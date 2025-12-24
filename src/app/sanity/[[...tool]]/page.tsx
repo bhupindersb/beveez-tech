@@ -10,7 +10,7 @@
 'use client'
 
 import { Studio } from 'sanity'
-import config from '@/sanity.config'
+import config from '../../../../sanity.config'
 
 export const dynamic = 'force-dynamic'
 

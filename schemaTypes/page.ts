@@ -26,6 +26,11 @@ export const page = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'heroHighlight',
+      title: 'Hero Highlight Line',
+      type: 'string',
+    }),
+    defineField({
       name: 'heroSubheadline',
       title: 'Hero Subheadline',
       type: 'text',
@@ -43,6 +48,43 @@ export const page = defineType({
       title: 'SEO Description',
       type: 'text',
       description: 'Max 160 characters',
+    }),
+    defineField({
+      name: 'heroBackground',
+      title: 'Hero Background Image',
+      type: 'image',
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: 'heroHighlightImage',
+      title: 'Hero Highlight Decoration Image',
+      description: 'Decorative image behind gradient text',
+      type: 'image',
+      options: { hotspot: true },
+    }),
+
+    defineField({
+      name: 'heroPrimaryCtaText',
+      title: 'Hero Primary CTA Text',
+      type: 'string',
+    }),
+
+    defineField({
+      name: 'heroPrimaryCtaUrl',
+      title: 'Hero Primary CTA URL',
+      type: 'string',
+    }),
+
+    defineField({
+      name: 'heroSecondaryCtaText',
+      title: 'Hero Secondary CTA Text',
+      type: 'string',
+    }),
+
+    defineField({
+      name: 'heroSecondaryCtaUrl',
+      title: 'Hero Secondary CTA URL',
+      type: 'string',
     }),
   ],
 })

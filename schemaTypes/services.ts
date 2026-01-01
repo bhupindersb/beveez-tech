@@ -1,4 +1,4 @@
-import {defineType, defineField} from 'sanity'
+import { defineType, defineField } from 'sanity'
 
 export const service = defineType({
   name: 'service',
@@ -6,27 +6,40 @@ export const service = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'name',
-      title: 'Service Name',
+      name: 'title',
+      title: 'Service Title',
       type: 'string',
-      validation: Rule => Rule.required()
+      validation: Rule => Rule.required(),
     }),
+
     defineField({
       name: 'description',
-      title: 'Short Description',
-      type: 'text'
+      title: 'Service Description',
+      type: 'text',
+      rows: 4,
     }),
-    defineField({
-      name: 'features',
-      title: 'Features',
-      type: 'array',
-      of: [{type: 'string'}]
-    }),
-    defineField({
-      name: 'priceFrom',
-      title: 'Starting Price (USD)',
-      type: 'number'
-    })
-  ]
-})
 
+    defineField({
+      name: 'image',
+      title: 'Service Image (PNG / SVG / GIF / WEBP)',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+    }),
+
+    defineField({
+      name: 'order',
+      title: 'Order',
+      type: 'number',
+    }),
+  ],
+
+  orderings: [
+    {
+      title: 'Order',
+      name: 'orderAsc',
+      by: [{ field: 'order', direction: 'asc' }],
+    },
+  ],
+})

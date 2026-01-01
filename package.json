@@ -5,29 +5,28 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "start": "next start"
   },
   "dependencies": {
     "@sanity/icons": "^3.7.4",
     "@sanity/image-url": "^1.2.0",
-    "@sanity/vision": "^4.22.0",
-    "next": "16.1.1",
-    "next-sanity": "^11.6.12",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "sanity": "^4.22.0",
+    "@sanity/vision": "^3.37.1",
+    "next": "14.2.5",
+    "next-sanity": "^11.0.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "sanity": "^3.37.1",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "babel-plugin-react-compiler": "1.0.0",
-    "eslint": "^9",
-    "eslint-config-next": "16.1.1",
-    "tailwindcss": "^4",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.23",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.5",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5"
   }
 }

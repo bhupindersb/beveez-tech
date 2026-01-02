@@ -24,6 +24,7 @@ export default async function RootLayout({
     <html lang="en" className={poppins.variable}>
       <head>
         <link rel="stylesheet" href="https://use.typekit.net/dco4nvv.css" />
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
       </head>
       <body className="antialiased font-body bg-[#f2f1f6]">
         {settings && <Navbar settings={settings} />}

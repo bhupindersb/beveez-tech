@@ -1,35 +1,23 @@
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const licenseKey = searchParams.get("license");
+const GITHUB_RELEASE_API =
+  "https://api.github.com/repos/bhupindersb/affilixwp/releases/latest";
 
-  if (!licenseKey) {
-    return new NextResponse("Missing license", { status: 403 });
+async function getLatestZipUrl() {
+  const res = await fetch(GITHUB_RELEASE_API, {
+    headers: {
+      "Accept": "application/vnd.github+json",
+      "User-Agent": "beveez-tech-updater",
+      "Authorization": `Bearer ${process.env.GITHUB_TOKEN}`,
+    },
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch GitHub release");
   }
 
-  // NOTE: Phase 3 will validate license properly.
-  // For Phase 2, allow any non-empty license.
-
-  const releaseRes = await fetch(
-    "https://api.github.com/repos/bhupindersb/affilixwp/releases/latest",
-    {
-      headers: {
-        "Accept": "application/vnd.github+json",
-        "User-Agent": "beveez-tech-updater",
-        "Authorization": `Bearer ${process.env.GITHUB_TOKEN}`,
-      },
-      cache: "no-store",
-    }
-  );
-
-  if (!releaseRes.ok) {
-    const text = await releaseRes.text();
-    console.error("GitHub release fetch failed:", text);
-    return new NextResponse("Release fetch failed", { status: 500 });
-  }
-
-  const release = await releaseRes.json();
+  const release = await res.json();
 
   const zipAsset = release.assets.find(
     (asset: any) =>
@@ -38,10 +26,48 @@ export async function GET(req: Request) {
   );
 
   if (!zipAsset) {
-    console.error("ZIP asset not found in release");
-    return new NextResponse("ZIP not found", { status: 404 });
+    throw new Error("ZIP asset not found");
   }
 
-  // 🔥 THIS IS IMPORTANT: WordPress can follow redirects
-  return NextResponse.redirect(zipAsset.browser_download_url);
+  return zipAsset.browser_download_url;
+}
+
+/**
+ * WordPress sends HEAD first
+ */
+export async function HEAD() {
+  try {
+    const zipUrl = await getLatestZipUrl();
+
+    return new NextResponse(null, {
+      status: 200,
+      headers: {
+        "Content-Type": "application/zip",
+        "Location": zipUrl,
+      },
+    });
+  } catch (e) {
+    return new NextResponse(null, { status: 404 });
+  }
+}
+
+/**
+ * WordPress then sends GET
+ */
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const licenseKey = searchParams.get("license");
+
+  if (!licenseKey) {
+    return new NextResponse("Missing license", { status: 403 });
+  }
+
+  try {
+    const zipUrl = await getLatestZipUrl();
+
+    // Redirect WordPress to the ZIP
+    return NextResponse.redirect(zipUrl);
+  } catch (e) {
+    return new NextResponse("Download failed", { status: 404 });
+  }
 }

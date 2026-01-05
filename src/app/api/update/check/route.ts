@@ -30,8 +30,9 @@ export async function POST(req: Request) {
 
   const zipAsset = release.assets.find(
     (asset: any) =>
-      asset.name.startsWith("affilixwp-") && asset.name.endsWith(".zip")
+      asset.name === `affilixwp-${latestVersion}.zip`
   );
+
 
   if (!zipAsset) {
     return NextResponse.json({ error: "ZIP not found" }, { status: 404 });

@@ -38,8 +38,9 @@ export async function POST(req: Request) {
   }
 
   return NextResponse.json({
-    new_version: latestVersion, // ✅ now defined
-    download_url: `https://www.beveez.tech/api/update/download?license=${licenseKey}`,
+    new_version: latestVersion,
     homepage: "https://www.beveez.tech/affilixwp",
+    download_url: zipAsset.browser_download_url, // ← GITHUB ZIP
   });
+
 }

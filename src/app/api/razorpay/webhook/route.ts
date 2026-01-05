@@ -12,6 +12,12 @@ const redis = new Redis({
 // Initialize Resend
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+function generateLicenseKey() {
+  const part = () => Math.random().toString(36).substring(2, 6).toUpperCase();
+  return `AFFILIXWP-${part()}-${part()}-${part()}`;
+}
+
+
 export async function POST(req: Request) {
   console.log("🔔 Razorpay webhook hit");
 
@@ -81,28 +87,45 @@ export async function POST(req: Request) {
 
     console.log("✅ AffilixWP token stored");
 
+    // Generate license key
+    const licenseKey = generateLicenseKey();
+
+    // Store license in Redis
+    await redis.set(`license:${licenseKey}`, {
+    email,
+    subscriptionId,
+    status: "active",
+    createdAt: Date.now(),
+    expiresAt: null,
+    domains: [],
+    });
+
+    console.log("🔑 License issued:", licenseKey);
+
+
     // --- Send download email ---
     try {
-      const downloadUrl = `https://www.beveez.tech/api/download/affilixwp?token=${token}`;
+        const downloadUrl = `https://www.beveez.tech/api/download/affilixwp?token=${token}`;
 
-      await resend.emails.send({
+        await resend.emails.send({
         from: "AffilixWP <noreply@beveez.tech>",
         to: email,
-        subject: "Your AffilixWP Download 🎉",
+        subject: "Your AffilixWP License & Download",
         html: `
-          <h2>Thank you for purchasing AffilixWP!</h2>
-          <p>You can download your plugin using the link below:</p>
-          <p>
-            <a href="${downloadUrl}" target="_blank">
-              Download AffilixWP
-            </a>
-          </p>
-          <p><small>This link expires in 24 hours.</small></p>
-          <p>If you need help, contact support@beveez.tech</p>
-        `,
-      });
+            <h2>Welcome to AffilixWP 🎉</h2>
 
-      console.log("📧 Download email sent");
+            <p><strong>Your License Key:</strong></p>
+            <pre style="font-size:16px">${licenseKey}</pre>
+
+            <p><strong>Download Plugin:</strong></p>
+            <p><a href="${downloadUrl}">Download AffilixWP</a></p>
+
+            <p>This license is valid for one site.</p>
+            <p>Need help? support@beveez.tech</p>
+        `,
+        });
+
+        console.log("📧 Download email sent");
     } catch (error) {
       // Do NOT fail webhook if email fails
       console.error("❌ Failed to send email", error);

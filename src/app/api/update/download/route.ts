@@ -8,9 +8,8 @@ export async function GET(req: Request) {
     return new NextResponse("Missing license", { status: 403 });
   }
 
-  // TODO (Phase 3): Validate license properly
-  // For now, allow any non-empty license
-  // Later: check Redis / DB, domain, expiry, etc.
+  // NOTE: Phase 3 will validate license properly.
+  // For Phase 2, allow any non-empty license.
 
   const releaseRes = await fetch(
     "https://api.github.com/repos/bhupindersb/affilixwp/releases/latest",
@@ -25,20 +24,24 @@ export async function GET(req: Request) {
   );
 
   if (!releaseRes.ok) {
-    return new NextResponse("Failed to fetch release", { status: 500 });
+    const text = await releaseRes.text();
+    console.error("GitHub release fetch failed:", text);
+    return new NextResponse("Release fetch failed", { status: 500 });
   }
 
   const release = await releaseRes.json();
 
   const zipAsset = release.assets.find(
     (asset: any) =>
-      asset.name.startsWith("affilixwp-") && asset.name.endsWith(".zip")
+      asset.name.startsWith("affilixwp-") &&
+      asset.name.endsWith(".zip")
   );
 
   if (!zipAsset) {
+    console.error("ZIP asset not found in release");
     return new NextResponse("ZIP not found", { status: 404 });
   }
 
-  // Redirect WordPress to the ZIP
+  // 🔥 THIS IS IMPORTANT: WordPress can follow redirects
   return NextResponse.redirect(zipAsset.browser_download_url);
 }

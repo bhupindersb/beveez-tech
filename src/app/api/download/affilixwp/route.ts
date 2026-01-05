@@ -14,17 +14,44 @@ export async function GET(req: Request) {
     return new NextResponse("Missing token", { status: 401 });
   }
 
+  // Validate download token
   const record = await redis.get(`affilixwp:token:${token}`);
 
   if (!record) {
     return new NextResponse("Invalid or expired token", { status: 403 });
   }
 
-  // Optional: one-time download
+  // One-time download (optional but recommended)
   await redis.del(`affilixwp:token:${token}`);
 
-  // Redirect to actual plugin ZIP
-  return NextResponse.redirect(
-    "https://github.com/bhupindersb/affilixwp/releases/download/v0.1.2/affilixwp-v0.1.2.zip"
+  // Fetch latest GitHub release
+  const releaseRes = await fetch(
+    "https://api.github.com/repos/bhupindersb/affilixwp/releases/latest",
+    {
+      headers: {
+        Accept: "application/vnd.github+json",
+      },
+      // Prevent edge caching
+      cache: "no-store",
+    }
   );
+
+  if (!releaseRes.ok) {
+    return new NextResponse("Failed to fetch release", { status: 500 });
+  }
+
+  const release = await releaseRes.json();
+
+  // Find plugin ZIP asset
+  const zipAsset = release.assets.find(
+    (asset: any) =>
+      asset.name.startsWith("affilixwp-") && asset.name.endsWith(".zip")
+  );
+
+  if (!zipAsset) {
+    return new NextResponse("Plugin ZIP not found", { status: 500 });
+  }
+
+  // Redirect to the actual ZIP
+  return NextResponse.redirect(zipAsset.browser_download_url);
 }

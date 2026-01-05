@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   const { slug, version, licenseKey, domain } = await req.json();
 
-  // TODO: Phase 3 – Validate license properly
   if (!licenseKey) {
     return NextResponse.json({ error: "Invalid license" }, { status: 403 });
   }
@@ -26,14 +25,21 @@ export async function POST(req: Request) {
 
   const release = await releaseRes.json();
 
+  // ✅ DEFINE latestVersion (THIS WAS MISSING)
+  const latestVersion = release.tag_name.replace(/^v/, "");
+
   const zipAsset = release.assets.find(
     (asset: any) =>
       asset.name.startsWith("affilixwp-") && asset.name.endsWith(".zip")
   );
 
+  if (!zipAsset) {
+    return NextResponse.json({ error: "ZIP not found" }, { status: 404 });
+  }
+
   return NextResponse.json({
-    new_version: release.tag_name.replace("v", ""),
-    download_url: zipAsset.browser_download_url,
+    new_version: latestVersion, // ✅ now defined
+    download_url: `https://www.beveez.tech/api/update/download?license=${licenseKey}`,
     homepage: "https://www.beveez.tech/affilixwp",
   });
 }

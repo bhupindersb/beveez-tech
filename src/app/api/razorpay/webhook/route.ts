@@ -17,28 +17,18 @@ function generateLicenseKey() {
   return `AFFILIXWP-${part()}-${part()}-${part()}`;
 }
 
-
 export async function POST(req: Request) {
   console.log("🔔 Razorpay webhook hit");
 
   // --- Safety checks ---
-  if (!process.env.RP_WEBHOOK_SECRET) {
-    console.error("❌ RP_WEBHOOK_SECRET is missing");
-    return new NextResponse("Server misconfigured", { status: 500 });
-  }
-
-  if (!process.env.AFFILIXWP_DOWNLOAD_SECRET) {
-    console.error("❌ AFFILIXWP_DOWNLOAD_SECRET is missing");
-    return new NextResponse("Server misconfigured", { status: 500 });
-  }
-
-  if (!process.env.KV_REST_API_URL || !process.env.KV_REST_API_TOKEN) {
-    console.error("❌ Redis env vars are missing");
-    return new NextResponse("Server misconfigured", { status: 500 });
-  }
-
-  if (!process.env.RESEND_API_KEY) {
-    console.error("❌ RESEND_API_KEY is missing");
+  if (
+    !process.env.RP_WEBHOOK_SECRET ||
+    !process.env.AFFILIXWP_DOWNLOAD_SECRET ||
+    !process.env.KV_REST_API_URL ||
+    !process.env.KV_REST_API_TOKEN ||
+    !process.env.RESEND_API_KEY
+  ) {
+    console.error("❌ Missing environment variables");
     return new NextResponse("Server misconfigured", { status: 500 });
   }
 
@@ -69,13 +59,14 @@ export async function POST(req: Request) {
     const email =
       payload.payload.payment.entity.email || "unknown@customer.com";
 
-    // Generate secure download token
+    /* ----------------------------
+       1️⃣ Generate download token
+    ----------------------------- */
     const token = crypto
       .createHmac("sha256", process.env.AFFILIXWP_DOWNLOAD_SECRET)
       .update(`${subscriptionId}|${paymentId}`)
       .digest("hex");
 
-    // Store token in Redis (24h expiry)
     await redis.set(`affilixwp:token:${token}`, {
       email,
       subscriptionId,
@@ -85,49 +76,50 @@ export async function POST(req: Request) {
 
     await redis.expire(`affilixwp:token:${token}`, 60 * 60 * 24);
 
-    console.log("✅ AffilixWP token stored");
+    console.log("✅ Download token stored");
 
-    // Generate license key
+    /* ----------------------------
+       2️⃣ Generate & store license
+    ----------------------------- */
     const licenseKey = generateLicenseKey();
 
-    // Store license in Redis
-    await redis.set(`license:${licenseKey}`, {
-    email,
-    subscriptionId,
-    status: "active",
-    createdAt: Date.now(),
-    expiresAt: null,
-    domains: [],
+    await redis.set(`affilixwp:license:${licenseKey}`, {
+      status: "active",
+      plan: "pro",
+      max_sites: 1,
+      email,
+      created_at: new Date().toISOString(),
+      expires_at: null, // lifetime
     });
 
     console.log("🔑 License issued:", licenseKey);
 
-
-    // --- Send download email ---
+    /* ----------------------------
+       3️⃣ Send email
+    ----------------------------- */
     try {
-        const downloadUrl = `https://www.beveez.tech/api/download/affilixwp?token=${token}`;
+      const downloadUrl = `https://www.beveez.tech/api/download/affilixwp?token=${token}`;
 
-        await resend.emails.send({
+      await resend.emails.send({
         from: "AffilixWP <noreply@beveez.tech>",
         to: email,
         subject: "Your AffilixWP License & Download",
         html: `
-            <h2>Welcome to AffilixWP 🎉</h2>
+          <h2>Welcome to AffilixWP 🎉</h2>
 
-            <p><strong>Your License Key:</strong></p>
-            <pre style="font-size:16px">${licenseKey}</pre>
+          <p><strong>Your License Key:</strong></p>
+          <pre style="font-size:16px">${licenseKey}</pre>
 
-            <p><strong>Download Plugin:</strong></p>
-            <p><a href="${downloadUrl}">Download AffilixWP</a></p>
+          <p><strong>Download Plugin:</strong></p>
+          <p><a href="${downloadUrl}">Download AffilixWP</a></p>
 
-            <p>This license is valid for one site.</p>
-            <p>Need help? support@beveez.tech</p>
+          <p>This license is valid for one site.</p>
+          <p>Need help? support@beveez.tech</p>
         `,
-        });
+      });
 
-        console.log("📧 Download email sent");
+      console.log("📧 License email sent");
     } catch (error) {
-      // Do NOT fail webhook if email fails
       console.error("❌ Failed to send email", error);
     }
   }

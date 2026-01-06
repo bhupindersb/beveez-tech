@@ -16,7 +16,9 @@ function generateLicenseKey() {
 
 export async function POST(req: Request) {
   try {
-    const { email, plan = "pro" } = await req.json();
+    const body = await req.json();
+    const email = body.email;
+    const plan = body.plan || "pro";
 
     if (!email) {
       return NextResponse.json({ error: "Missing email" }, { status: 400 });
@@ -28,16 +30,17 @@ export async function POST(req: Request) {
       status: "active",
       plan,
       max_sites: 1,
+      email,
       created_at: new Date().toISOString(),
       expires_at: null, // lifetime
-      email,
     });
 
     return NextResponse.json({
       success: true,
       licenseKey,
     });
-  } catch {
+  } catch (err) {
+    console.error("LICENSE CREATE ERROR", err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

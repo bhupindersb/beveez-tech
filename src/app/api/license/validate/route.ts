@@ -4,7 +4,6 @@ export async function POST(req: Request) {
   try {
     const { license_key } = await req.json();
 
-    // TEMP: hardcoded test license
     if (license_key === "AFFILIXWP-TEST-1234") {
       return NextResponse.json({
         valid: true,
@@ -18,9 +17,7 @@ export async function POST(req: Request) {
       valid: false,
       status: "invalid",
     });
-  } catch (e) {
-    return NextResponse.json({
-      valid: false,
-    });
+  } catch {
+    return NextResponse.json({ valid: false });
   }
 }

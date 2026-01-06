@@ -14,11 +14,22 @@ export async function GET() {
   for (const key of keys) {
     if (key.includes(":domains") || key.includes(":last_valid")) continue;
 
-    const data = await redis.get(key);
-    licenses.push({
-      key: key.replace("affilixwp:license:", ""),
-      ...data,
-    });
+    type LicenseRecord = {
+        email: string;
+        status: "active" | "inactive";
+        createdAt: number;
+        expiresAt?: number;
+        };
+
+        const data = await redis.get<LicenseRecord>(key);
+
+        if (data) {
+        licenses.push({
+            key: key.replace("affilixwp:license:", ""),
+            ...data,
+        });
+        }
+
   }
 
   return NextResponse.json(licenses);

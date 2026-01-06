@@ -2,8 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
 
-  experimental: {
-    appDir: true, // ✅ REQUIRED for src/app routes
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 
   images: {

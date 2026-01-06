@@ -45,14 +45,21 @@ export async function GET(req: Request) {
 
   const release = await releaseRes.json();
 
-  // Find the plugin ZIP asset dynamically
-  const zipAsset = release.assets.find(
-    (asset: any) =>
-      asset.name.startsWith("affilixwp-") && asset.name.endsWith(".zip")
+  // Prefer canonical ZIP name
+  let zipAsset = release.assets.find(
+    (asset: any) => asset.name === "affilixwp.zip"
   );
 
+  // Fallback (older releases)
   if (!zipAsset) {
-    console.error("❌ ZIP asset not found in release:", release.assets);
+    zipAsset = release.assets.find(
+      (asset: any) =>
+        asset.name.startsWith("affilixwp-") &&
+        asset.name.endsWith(".zip")
+    );
+  }
+
+  if (!zipAsset) {
     return new NextResponse("Plugin ZIP not found", { status: 500 });
   }
 

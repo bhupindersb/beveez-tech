@@ -1,28 +1,36 @@
 import Razorpay from "razorpay";
 import { NextResponse } from "next/server";
 
-export async function POST() {
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID!,
+  key_secret: process.env.RAZORPAY_KEY_SECRET!,
+});
+
+export async function POST(req: Request) {
   try {
-    const razorpay = new Razorpay({
-      key_id: process.env.RP_KEY_ID!,
-      key_secret: process.env.RP_KEY_SECRET!,
-    });
+    const { planId, wpUserId } = await req.json();
+
+    if (!wpUserId) {
+      return NextResponse.json(
+        { error: "Missing WP user ID" },
+        { status: 400 }
+      );
+    }
 
     const subscription = await razorpay.subscriptions.create({
-      plan_id: process.env.RP_PLAN_ID!,
+      plan_id: planId,
       customer_notify: 1,
-      quantity: 1,
-      total_count: 12, // 12 months (set null for infinite)
+      total_count: 12,
+      notes: {
+        wp_user_id: wpUserId, // 🔥 THIS IS THE KEY LINE
+      },
     });
 
-    return NextResponse.json({
-      success: true,
-      subscription_id: subscription.id,
-    });
-  } catch (error: any) {
-    console.error("Razorpay error:", error);
+    return NextResponse.json(subscription);
+  } catch (err) {
+    console.error(err);
     return NextResponse.json(
-      { success: false, message: error.message },
+      { error: "Failed to create subscription" },
       { status: 500 }
     );
   }

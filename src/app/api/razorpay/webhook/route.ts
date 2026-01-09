@@ -77,7 +77,7 @@ export async function POST(req: Request) {
 
   const amount = payment.amount / 100;
   const reference = `razorpay_${payment.id}`;
-  const email = payment.email || "unknown@customer.com";
+  const email = payment.email;
 
   /* ----------------------------
      1️⃣ Download token
@@ -111,34 +111,44 @@ export async function POST(req: Request) {
   });
 
   /* ----------------------------
-     3️⃣ Trigger WordPress commission
+    3️⃣ Trigger WP commission
   ----------------------------- */
   try {
-    const res = await fetch(
-      `${process.env.WP_SITE_URL}/wp-json/affilixwp/v1/record-purchase`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-AffilixWP-Secret": process.env.AFFILIXWP_API_SECRET,
-        },
-        body: JSON.stringify({
-          user_id: Number(wpUserId),
-          amount,
-          reference,
-          source: "razorpay_subscription",
-        }),
-      }
-    );
+    const wpUserId =
+      payload.payload.subscription.entity.notes?.wp_user_id;
 
-    if (!res.ok) {
-      console.error("❌ Commission API failed");
+    if (!wpUserId) {
+      console.error("❌ Missing wp_user_id in subscription notes");
     } else {
-      console.log("💰 Commission recorded");
+      const commissionRes = await fetch(
+        "https://www.beveez.tech/wp-json/affilixwp/v1/commission",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-affilixwp-secret": process.env.AFFILIXWP_API_SECRET!,
+          },
+          body: JSON.stringify({
+            buyer_user_id: parseInt(wpUserId, 10),
+            amount: amount,
+            reference,
+          }),
+        }
+      );
+
+      if (!commissionRes.ok) {
+        const text = await commissionRes.text();
+        console.error("❌ Commission API failed:", text);
+      } else {
+        console.log("💰 Commission recorded");
+      }
     }
   } catch (err) {
     console.error("❌ Commission API error", err);
   }
+
+
+
 
   /* ----------------------------
      4️⃣ Email

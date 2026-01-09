@@ -7,63 +7,52 @@ const ALLOWED_ORIGINS = new Set([
   "https://www.beveez.tech",
 ]);
 
-function buildCorsHeaders(origin: string | null): Headers {
-  const headers = new Headers();
+function corsHeaders(origin: string | null) {
+  const headers: Record<string, string> = {};
 
   if (origin && ALLOWED_ORIGINS.has(origin)) {
-    headers.set("Access-Control-Allow-Origin", origin);
-    headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
-    headers.set("Access-Control-Allow-Headers", "Content-Type");
+    headers["Access-Control-Allow-Origin"] = origin;
+    headers["Access-Control-Allow-Methods"] = "POST, OPTIONS";
+    headers["Access-Control-Allow-Headers"] = "Content-Type";
   }
 
   return headers;
 }
 
-/**
- * Handle CORS preflight
- */
+/* -------------------------
+   CORS preflight
+-------------------------- */
 export async function OPTIONS(req: Request) {
   const origin = req.headers.get("origin");
-
   return new NextResponse(null, {
     status: 204,
-    headers: buildCorsHeaders(origin),
+    headers: corsHeaders(origin),
   });
 }
 
-/**
- * Create Razorpay subscription
- */
+/* -------------------------
+   Create subscription
+-------------------------- */
 export async function POST(req: Request) {
   const origin = req.headers.get("origin");
 
   try {
-    const { planId, wpUserId } = await req.json();
+    const { planId, wpUserId, email, name } = await req.json();
 
-    if (!planId || !wpUserId) {
+    if (!planId || !wpUserId || !email) {
       return NextResponse.json(
-        { error: "Missing planId or wpUserId" },
-        {
-          status: 400,
-          headers: buildCorsHeaders(origin),
-        }
+        { error: "Missing planId, wpUserId or email" },
+        { status: 400, headers: corsHeaders(origin) }
       );
     }
 
-    if (
-      !process.env.RP_KEY_ID ||
-      !process.env.RP_KEY_SECRET
-    ) {
+    if (!process.env.RP_KEY_ID || !process.env.RP_KEY_SECRET) {
       return NextResponse.json(
         { error: "Server misconfigured" },
-        {
-          status: 500,
-          headers: buildCorsHeaders(origin),
-        }
+        { status: 500, headers: corsHeaders(origin) }
       );
     }
 
-    // ✅ Razorpay created at runtime
     const razorpay = new Razorpay({
       key_id: process.env.RP_KEY_ID,
       key_secret: process.env.RP_KEY_SECRET,
@@ -73,24 +62,26 @@ export async function POST(req: Request) {
       plan_id: planId,
       customer_notify: 1,
       total_count: 12,
+
+      customer: {
+        email,
+        name: name || "AffilixWP Customer",
+      },
+
       notes: {
-        wp_user_id: wpUserId,
+        wp_user_id: wpUserId.toString(),
       },
     });
 
     return NextResponse.json(subscription, {
-      headers: buildCorsHeaders(origin),
+      headers: corsHeaders(origin),
     });
-
   } catch (error) {
-    console.error("❌ Razorpay error:", error);
+    console.error("❌ Razorpay create-subscription error:", error);
 
     return NextResponse.json(
       { error: "Failed to create subscription" },
-      {
-        status: 500,
-        headers: buildCorsHeaders(origin),
-      }
+      { status: 500, headers: corsHeaders(origin) }
     );
   }
 }

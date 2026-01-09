@@ -7,7 +7,7 @@ const ALLOWED_ORIGINS = new Set([
   "https://www.beveez.tech",
 ]);
 
-function corsHeaders(origin: string | null) {
+function corsHeaders(origin: string | null): Record<string, string> {
   const headers: Record<string, string> = {};
 
   if (origin && ALLOWED_ORIGINS.has(origin)) {
@@ -37,11 +37,11 @@ export async function POST(req: Request) {
   const origin = req.headers.get("origin");
 
   try {
-    const { planId, wpUserId, email, name } = await req.json();
+    const { planId, wpUserId } = await req.json();
 
-    if (!planId || !wpUserId || !email) {
+    if (!planId || !wpUserId) {
       return NextResponse.json(
-        { error: "Missing planId, wpUserId or email" },
+        { error: "Missing planId or wpUserId" },
         { status: 400, headers: corsHeaders(origin) }
       );
     }
@@ -63,11 +63,7 @@ export async function POST(req: Request) {
       customer_notify: 1,
       total_count: 12,
 
-      customer: {
-        email,
-        name: name || "AffilixWP Customer",
-      },
-
+      // ✅ ONLY place WP user mapping here
       notes: {
         wp_user_id: wpUserId.toString(),
       },

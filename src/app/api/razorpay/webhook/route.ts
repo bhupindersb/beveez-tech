@@ -31,6 +31,7 @@ function generateLicenseKey() {
 export async function POST(req: Request) {
   console.log("🔔 Razorpay webhook hit");
 
+  // --- Safety checks ---
   if (
     !process.env.RP_WEBHOOK_SECRET ||
     !process.env.AFFILIXWP_DOWNLOAD_SECRET ||
@@ -43,6 +44,7 @@ export async function POST(req: Request) {
     return new NextResponse("Server misconfigured", { status: 500 });
   }
 
+  // --- Verify signature ---
   const body = await req.text();
   const signature = req.headers.get("x-razorpay-signature");
 
@@ -61,6 +63,7 @@ export async function POST(req: Request) {
 
   const payload = JSON.parse(body);
 
+  // Only care about successful subscription charge
   if (payload.event !== "subscription.charged") {
     return NextResponse.json({ received: true });
   }
@@ -68,20 +71,25 @@ export async function POST(req: Request) {
   const subscription = payload.payload.subscription.entity;
   const payment = payload.payload.payment.entity;
 
-  const wpUserId = subscription.notes?.wp_user_id;
+  /* ----------------------------
+     Extract required data
+  ----------------------------- */
 
-  if (!wpUserId) {
-    console.error("❌ wp_user_id missing in Razorpay notes");
+  const buyerUserId = subscription.notes?.wp_user_id;
+
+  if (!buyerUserId) {
+    console.error("❌ wp_user_id missing in Razorpay subscription notes");
     return NextResponse.json({ received: true });
   }
 
-  const amount = payment.amount / 100;
+  const orderAmount = payment.amount / 100; // paise → INR
   const reference = `razorpay_${payment.id}`;
-  const email = payment.email;
+  const email = payment.email || "unknown@customer.com";
 
   /* ----------------------------
      1️⃣ Download token
   ----------------------------- */
+
   const token = crypto
     .createHmac("sha256", process.env.AFFILIXWP_DOWNLOAD_SECRET)
     .update(`${subscription.id}|${payment.id}`)
@@ -96,9 +104,12 @@ export async function POST(req: Request) {
 
   await redis.expire(`affilixwp:token:${token}`, 60 * 60 * 24);
 
+  console.log("✅ Download token created");
+
   /* ----------------------------
      2️⃣ License
   ----------------------------- */
+
   const licenseKey = generateLicenseKey();
 
   await redis.set(`affilixwp:license:${licenseKey}`, {
@@ -110,44 +121,36 @@ export async function POST(req: Request) {
     expires_at: null,
   });
 
+  console.log("🔑 License issued:", licenseKey);
+
   /* ----------------------------
-    3️⃣ Trigger WP commission (admin-ajax)
+     3️⃣ Trigger WP commission (admin-ajax)
   ----------------------------- */
 
   try {
-    const buyerUserId =
-      payload.payload.payment.entity.notes?.wp_user_id;
+    await fetch("https://www.beveez.tech/wp-admin/admin-ajax.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "x-affilixwp-secret": process.env.AFFILIXWP_API_SECRET!,
+      },
+      body: new URLSearchParams({
+        action: "affilixwp_record_commission",
+        buyer_user_id: String(buyerUserId),
+        amount: String(orderAmount),
+        reference,
+      }),
+    });
 
-    if (!buyerUserId) {
-      console.error("❌ Missing wp_user_id in Razorpay notes");
-    } else {
-      await fetch("https://www.beveez.tech/wp-admin/admin-ajax.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "x-affilixwp-secret": process.env.AFFILIXWP_API_SECRET!,
-        },
-        body: new URLSearchParams({
-          action: "affilixwp_record_commission",
-          buyer_user_id: String(buyerUserId),
-          amount: String(orderAmount),
-          reference,
-        }),
-      });
-
-      console.log("💰 Commission recorded via admin-ajax");
-    }
+    console.log("💰 Commission recorded via admin-ajax");
   } catch (err) {
     console.error("❌ Commission API error", err);
   }
 
-
-
-
-
   /* ----------------------------
-     4️⃣ Email
+     4️⃣ Send email
   ----------------------------- */
+
   try {
     const downloadUrl = `https://www.beveez.tech/api/download/affilixwp?token=${token}`;
 
@@ -158,10 +161,12 @@ export async function POST(req: Request) {
       html: `
         <h2>Welcome to AffilixWP 🎉</h2>
         <p><strong>Your License Key:</strong></p>
-        <pre>${licenseKey}</pre>
+        <pre style="font-size:16px">${licenseKey}</pre>
         <p><a href="${downloadUrl}">Download Plugin</a></p>
       `,
     });
+
+    console.log("📧 License email sent");
   } catch (err) {
     console.error("❌ Email send failed", err);
   }

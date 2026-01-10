@@ -111,41 +111,36 @@ export async function POST(req: Request) {
   });
 
   /* ----------------------------
-    3️⃣ Trigger WP commission
+    3️⃣ Trigger WP commission (admin-ajax)
   ----------------------------- */
+
   try {
-    const wpUserId =
-      payload.payload.subscription.entity.notes?.wp_user_id;
+    const buyerUserId =
+      payload.payload.payment.entity.notes?.wp_user_id;
 
-    if (!wpUserId) {
-      console.error("❌ Missing wp_user_id in subscription notes");
+    if (!buyerUserId) {
+      console.error("❌ Missing wp_user_id in Razorpay notes");
     } else {
-      const commissionRes = await fetch(
-        "https://www.beveez.tech/wp-json/affilixwp/v1/commission",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-affilixwp-secret": process.env.AFFILIXWP_API_SECRET!,
-          },
-          body: JSON.stringify({
-            buyer_user_id: parseInt(wpUserId, 10),
-            amount: amount,
-            reference,
-          }),
-        }
-      );
+      await fetch("https://www.beveez.tech/wp-admin/admin-ajax.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "x-affilixwp-secret": process.env.AFFILIXWP_API_SECRET!,
+        },
+        body: new URLSearchParams({
+          action: "affilixwp_record_commission",
+          buyer_user_id: String(buyerUserId),
+          amount: String(orderAmount),
+          reference,
+        }),
+      });
 
-      if (!commissionRes.ok) {
-        const text = await commissionRes.text();
-        console.error("❌ Commission API failed:", text);
-      } else {
-        console.log("💰 Commission recorded");
-      }
+      console.log("💰 Commission recorded via admin-ajax");
     }
   } catch (err) {
     console.error("❌ Commission API error", err);
   }
+
 
 
 

@@ -2,33 +2,38 @@ import Razorpay from "razorpay";
 import { NextResponse } from "next/server";
 
 const ALLOWED_ORIGINS = new Set([
-  "http://affilixwp.local",
-  "https://beveez.tech",
+  "http://affilixwp.beveez.tech",
+  "https://affilixwp.beveez.tech",
   "https://www.beveez.tech",
 ]);
 
-function corsHeaders(origin: string | null): Record<string, string> {
-  const headers: Record<string, string> = {};
+
+function corsHeaders(origin: string | null) {
+  const headers: Record<string, string> = {
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+  };
 
   if (origin && ALLOWED_ORIGINS.has(origin)) {
     headers["Access-Control-Allow-Origin"] = origin;
-    headers["Access-Control-Allow-Methods"] = "POST, OPTIONS";
-    headers["Access-Control-Allow-Headers"] = "Content-Type";
   }
 
   return headers;
 }
+
 
 /* -------------------------
    CORS preflight
 -------------------------- */
 export async function OPTIONS(req: Request) {
   const origin = req.headers.get("origin");
-  return new NextResponse(null, {
+
+  return new Response(null, {
     status: 204,
     headers: corsHeaders(origin),
   });
 }
+
 
 /* -------------------------
    Create subscription

@@ -115,9 +115,8 @@ export async function POST(req: Request) {
      3️⃣ Trigger commission on WORDPRESS
   ----------------------------- */
   try {
-    const res = await fetch(
-      `${process.env.AFFILIXWP_WP_URL}/wp-json/affilixwp/v1/commission`,
-      {
+    const WP_BASE_URL = process.env.WP_BASE_URL!;
+    await fetch(`${WP_BASE_URL}/wp-json/affilixwp/v1/commission`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

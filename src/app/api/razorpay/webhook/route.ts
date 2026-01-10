@@ -12,7 +12,7 @@ const redis = new Redis({
   token: process.env.KV_REST_API_TOKEN!,
 });
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY!);
 
 /* ----------------------------
    Helpers
@@ -38,11 +38,15 @@ export async function POST(req: Request) {
     !process.env.KV_REST_API_TOKEN ||
     !process.env.RESEND_API_KEY ||
     !process.env.AFFILIXWP_API_SECRET ||
-    !process.env.AFFILIXWP_WP_URL
+    !process.env.WP_BASE_URL
   ) {
     console.error("❌ Missing environment variables");
     return new NextResponse("Server misconfigured", { status: 500 });
   }
+
+  /* ----------------------------
+     Verify signature
+  ----------------------------- */
 
   const body = await req.text();
   const signature = req.headers.get("x-razorpay-signature");
@@ -66,6 +70,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ received: true });
   }
 
+  /* ----------------------------
+     Extract Razorpay data
+  ----------------------------- */
+
   const subscription = payload.payload.subscription.entity;
   const payment = payload.payload.payment.entity;
 
@@ -83,6 +91,7 @@ export async function POST(req: Request) {
   /* ----------------------------
      1️⃣ Download token
   ----------------------------- */
+
   const token = crypto
     .createHmac("sha256", process.env.AFFILIXWP_DOWNLOAD_SECRET)
     .update(`${subscription.id}|${payment.id}`)
@@ -100,6 +109,7 @@ export async function POST(req: Request) {
   /* ----------------------------
      2️⃣ License
   ----------------------------- */
+
   const licenseKey = generateLicenseKey();
 
   await redis.set(`affilixwp:license:${licenseKey}`, {
@@ -112,11 +122,13 @@ export async function POST(req: Request) {
   });
 
   /* ----------------------------
-     3️⃣ Trigger commission on WORDPRESS
+     3️⃣ Trigger WordPress commission
   ----------------------------- */
+
   try {
-    const WP_BASE_URL = process.env.WP_BASE_URL!;
-    await fetch(`${WP_BASE_URL}/wp-json/affilixwp/v1/commission`, {
+    const res = await fetch(
+      `${process.env.WP_BASE_URL}/wp-json/affilixwp/v1/commission`,
+      {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -143,6 +155,7 @@ export async function POST(req: Request) {
   /* ----------------------------
      4️⃣ Email
   ----------------------------- */
+
   try {
     const downloadUrl = `https://www.beveez.tech/api/download/affilixwp?token=${token}`;
 

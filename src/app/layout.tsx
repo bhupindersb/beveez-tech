@@ -32,7 +32,8 @@ export const metadata = {
     follow: true,
   },
   icons: {
-    icon: '/favicon.png',
+    icon: '/favicon-v2.png',
+    apple: '/favicon-v2.png',
   },
 }
 

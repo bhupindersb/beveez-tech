@@ -9,14 +9,33 @@ export const page = defineType({
       name: 'title',
       title: 'Page Title',
       type: 'string',
-      validation: Rule => Rule.required(),
     }),
+
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: {source: 'title'},
-      validation: Rule => Rule.required(),
+      options: { source: 'title' },
+    }),
+
+    // ✅ SEO FIELDS
+    defineField({
+      name: 'seoTitle',
+      title: 'SEO Title',
+      type: 'string',
+      description: 'Overrides page title for search engines',
+    }),
+    defineField({
+      name: 'seoDescription',
+      title: 'SEO Description',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'seoImage',
+      title: 'SEO / OpenGraph Image',
+      type: 'image',
+      options: { hotspot: true },
     }),
 
     // HERO

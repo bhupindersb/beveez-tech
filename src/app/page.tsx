@@ -25,6 +25,31 @@ import { getCtaSection } from '@/sanity/lib/getCtaSection'
 import { getBlogs } from '@/sanity/lib/getBlogs'
 import BlogSection from '@/components/BlogSection'
 
+import { Metadata } from 'next'
+import { getPageSeo } from '@/sanity/lib/getPageSeo'
+import { urlFor } from '@/sanity/lib/image'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getPageSeo('home')
+
+  return {
+    title: seo?.seoTitle || 'Beveez Tech — Web Design for Startups',
+    description: seo?.seoDescription,
+
+    openGraph: {
+      title: seo?.seoTitle,
+      description: seo?.seoDescription,
+      images: seo?.seoImage
+        ? [
+            {
+              url: urlFor(seo.seoImage).width(1200).height(630).url(),
+            },
+          ]
+        : [],
+    },
+  }
+}
+
 
 async function getHomePage() {
   return sanityClient.fetch(`

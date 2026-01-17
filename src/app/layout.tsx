@@ -1,16 +1,40 @@
 import './globals.css'
 import { getSiteSettings } from '../sanity/lib/getSiteSettings'
-import Navbar from '@/components/Navbar'
-import { Poppins } from 'next/font/google'
-
-import Footer from '@/components/Footer'
 import { getFooterSettings } from '@/sanity/lib/getFooterSettings'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
+import { Poppins } from 'next/font/google'
 
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-poppins',
 })
+
+export const metadata = {
+  title: {
+    default: 'Beveez Tech — Web Design, Development & SEO for Startups',
+    template: '%s | Beveez Tech',
+  },
+  description:
+    'Beveez Tech helps startups, founders, and small businesses build fast, scalable websites optimized for SEO, performance, and conversions.',
+  metadataBase: new URL('https://beveez.tech'),
+  openGraph: {
+    title: 'Beveez Tech — Web Design, Development & SEO for Startups',
+    description:
+      'Modern web design and development for startups and founders worldwide. Fast, SEO-optimized, conversion-focused websites.',
+    url: 'https://beveez.tech',
+    siteName: 'Beveez Tech',
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  icons: {
+    icon: '/favicon.png',
+  },
+}
 
 export default async function RootLayout({
   children,
@@ -23,9 +47,16 @@ export default async function RootLayout({
   return (
     <html lang="en" className={poppins.variable}>
       <head>
+        {/* Adobe Fonts – All Round Gothic */}
         <link rel="stylesheet" href="https://use.typekit.net/dco4nvv.css" />
+
+        {/* Razorpay */}
         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+        {/* Favicon */}
+        <link rel="icon" href="/favicon.png" type="image/png" />
       </head>
+
       <body className="antialiased font-body bg-[#f2f1f6]">
         {settings && <Navbar settings={settings} />}
         {children}

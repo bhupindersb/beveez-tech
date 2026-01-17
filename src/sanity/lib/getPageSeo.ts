@@ -6,9 +6,14 @@ export async function getPageSeo(slug: string) {
     *[_type == "page" && slug.current == $slug][0]{
       seoTitle,
       seoDescription,
-      seoImage
+      seoImage {
+        asset->{
+          url
+        }
+      }
     }
     `,
     { slug }
   )
 }
+

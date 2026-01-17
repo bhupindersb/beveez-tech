@@ -27,24 +27,32 @@ import BlogSection from '@/components/BlogSection'
 
 import { Metadata } from 'next'
 import { getPageSeo } from '@/sanity/lib/getPageSeo'
-import { urlFor } from '@/sanity/lib/image'
+import { urlFor } from '@/sanity/lib/image' 
+
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('home')
 
   return {
-    title: seo?.seoTitle || 'Beveez Tech — Web Design for Startups',
-    description: seo?.seoDescription,
-
+    title: seo?.seoTitle || 'Beveez Tech – Design & Development Studio',
+    description:
+      seo?.seoDescription ||
+      'We help startups and founders design, build, and scale digital products.',
     openGraph: {
       title: seo?.seoTitle,
       description: seo?.seoDescription,
-      images: seo?.seoImage
-        ? [
-            {
-              url: urlFor(seo.seoImage).width(1200).height(630).url(),
-            },
-          ]
+      images: seo?.seoImage?.asset?.url
+        ? [{ url: seo.seoImage.asset.url }]
+        : [],
+      url: 'https://www.beveez.tech',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: seo?.seoTitle,
+      description: seo?.seoDescription,
+      images: seo?.seoImage?.asset?.url
+        ? [seo.seoImage.asset.url]
         : [],
     },
   }
@@ -62,10 +70,20 @@ async function getHomePage() {
       heroPrimaryCtaText,
       heroPrimaryCtaUrl,
       heroSecondaryCtaText,
-      heroSecondaryCtaUrl
+      heroSecondaryCtaUrl,
+      seo {
+        seoTitle,
+        seoDescription,
+        seoImage {
+          asset->{
+            url
+          }
+        }
+      }
     }
   `)
 }
+
 
 export default async function Home() {
   const page = await getHomePage()

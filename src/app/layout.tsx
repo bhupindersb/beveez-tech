@@ -53,8 +53,6 @@ export default async function RootLayout({
         {/* Razorpay */}
         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-        {/* Favicon */}
-        <link rel="icon" href="/favicon.png" type="image/png" />
       </head>
 
       <body className="antialiased font-body bg-[#f2f1f6]">

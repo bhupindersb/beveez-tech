@@ -4,11 +4,13 @@ export async function getPageSeo(slug: string) {
   return sanityClient.fetch(
     `
     *[_type == "page" && slug.current == $slug][0]{
-      seoTitle,
-      seoDescription,
-      seoImage {
-        asset->{
-          url
+      seo {
+        seoTitle,
+        seoDescription,
+        seoImage {
+          asset->{
+            url
+          }
         }
       }
     }
@@ -16,4 +18,3 @@ export async function getPageSeo(slug: string) {
     { slug }
   )
 }
-

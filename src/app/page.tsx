@@ -27,17 +27,18 @@ import BlogSection from '@/components/BlogSection'
 
 import { Metadata } from 'next'
 import { getPageSeo } from '@/sanity/lib/getPageSeo'
-import { urlFor } from '@/sanity/lib/image' 
 
 
 export async function generateMetadata(): Promise<Metadata> {
-  const seo = await getPageSeo('home')
+  const page = await getPageSeo('home')
+  const seo = page?.seo
 
   return {
-    title: seo?.seoTitle || 'Beveez Tech – Design & Development Studio',
+    title: seo?.seoTitle || 'Beveez Tech — Web Design, Development & SEO for Startups',
     description:
       seo?.seoDescription ||
-      'We help startups and founders design, build, and scale digital products.',
+      'Beveez Tech helps startups, founders, and small businesses build fast, scalable websites.',
+    metadataBase: new URL('https://beveez.tech'),
     openGraph: {
       title: seo?.seoTitle,
       description: seo?.seoDescription,
@@ -45,6 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
         ? [{ url: seo.seoImage.asset.url }]
         : [],
       url: 'https://www.beveez.tech',
+      siteName: 'Beveez Tech',
       type: 'website',
     },
     twitter: {
@@ -55,8 +57,13 @@ export async function generateMetadata(): Promise<Metadata> {
         ? [seo.seoImage.asset.url]
         : [],
     },
+    robots: {
+      index: true,
+      follow: true,
+    },
   }
 }
+
 
 
 async function getHomePage() {

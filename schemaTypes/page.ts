@@ -9,33 +9,47 @@ export const page = defineType({
       name: 'title',
       title: 'Page Title',
       type: 'string',
+      validation: Rule => Rule.required(),
     }),
 
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: { source: 'title' },
+      options: {
+        source: 'title',
+        maxLength: 96,
+      },
+      validation: Rule => Rule.required(),
     }),
 
-    // ✅ SEO FIELDS
+    /* =======================
+       SEO (ONLY ONCE)
+    ======================= */
     defineField({
-      name: 'seoTitle',
-      title: 'SEO Title',
-      type: 'string',
-      description: 'Overrides page title for search engines',
-    }),
-    defineField({
-      name: 'seoDescription',
-      title: 'SEO Description',
-      type: 'text',
-      rows: 3,
-    }),
-    defineField({
-      name: 'seoImage',
-      title: 'SEO / OpenGraph Image',
-      type: 'image',
-      options: { hotspot: true },
+      name: 'seo',
+      title: 'SEO',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'seoTitle',
+          title: 'SEO Title',
+          type: 'string',
+          description: 'Max 60 characters',
+        }),
+        defineField({
+          name: 'seoDescription',
+          title: 'SEO Description',
+          type: 'text',
+          rows: 3,
+          description: 'Max 160 characters',
+        }),
+        defineField({
+          name: 'seoImage',
+          title: 'SEO Image',
+          type: 'image',
+        }),
+      ],
     }),
 
     // HERO
@@ -55,19 +69,6 @@ export const page = defineType({
       type: 'text',
     }),
 
-    // SEO
-    defineField({
-      name: 'seoTitle',
-      title: 'SEO Title',
-      type: 'string',
-      description: 'Max 60 characters',
-    }),
-    defineField({
-      name: 'seoDescription',
-      title: 'SEO Description',
-      type: 'text',
-      description: 'Max 160 characters',
-    }),
     defineField({
       name: 'heroBackground',
       title: 'Hero Background Image',

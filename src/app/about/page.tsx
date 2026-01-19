@@ -32,12 +32,14 @@ export default async function AboutPage() {
   const data = (await getAboutPage()) as AboutPageData
 
   if (!data?.aboutHero) {
+    console.log('ABOUT PAGE DATA:', data)
     return (
-      <div className="py-32 text-center text-gray-500">
-        About page content not found.
-      </div>
+        <div className="py-32 text-center text-gray-500">
+            About page content not found.
+        </div>
     )
-  }
+}
+
 
   const hero = data.aboutHero
 
@@ -75,12 +77,12 @@ export default async function AboutPage() {
       {/* CONTENT */}
       <div className="relative z-30 mx-auto max-w-[1280px] px-6 pt-[180px] pb-[140px] text-center">
 
-        <h1 className="text-[48px] md:text-[64px] font-heading font-bold text-darkBlue">
+        <h1 className="font-heading font-bold text-darkBlue leading-tight text-[30px] sm:text-[40px] md:text-[64px] lg:text-[72px]">
           {hero.headline}
         </h1>
 
         {hero.subText && (
-          <p className="mx-auto mt-6 max-w-[720px] text-lg text-darkBlue/80">
+          <p className="mt-8 md:mt-20 text-base sm:text-lg text-darkBlue">
             {hero.subText}
           </p>
         )}
@@ -88,10 +90,7 @@ export default async function AboutPage() {
         {hero.ctaText && hero.ctaUrl && (
           <a
             href={hero.ctaUrl}
-            className="inline-block mt-10 rounded-full
-                       bg-gradient-to-r from-[#cf5a20] to-[#f68f1e]
-                       px-10 py-4 font-semibold text-white
-                       transition hover:opacity-90"
+            className="rounded-full bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] px-12 py-8 text-white font-semibold text-center transition-all hover:from-[#f68f1e] hover:to-[#cf5a20]"
           >
             {hero.ctaText}
           </a>

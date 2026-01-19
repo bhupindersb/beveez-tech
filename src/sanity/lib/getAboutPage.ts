@@ -3,7 +3,11 @@ import { sanityClient } from './client'
 export async function getAboutPage() {
   return sanityClient.fetch(
     `
-    *[_type == "page" && slug.current == "about"][0]{
+    *[
+      _type == "page" &&
+      slug.current == "about" &&
+      template == "about"
+    ][0]{
       aboutHero{
         headline,
         subText,

@@ -1,29 +1,30 @@
 import { sanityClient } from './client'
 
 export async function getAboutPage() {
-  return sanityClient.fetch(`
-    *[_type == "aboutPage" && slug.current == "about"][0]{
-      hero {
-        backgroundImage,
+  return sanityClient.fetch(
+    `
+    *[_type == "page" && slug.current == "about"][0]{
+      aboutHero{
         headline,
         subText,
         ctaText,
-        ctaUrl
-      },
-      values[] {
-        title,
-        description,
-        icon {
-          asset->{ url }
+        ctaUrl,
+        backgroundImage{
+          asset->{
+            url
+          }
         }
       },
-      seo {
-        seoTitle,
-        seoDescription,
-        seoImage {
-          asset->{ url }
+      values[]{
+        title,
+        description,
+        icon{
+          asset->{
+            url
+          }
         }
       }
     }
-  `)
+    `
+  )
 }

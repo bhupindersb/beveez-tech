@@ -188,5 +188,23 @@ export const page = defineType({
       ],
     }),
 
+    defineField({
+      name: 'values',
+      title: 'Core Values',
+      type: 'array',
+      of: [{
+        type: 'object',
+        fields: [
+          { name: 'title', type: 'string' },
+          { name: 'description', type: 'text' },
+          {
+            name: 'icon',
+            type: 'image',
+            options: { hotspot: true }
+          }
+        ]
+      }]
+    }),
+
   ],
 })

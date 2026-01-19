@@ -5,6 +5,7 @@ import { footerSettings } from './footerSettings'
 // Homepage / Sections
 import { trustSection } from './trust'
 import { servicesSection } from './servicesSection'
+import { service } from './services'
 import { whyChooseUs } from './whyChooseUs'
 import { whoWeWorkWith } from './whoWeWorkWith'
 import { pricingSection } from './pricingSection'
@@ -28,6 +29,7 @@ export const schemaTypes = [
   // Homepage sections
   trustSection,
   servicesSection,
+  service,
   whyChooseUs,
   whoWeWorkWith,
   pricingSection,

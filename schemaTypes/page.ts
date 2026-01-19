@@ -206,5 +206,71 @@ export const page = defineType({
       }]
     }),
 
+    /* =======================
+    ABOUT – WHO WE WORK WITH
+  ======================= */
+  defineField({
+    name: 'whoWeWorkWith',
+    title: 'About Page – Who We Work With',
+    type: 'object',
+    hidden: ({ parent }) => parent?.template !== 'about',
+    fields: [
+      defineField({
+        name: 'headline',
+        title: 'Headline',
+        type: 'string',
+        validation: Rule => Rule.required(),
+      }),
+
+      defineField({
+        name: 'description',
+        title: 'Description (Left)',
+        type: 'text',
+        rows: 3,
+      }),
+
+      defineField({
+        name: 'sideNote',
+        title: 'Side Note (Right)',
+        type: 'text',
+        rows: 3,
+      }),
+
+      defineField({
+        name: 'audiences',
+        title: 'Audience Cards',
+        type: 'array',
+        validation: Rule => Rule.min(3).max(3),
+        of: [
+          {
+            type: 'object',
+            fields: [
+              {
+                name: 'title',
+                title: 'Title',
+                type: 'string',
+              },
+              {
+                name: 'description',
+                title: 'Description',
+                type: 'text',
+              },
+              {
+                name: 'icon',
+                title: 'Icon',
+                type: 'image',
+                options: { hotspot: true },
+              },
+            ],
+          },
+        ],
+      }),
+
+      defineField({
+        name: 'footerText',
+        title: 'Bottom Line Text',
+        type: 'string',
+      }),
+
   ],
 })

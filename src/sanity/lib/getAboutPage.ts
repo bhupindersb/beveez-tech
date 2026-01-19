@@ -27,7 +27,21 @@ export async function getAboutPage() {
             url
           }
         }
-      }
+      },
+      whoWeWorkWith {
+        headline,
+        description,
+        sideNote,
+        footerText,
+        audiences[] {
+          title,
+          description,
+          icon {
+            asset->{
+              url
+            }
+          }
+        }
     }
     `
   )

@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { getAboutPage } from '@/sanity/lib/getAboutPage'
+import WhoWeWorkWithAbout from '@/components/WhoWeWorkWithAbout'
 
 interface AboutValueItem {
   title: string
@@ -23,9 +24,28 @@ interface AboutHero {
   }
 }
 
+interface WhoWeWorkWithItem {
+  title: string
+  description: string
+  icon?: {
+    asset?: {
+      url?: string
+    }
+  }
+}
+
+interface WhoWeWorkWithData {
+  headline: string
+  description?: string
+  sideNote?: string
+  footerText?: string
+  audiences: WhoWeWorkWithItem[]
+}
+
 interface AboutPageData {
   aboutHero?: AboutHero
   values?: AboutValueItem[]
+  whoWeWorkWith?: WhoWeWorkWithData
 }
 
 export default async function AboutPage() {
@@ -44,6 +64,7 @@ export default async function AboutPage() {
   const hero = data.aboutHero
 
   return (
+    <>
     <section className="relative overflow-hidden">
 
       {/* BACKGROUND IMAGE */}
@@ -134,5 +155,9 @@ export default async function AboutPage() {
 
       </div>
     </section>
+    {data.whoWeWorkWith && (
+        <WhoWeWorkWithAbout data={data.whoWeWorkWith} />
+    )}
+    </>
   )
 }

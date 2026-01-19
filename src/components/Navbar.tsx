@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 export default function Navbar({ settings }: any) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -25,11 +27,17 @@ export default function Navbar({ settings }: any) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Active link matcher
+  const isActive = (url: string) => {
+    if (url === '/') return pathname === '/'
+    return pathname.startsWith(url)
+  }
+
   return (
     <>
       {/* NAV BAR */}
       <nav
-        className={`fixed top-4 md:left-1/2 z-50 w-[90%] md:w-[90%] md:max-w-[900px]
+        className={`fixed top-4 md:left-1/2 z-50 w-[90%] md:max-w-[900px]
         md:-translate-x-1/2 rounded-full py-3 pl-5 pr-3 md:top-6
         transition-all duration-300 ml-4
         ${
@@ -56,13 +64,31 @@ export default function Navbar({ settings }: any) {
 
           {/* DESKTOP MENU */}
           <ul className="hidden items-center gap-8 text-white md:flex">
-            {settings?.navigation?.map((item: any, i: number) => (
-              <li key={i}>
-                <Link href={item.url} className="hover:text-orange transition">
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            {settings?.navigation?.map((item: any, i: number) => {
+              const active = isActive(item.url)
+
+              return (
+                <li key={i}>
+                  <Link
+                    href={item.url}
+                    className={`relative transition
+                      ${
+                        active
+                          ? 'text-orange font-semibold'
+                          : 'text-white hover:text-orange'
+                      }
+                    `}
+                  >
+                    {item.label}
+
+                    {/* Active underline */}
+                    {active && (
+                      <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-orange rounded-full" />
+                    )}
+                  </Link>
+                </li>
+              )
+            })}
           </ul>
 
           {/* DESKTOP CTA */}
@@ -92,7 +118,7 @@ export default function Navbar({ settings }: any) {
 
       {/* MOBILE DROPDOWN */}
       <div
-        className={`fixed top-[74px] md:left-1/2 z-40 w-[90%] md:w-[90%] md:max-w-[900px]
+        className={`fixed top-[74px] md:left-1/2 z-40 w-[90%] md:max-w-[900px]
         md:-translate-x-1/2 rounded-3xl px-6 py-6 shadow-xl
         transition-all duration-300 ease-out md:hidden ml-4
         ${
@@ -107,17 +133,27 @@ export default function Navbar({ settings }: any) {
         }`}
       >
         <ul className="flex flex-col gap-6 text-center text-white">
-          {settings?.navigation?.map((item: any, i: number) => (
-            <li key={i}>
-              <Link
-                href={item.url}
-                className="text-lg font-medium"
-                onClick={() => setOpen(false)}
-              >
-                {item.label}
-              </Link>
-            </li>
-          ))}
+          {settings?.navigation?.map((item: any, i: number) => {
+            const active = isActive(item.url)
+
+            return (
+              <li key={i}>
+                <Link
+                  href={item.url}
+                  onClick={() => setOpen(false)}
+                  className={`text-lg transition
+                    ${
+                      active
+                        ? 'text-orange font-semibold'
+                        : 'text-white'
+                    }
+                  `}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            )
+          })}
         </ul>
 
         {settings?.navCtaText && settings?.navCtaUrl && (

@@ -18,16 +18,15 @@ import { postType } from './postType'
 import { authorType } from './authorType'
 import { categoryType } from './categoryType'
 import { blockContentType } from './blockContentType'
+import { aboutPage } from './aboutPage'
 
 export const schemaTypes = [
-  // Global
   siteSettings,
   footerSettings,
 
-  // Pages
   page,
+  aboutPage,
 
-  // Homepage sections
   trustSection,
   servicesSection,
   service,
@@ -38,7 +37,6 @@ export const schemaTypes = [
   ctaSection,
   blogSection,
 
-  // Blog
   postType,
   authorType,
   categoryType,

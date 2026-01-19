@@ -30,6 +30,14 @@ interface AboutPageData {
 export default async function AboutPage() {
   const data = (await getAboutPage()) as AboutPageData
 
+  if (!data || !data.hero) {
+    return (
+      <div className="py-32 text-center text-gray-500">
+        About page content not found.
+      </div>
+    )
+  }
+
   return (
     <section className="relative overflow-hidden">
 

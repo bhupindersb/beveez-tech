@@ -1,7 +1,7 @@
 import { defineType, defineField } from 'sanity'
 
-export const trust = defineType({
-  name: 'trust',
+export const trustSection = defineType({
+  name: 'trustSection',
   title: 'Trust Section',
   type: 'document',
   fields: [

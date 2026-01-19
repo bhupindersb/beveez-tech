@@ -1,22 +1,49 @@
 import Image from 'next/image'
 import { getAboutPage } from '@/sanity/lib/getAboutPage'
 
+interface AboutValueItem {
+  title: string
+  description: string
+  icon?: {
+    asset?: {
+      url: string
+    }
+  }
+}
+
+interface AboutPageData {
+  hero: {
+    headline: string
+    subText?: string
+    ctaText?: string
+    ctaUrl?: string
+    backgroundImage: {
+      asset: {
+        url: string
+      }
+    }
+  }
+  values?: AboutValueItem[]
+}
+
+
 export default async function AboutPage() {
-  const data = await getAboutPage()
+  const data = (await getAboutPage()) as AboutPageData
 
   return (
     <section className="relative overflow-hidden">
 
       {/* BACKGROUND IMAGE */}
-      {data.hero?.backgroundImage && (
+      {data.hero.backgroundImage?.asset?.url && (
         <Image
-          src={data.hero.backgroundImage.asset.url}
-          alt=""
-          fill
-          className="object-cover -z-30"
-          priority
+            src={data.hero.backgroundImage.asset.url}
+            alt="About background"
+            fill
+            className="object-cover"
+            priority
         />
-      )}
+    )}
+
 
       {/* ORANGE GRADIENT */}
       <div className="absolute inset-x-0 bottom-0 h-[40%]
@@ -56,32 +83,33 @@ export default async function AboutPage() {
 
         {/* VALUE BOXES */}
         <div className="mt-24 grid grid-cols-1 md:grid-cols-4 gap-8">
-          {data.values?.map((item, i) => (
-            <div
-              key={i}
-              className={`rounded-3xl bg-white p-8 text-left shadow-md
-                ${i === 1 || i === 2 ? 'md:translate-y-[80px]' : ''}
-                md:translate-y-0`}
-            >
-              {item.icon?.asset?.url && (
-                <Image
-                  src={item.icon.asset.url}
-                  alt={item.title}
-                  width={56}
-                  height={56}
-                />
-              )}
+            {data.values?.map((item: AboutValueItem, i: number) => (
+                <div
+                key={i}
+                className={`rounded-3xl bg-white p-8 text-left shadow-md
+                    ${i === 1 || i === 2 ? 'md:translate-y-[80px]' : ''}
+                    md:translate-y-0`}
+                >
+                {item.icon?.asset?.url && (
+                    <Image
+                    src={item.icon.asset.url}
+                    alt={item.title}
+                    width={56}
+                    height={56}
+                    />
+                )}
 
-              <h3 className="mt-6 text-xl font-semibold text-darkBlue">
-                {item.title}
-              </h3>
+                <h3 className="mt-6 text-xl font-semibold text-darkBlue">
+                    {item.title}
+                </h3>
 
-              <p className="mt-3 text-sm text-gray-600">
-                {item.description}
-              </p>
-            </div>
-          ))}
+                <p className="mt-3 text-sm text-gray-600">
+                    {item.description}
+                </p>
+                </div>
+            ))}
         </div>
+
 
       </div>
     </section>

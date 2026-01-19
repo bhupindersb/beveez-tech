@@ -77,12 +77,12 @@ export default async function AboutPage() {
       {/* CONTENT */}
       <div className="relative z-30 mx-auto max-w-[1280px] px-6 pt-[180px] pb-[140px] text-center">
 
-        <h1 className="font-heading font-bold text-darkBlue leading-tight text-[30px] sm:text-[40px] md:text-[64px] lg:text-[72px]">
+        <h1 className="font-heading font-bold text-darkBlue leading-tight text-[30px] sm:text-[40px] md:text-[64px] lg:text-[72px] md:max-w-[1120px]">
           {hero.headline}
         </h1>
 
         {hero.subText && (
-          <p className="mt-8 md:mt-20 text-base sm:text-lg text-darkBlue">
+          <p className="mt-8 md:mt-12 text-base sm:text-lg text-darkBlue md:max-w-[640px]">
             {hero.subText}
           </p>
         )}
@@ -90,7 +90,7 @@ export default async function AboutPage() {
         {hero.ctaText && hero.ctaUrl && (
           <a
             href={hero.ctaUrl}
-            className="rounded-full bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] px-12 py-8 text-white font-semibold text-center transition-all hover:from-[#f68f1e] hover:to-[#cf5a20]"
+            className="rounded-full bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] px-12 py-8 text-white font-semibold text-center transition-all hover:from-[#f68f1e] hover:to-[#cf5a20] relative top-[60px]"
           >
             {hero.ctaText}
           </a>

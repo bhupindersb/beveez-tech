@@ -271,6 +271,7 @@ export const page = defineType({
         title: 'Bottom Line Text',
         type: 'string',
       }),
-
+    ],
+  }),
   ],
 })

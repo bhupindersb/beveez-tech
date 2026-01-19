@@ -9,6 +9,7 @@ import { service } from './services'
 import { whyChooseUs } from './whyChooseUs'
 import { whoWeWorkWith } from './whoWeWorkWith'
 import { pricingSection } from './pricingSection'
+import { pricingPlan } from './pricingPlan'
 import { ctaSection } from './ctaSection'
 import { blogSection } from './blog'
 
@@ -33,6 +34,7 @@ export const schemaTypes = [
   whyChooseUs,
   whoWeWorkWith,
   pricingSection,
+  pricingPlan,
   ctaSection,
   blogSection,
 

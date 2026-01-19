@@ -91,6 +91,6 @@ export const structure = (S: StructureBuilder) =>
       S.listItem()
         .title('Blog')
         .child(
-          S.documentTypeList('blog').title('Blog Posts')
+          S.documentTypeList('blogSection').title('Blog Posts')
         ),
     ])

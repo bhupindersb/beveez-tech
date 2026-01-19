@@ -147,5 +147,46 @@ export const page = defineType({
       type: 'string',
       hidden: ({ parent }) => parent?.template !== 'home',
     }),
+
+    /* =======================
+       About HERO (ONLY FOR ABOUT)
+    ======================= */
+    defineField({
+      name: 'aboutHero',
+      title: 'About Page – Hero Section',
+      type: 'object',
+      hidden: ({ parent }) => parent?.template !== 'about',
+      fields: [
+        defineField({
+          name: 'headline',
+          title: 'Headline',
+          type: 'string',
+          validation: Rule => Rule.required(),
+        }),
+        defineField({
+          name: 'subText',
+          title: 'Sub Text',
+          type: 'text',
+          rows: 3,
+        }),
+        defineField({
+          name: 'ctaText',
+          title: 'CTA Text',
+          type: 'string',
+        }),
+        defineField({
+          name: 'ctaUrl',
+          title: 'CTA URL',
+          type: 'string',
+        }),
+        defineField({
+          name: 'backgroundImage',
+          title: 'Background Image',
+          type: 'image',
+          options: { hotspot: true },
+        }),
+      ],
+    }),
+
   ],
 })

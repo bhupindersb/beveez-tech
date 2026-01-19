@@ -52,7 +52,7 @@ export default async function AboutPage() {
           src={hero.backgroundImage.asset.url}
           alt="About background"
           fill
-          className="object-cover"
+          className="object-contain"
           priority
         />
       )}
@@ -77,12 +77,12 @@ export default async function AboutPage() {
       {/* CONTENT */}
       <div className="relative z-30 mx-auto max-w-[1280px] px-6 pt-[180px] pb-[140px] text-center">
 
-        <h1 className="font-heading font-bold text-darkBlue leading-tight text-[30px] sm:text-[40px] md:text-[64px] lg:text-[72px] md:max-w-[1120px]">
+        <h1 className="font-heading font-bold text-darkBlue leading-tight text-[30px] sm:text-[40px] md:text-[64px] lg:text-[72px] md:max-w-[1120px] mx-auto">
           {hero.headline}
         </h1>
 
         {hero.subText && (
-          <p className="mt-8 md:mt-12 text-base sm:text-lg text-darkBlue md:max-w-[640px]">
+          <p className="mt-8 md:mt-12 text-base sm:text-lg text-darkBlue md:max-w-[640px] mx-auto">
             {hero.subText}
           </p>
         )}

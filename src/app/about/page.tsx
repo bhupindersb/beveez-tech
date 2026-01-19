@@ -113,8 +113,9 @@ export default async function AboutPage() {
                     <Image
                       src={item.icon.asset.url}
                       alt={item.title}
-                      width={56}
-                      height={56}
+                      width={120}
+                      height={120}
+                      className="mx-auto"
                     />
                   )}
 

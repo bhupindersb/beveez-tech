@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { getAboutPage } from '@/sanity/lib/getAboutPage'
 import WhoWeWorkWithAbout from '@/components/WhoWeWorkWithAbout'
-import { whoWeWorkWith } from '../../../schemaTypes/whoWeWorkWith'
+
 
 interface AboutValueItem {
   title: string

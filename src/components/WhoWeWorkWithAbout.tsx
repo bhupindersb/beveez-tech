@@ -33,14 +33,14 @@ export default function WhoWeWorkWithAbout({ data }: WhoWeWorkWithProps) {
             </h2>
 
             {data.description && (
-              <p className="text-lg text-darkBlue text-center md:text-left">
+              <p className="mt-6 text-lg text-darkBlue text-center md:text-left">
                 {data.description}
               </p>
             )}
           </div>
 
           {data.sideNote && (
-            <p className="text-lg text-darkBlue text-center md:text-left">
+            <p className="text-base text-darkBlue text-center md:text-left">
               {data.sideNote}
             </p>
           )}
@@ -51,22 +51,22 @@ export default function WhoWeWorkWithAbout({ data }: WhoWeWorkWithProps) {
           {data.audiences.map((item, i) => (
             <div
               key={i}
-              className="rounded-[32px] bg-[#e9ecef] p-10 text-left"
+              className="rounded-[40px] bg-[#e5e9eb] p-10 text-left"
             >
               {item.icon?.asset?.url && (
                 <Image
                   src={item.icon.asset.url}
                   alt={item.title}
-                  width={96}
-                  height={96}
+                  width={200}
+                  height={200}
                 />
               )}
 
-              <h3 className="mt-6 text-xl font-semibold text-orange">
+              <h3 className="mt-6 text-[30px] font-heading text-orange">
                 {item.title}
               </h3>
 
-              <p className="mt-3 text-darkBlue/80">
+              <p className="mt-3 text-darkBlue text-base">
                 {item.description}
               </p>
             </div>
@@ -75,7 +75,7 @@ export default function WhoWeWorkWithAbout({ data }: WhoWeWorkWithProps) {
 
         {/* FOOTER */}
         {data.footerText && (
-          <p className="mt-16 text-center text-darkBlue/70">
+          <p className="mt-16 text-center text-darkBlue text-base">
             {data.footerText}
           </p>
         )}

@@ -26,21 +26,21 @@ export default function WhoWeWorkWithAbout({ data }: WhoWeWorkWithProps) {
       <div className="mx-auto max-w-[1280px] px-6">
 
         {/* HEADER */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div>
-            <h2 className="font-heading text-[36px] md:text-[48px] font-bold text-darkBlue">
+        <div className="mx-auto max-w-[1280px] flex items-center grid grid-cols-1 md:grid-cols-4 gap-10 px-6 mb-16">
+          <div className='md:col-span-3'>
+            <h2 className="text-[48px] md:text-[72px] font-bold font-heading text-darkBlue leading-none text-center md:text-left">
               {data.headline}
             </h2>
 
             {data.description && (
-              <p className="mt-6 max-w-[520px] text-darkBlue/80">
+              <p className="text-lg text-darkBlue text-center md:text-left">
                 {data.description}
               </p>
             )}
           </div>
 
           {data.sideNote && (
-            <p className="md:mt-4 max-w-[420px] text-darkBlue/70">
+            <p className="text-lg text-darkBlue text-center md:text-left">
               {data.sideNote}
             </p>
           )}

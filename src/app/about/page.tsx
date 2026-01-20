@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { getAboutPage } from '@/sanity/lib/getAboutPage'
 import WhoWeWorkWithAbout from '@/components/WhoWeWorkWithAbout'
+import OurApproach from '@/components/OurApproach'
 
 
 interface AboutValueItem {
@@ -43,11 +44,36 @@ interface WhoWeWorkWithData {
   audiences: WhoWeWorkWithAudience[]
 }
 
+interface OurApproachStep {
+  number?: number
+  title: string
+  description?: string
+}
+
+interface OurApproachData {
+  heading: string
+  subText?: string
+  steps: OurApproachStep[]   // ✅ REQUIRED
+  visual?: {
+    backgroundImage?: {
+      asset?: {
+        url?: string
+      }
+    }
+    mainImage?: {
+      asset?: {
+        url?: string
+      }
+    }
+    subText?: string
+  }
+}
 
 interface AboutPageData {
   aboutHero?: AboutHero
   values?: AboutValueItem[]
   whoWeWorkWith?: WhoWeWorkWithData
+  ourApproach?: OurApproachData
 }
 
 
@@ -164,7 +190,11 @@ export default async function AboutPage() {
     {whoWeWorkWith && whoWeWorkWith.audiences.length > 0 && (
         <WhoWeWorkWithAbout data={whoWeWorkWith} />
     )}
-    
+
+    {data.ourApproach && data.ourApproach.steps.length > 0 && (
+        <OurApproach data={data.ourApproach} />
+    )}
+
     </>
   )
 }

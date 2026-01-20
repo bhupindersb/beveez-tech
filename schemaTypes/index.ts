@@ -19,6 +19,8 @@ import { authorType } from './authorType'
 import { categoryType } from './categoryType'
 import { blockContentType } from './blockContentType'
 import { aboutPage } from './aboutPage'
+import { ourApproach } from './ourApproach'
+
 
 export const schemaTypes = [
   siteSettings,
@@ -26,6 +28,11 @@ export const schemaTypes = [
 
   page,
   aboutPage,
+  ourApproach,
+
+  /* =====================
+     HOMEPAGE / SECTIONS
+  ===================== */
 
   trustSection,
   servicesSection,

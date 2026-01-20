@@ -22,7 +22,7 @@ interface WhoWeWorkWithProps {
 
 export default function WhoWeWorkWithAbout({ data }: WhoWeWorkWithProps) {
   return (
-    <section className="py-32">
+    <section className="py-[60px] md:py-[120px]">
       <div className="mx-auto max-w-[1280px] px-6">
 
         {/* HEADER */}

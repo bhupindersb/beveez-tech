@@ -41,7 +41,26 @@ export async function getAboutPage() {
               url
             }
           }
+        },
+        ourApproach{
+            heading,
+            subText,
+            steps[]{
+                number,
+                title,
+                description
+            },
+            visual{
+                backgroundImage{
+                asset->{ url }
+                },
+                mainImage{
+                asset->{ url }
+                },
+                subText
+            }
         }
+
       }
     }
     `

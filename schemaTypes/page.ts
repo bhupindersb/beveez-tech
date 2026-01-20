@@ -273,5 +273,13 @@ export const page = defineType({
       }),
     ],
   }),
+
+  defineField({
+    name: 'ourApproach',
+    title: 'Our Approach',
+    type: 'ourApproach',
+    hidden: ({ parent }) => parent?.template !== 'about',
+  }),
+
   ],
 })

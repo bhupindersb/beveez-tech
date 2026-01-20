@@ -89,7 +89,7 @@ export default async function AboutPage() {
   const hero = data.aboutHero
   const whoWeWorkWith = data.whoWeWorkWith
   const ourApproach = data.ourApproach
-    const hasApproachSteps =
+    const hasOurApproach =
     ourApproach &&
     Array.isArray(ourApproach.steps) &&
     ourApproach.steps.length > 0
@@ -192,11 +192,9 @@ export default async function AboutPage() {
         <WhoWeWorkWithAbout data={whoWeWorkWith} />
     )}
 
-    {ourApproach?.steps?.length > 0 && (
+    {hasOurApproach && (
         <OurApproach data={ourApproach} />
     )}
-
-
 
     </>
   )

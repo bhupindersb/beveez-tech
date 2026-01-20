@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { getAboutPage } from '@/sanity/lib/getAboutPage'
 import WhoWeWorkWithAbout from '@/components/WhoWeWorkWithAbout'
+import { whoWeWorkWith } from '../../../schemaTypes/whoWeWorkWith'
 
 interface AboutValueItem {
   title: string
@@ -39,8 +40,9 @@ interface WhoWeWorkWithData {
   description?: string
   sideNote?: string
   footerText?: string
-  audiences?: WhoWeWorkWithAudience[]
+  audiences: WhoWeWorkWithAudience[]
 }
+
 
 interface AboutPageData {
   aboutHero?: AboutHero
@@ -156,9 +158,13 @@ export default async function AboutPage() {
 
       </div>
     </section>
-    {data.whoWeWorkWith && (
-        <WhoWeWorkWithAbout data={data.whoWeWorkWith} />
+    const whoWeWorkWith = data.whoWeWorkWith
+
+    {whoWeWorkWith && whoWeWorkWith.audiences.length > 0 && (
+        <WhoWeWorkWithAbout data={whoWeWorkWith} />
     )}
+
+
     </>
   )
 }

@@ -10,7 +10,7 @@ interface Audience {
   }
 }
 
-interface Props {
+interface WhoWeWorkWithProps {
   data: {
     headline: string
     description?: string
@@ -20,9 +20,7 @@ interface Props {
   }
 }
 
-export default function WhoWeWorkWithAbout({ data }: Props) {
-  if (!data) return null
-
+export default function WhoWeWorkWithAbout({ data }: WhoWeWorkWithProps) {
   return (
     <section className="py-32">
       <div className="mx-auto max-w-[1280px] px-6">
@@ -75,7 +73,7 @@ export default function WhoWeWorkWithAbout({ data }: Props) {
           ))}
         </div>
 
-        {/* FOOTER LINE */}
+        {/* FOOTER */}
         {data.footerText && (
           <p className="mt-16 text-center text-darkBlue/70">
             {data.footerText}

@@ -1,6 +1,6 @@
 import { defineType, defineField } from 'sanity'
 
-export const whoWeWorkWith = defineType({
+export const whoWeWorkWithSection = defineType({
   name: 'whoWeWorkWith',
   title: 'Who We Work With',
   type: 'document',

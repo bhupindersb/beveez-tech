@@ -1,5 +1,8 @@
+import { client } from '@/sanity/lib/client'
+
 export async function getAboutPage() {
-  return sanityClient.fetch(`
+  return client.fetch(
+    `
     *[
       _type == "page" &&
       slug.current == "about" &&
@@ -11,18 +14,20 @@ export async function getAboutPage() {
         ctaText,
         ctaUrl,
         backgroundImage{
-          asset->{ url }
+          asset->{
+            url
+          }
         }
       },
-
       values[]{
         title,
         description,
         icon{
-          asset->{ url }
+          asset->{
+            url
+          }
         }
       },
-
       whoWeWorkWith{
         headline,
         description,
@@ -32,11 +37,12 @@ export async function getAboutPage() {
           title,
           description,
           icon{
-            asset->{ url }
+            asset->{
+              url
+            }
           }
         }
       },
-
       ourApproach{
         heading,
         subText,
@@ -56,5 +62,6 @@ export async function getAboutPage() {
         }
       }
     }
-  `)
+    `
+  )
 }

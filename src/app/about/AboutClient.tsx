@@ -1,10 +1,10 @@
 'use client'
 
 import Image from 'next/image'
+import { motion, useReducedMotion } from 'framer-motion'
+
 import WhoWeWorkWithAbout from '@/components/WhoWeWorkWithAbout'
 import OurApproach from '@/components/OurApproach'
-
-import { motion, useReducedMotion } from 'framer-motion'
 import { fadeUp, staggerContainer } from '@/lib/motion'
 
 /* ================= TYPES ================= */
@@ -63,8 +63,7 @@ interface AboutPageData {
 
 /* ================= PAGE ================= */
 
-export default async function AboutPage() {
-  const data = (await getAboutPage()) as AboutPageData
+export default function AboutClient({ data }: { data: AboutPageData }) {
   const reduceMotion = useReducedMotion()
 
   if (!data?.aboutHero) {

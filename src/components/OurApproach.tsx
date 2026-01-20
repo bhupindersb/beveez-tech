@@ -31,16 +31,16 @@ export default function OurApproach({ data }: OurApproachProps) {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-120px' }}
-      className="py-32"
+      className="py-[60px] md:py-[120px] bg-darkBlue"
     >
       <div className="mx-auto max-w-[1280px] px-6">
 
-        <motion.h2 variants={fadeUp} className="text-[48px] font-heading font-bold">
+        <motion.h2 variants={fadeUp} className="text-[48px] md:text-[72px] font-heading font-bold text-white text-center">
           {data.heading}
         </motion.h2>
 
         {data.subText && (
-          <motion.p variants={fadeUp} className="mt-4 max-w-[640px]">
+          <motion.p variants={fadeUp} className="mt-4 max-w-[640px] text-white/90 mx-auto text-center">
             {data.subText}
           </motion.p>
         )}
@@ -54,23 +54,24 @@ export default function OurApproach({ data }: OurApproachProps) {
                 key={i}
                 variants={fadeUp}
                 className="max-w-[550px] rounded-3xl
-                           bg-orange px-8 py-10 text-white"
+                           bg-orange px-8 py-10 text-white flex items-start"
               >
                 {step.number !== undefined && (
                   <div className="text-4xl font-bold opacity-60">
                     {step.number}
                   </div>
                 )}
+                <div class="card-content">
+                    <h3 className="mt-2 text-xl font-semibold">
+                    {step.title}
+                    </h3>
 
-                <h3 className="mt-2 text-xl font-semibold">
-                  {step.title}
-                </h3>
-
-                {step.description && (
-                  <p className="mt-2 text-white/90">
-                    {step.description}
-                  </p>
-                )}
+                    {step.description && (
+                    <p className="mt-2 text-white/90">
+                        {step.description}
+                    </p>
+                    )}
+                </div>
               </motion.div>
             ))}
           </motion.div>

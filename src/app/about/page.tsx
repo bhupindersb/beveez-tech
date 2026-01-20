@@ -24,7 +24,7 @@ interface AboutHero {
   }
 }
 
-interface WhoWeWorkWithItem {
+interface WhoWeWorkWithAudience {
   title: string
   description: string
   icon?: {
@@ -39,7 +39,7 @@ interface WhoWeWorkWithData {
   description?: string
   sideNote?: string
   footerText?: string
-  audiences: WhoWeWorkWithItem[]
+  audiences?: WhoWeWorkWithAudience[]
 }
 
 interface AboutPageData {
@@ -47,6 +47,7 @@ interface AboutPageData {
   values?: AboutValueItem[]
   whoWeWorkWith?: WhoWeWorkWithData
 }
+
 
 export default async function AboutPage() {
   const data = (await getAboutPage()) as AboutPageData

@@ -132,10 +132,7 @@ export default function AboutClient({ data }: { data: AboutPageData }) {
         >
           <motion.h1
             variants={reduceMotion ? undefined : fadeUp}
-            className="font-heading font-bold text-darkBlue
-                       text-[30px] sm:text-[40px]
-                       md:text-[64px] lg:text-[72px]
-                       md:max-w-[1120px] mx-auto"
+            className="font-heading font-bold text-darkBlue leading-tight text-[30px] sm:text-[40px] md:text-[64px] lg:text-[72px] relative"
           >
             {hero.headline}
           </motion.h1>
@@ -165,42 +162,43 @@ export default function AboutClient({ data }: { data: AboutPageData }) {
           {/* ================= VALUE BOXES ================= */}
           {data.values && data.values.length > 0 && (
             <motion.div
-              variants={reduceMotion ? undefined : staggerContainer(0.12)}
-              className="mt-24 grid grid-cols-1 md:grid-cols-4 gap-8"
+                variants={reduceMotion ? undefined : staggerContainer(0.12)}
+                className="mt-24 grid grid-cols-1 md:grid-cols-4 gap-8"
             >
-              {data.values.map((item, i) => {
+                {data.values.map((item, i) => {
                 const offset =
-                  i === 1 || i === 2 ? 'md:translate-y-[80px]' : ''
+                    i === 1 || i === 2 ? 'md:mt-[80px]' : 'md:mt-0'
 
                 return (
-                  <motion.div
+                    <motion.div
                     key={i}
                     variants={reduceMotion ? undefined : fadeUp}
                     className={`rounded-3xl bg-white p-8 text-left
                                 shadow-md ${offset}`}
-                  >
+                    >
                     {item.icon?.asset?.url && (
-                      <Image
+                        <Image
                         src={item.icon.asset.url}
                         alt={item.title}
                         width={120}
                         height={120}
                         className="mx-auto"
-                      />
+                        />
                     )}
 
                     <h3 className="mt-6 text-xl font-semibold text-darkBlue">
-                      {item.title}
+                        {item.title}
                     </h3>
 
                     <p className="mt-3 text-sm text-gray-600">
-                      {item.description}
+                        {item.description}
                     </p>
-                  </motion.div>
+                    </motion.div>
                 )
-              })}
+                })}
             </motion.div>
-          )}
+            )}
+
         </motion.div>
       </section>
 

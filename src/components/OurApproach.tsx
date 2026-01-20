@@ -61,7 +61,7 @@ export default function OurApproach({ data }: OurApproachProps) {
                     {step.number}
                   </div>
                 )}
-                <div class="card-content">
+                <div className="card-content">
                     <h3 className="mt-2 text-xl font-semibold">
                     {step.title}
                     </h3>

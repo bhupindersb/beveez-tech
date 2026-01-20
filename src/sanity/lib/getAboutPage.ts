@@ -28,20 +28,21 @@ export async function getAboutPage() {
           }
         }
       },
-      whoWeWorkWith {
+      whoWeWorkWith{
         headline,
         description,
         sideNote,
         footerText,
-        audiences[] {
+        audiences[]{
           title,
           description,
-          icon {
+          icon{
             asset->{
               url
             }
           }
         }
+      }
     }
     `
   )

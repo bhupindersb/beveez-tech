@@ -65,6 +65,8 @@ export default async function AboutPage() {
 
 
   const hero = data.aboutHero
+  const whoWeWorkWith = data.whoWeWorkWith
+
 
   return (
     <>
@@ -158,13 +160,11 @@ export default async function AboutPage() {
 
       </div>
     </section>
-    const whoWeWorkWith = data.whoWeWorkWith
 
     {whoWeWorkWith && whoWeWorkWith.audiences.length > 0 && (
         <WhoWeWorkWithAbout data={whoWeWorkWith} />
     )}
-
-
+    
     </>
   )
 }

@@ -53,17 +53,13 @@ interface OurApproachStep {
 interface OurApproachData {
   heading: string
   subText?: string
-  steps: OurApproachStep[]   // ✅ REQUIRED
+  steps?: OurApproachStep[]
   visual?: {
     backgroundImage?: {
-      asset?: {
-        url?: string
-      }
+      asset?: { url?: string }
     }
     mainImage?: {
-      asset?: {
-        url?: string
-      }
+      asset?: { url?: string }
     }
     subText?: string
   }
@@ -92,6 +88,11 @@ export default async function AboutPage() {
 
   const hero = data.aboutHero
   const whoWeWorkWith = data.whoWeWorkWith
+  const ourApproach = data.ourApproach
+    const hasApproachSteps =
+    ourApproach &&
+    Array.isArray(ourApproach.steps) &&
+    ourApproach.steps.length > 0
 
 
   return (
@@ -191,9 +192,11 @@ export default async function AboutPage() {
         <WhoWeWorkWithAbout data={whoWeWorkWith} />
     )}
 
-    {data.ourApproach && data.ourApproach.steps.length > 0 && (
-        <OurApproach data={data.ourApproach} />
+    {ourApproach?.steps?.length > 0 && (
+        <OurApproach data={ourApproach} />
     )}
+
+
 
     </>
   )

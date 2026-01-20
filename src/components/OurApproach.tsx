@@ -1,98 +1,97 @@
-import Image from 'next/image'
-
-interface Step {
+interface OurApproachStep {
   number?: number
   title: string
   description?: string
 }
 
-interface OurApproachProps {
-  data: {
-    heading: string
-    subText?: string
-    steps: Step[]
-    visual?: {
-      backgroundImage?: { asset?: { url?: string } }
-      mainImage?: { asset?: { url?: string } }
-      subText?: string
+interface OurApproachData {
+  heading: string
+  subText?: string
+  steps?: OurApproachStep[]
+  visual?: {
+    backgroundImage?: {
+      asset?: { url?: string }
     }
+    mainImage?: {
+      asset?: { url?: string }
+    }
+    subText?: string
   }
 }
 
+interface OurApproachProps {
+  data: OurApproachData
+}
+
 export default function OurApproach({ data }: OurApproachProps) {
+  if (!data?.steps || data.steps.length === 0) return null
+
   return (
-    <section className="bg-darkBlue py-32 text-white">
+    <section className="py-32">
       <div className="mx-auto max-w-[1280px] px-6">
 
-        {/* HEADER */}
-        <div className="text-center">
-          <h2 className="font-heading text-[36px] md:text-[48px] font-bold">
-            {data.heading}
-          </h2>
+        <h2 className="font-heading text-[48px] font-bold text-darkBlue">
+          {data.heading}
+        </h2>
 
-          {data.subText && (
-            <p className="mt-4 text-white/80">
-              {data.subText}
-            </p>
-          )}
-        </div>
+        {data.subText && (
+          <p className="mt-4 max-w-[640px] text-darkBlue/80">
+            {data.subText}
+          </p>
+        )}
 
-        {/* CONTENT */}
-        <div className="mt-20 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12">
 
-          {/* LEFT – STEPS */}
-          <div className="space-y-6">
+          {/* LEFT COLUMN – STEPS */}
+          <div className="space-y-8">
             {data.steps.map((step, i) => (
               <div
                 key={i}
-                className="max-w-[550px] w-full rounded-2xl bg-[#d55c1a] px-8 py-6"
+                className="max-w-[550px] rounded-3xl bg-orange px-8 py-10 text-white"
               >
-                <div className="flex items-start gap-4">
-                  <div className="text-3xl font-bold opacity-90">
+                {step.number !== undefined && (
+                  <div className="text-4xl font-bold opacity-60">
                     {step.number}
                   </div>
+                )}
 
-                  <div>
-                    <h3 className="text-lg font-semibold">
-                      {step.title}
-                    </h3>
-                    <p className="mt-1 text-sm text-white/90">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
+                <h3 className="mt-2 text-xl font-semibold">
+                  {step.title}
+                </h3>
+
+                {step.description && (
+                  <p className="mt-2 text-white/90">
+                    {step.description}
+                  </p>
+                )}
               </div>
             ))}
           </div>
 
-          {/* RIGHT – VISUAL */}
-          <div className="relative">
+          {/* RIGHT COLUMN – VISUAL */}
+          {data.visual && (
+            <div className="relative">
+              {data.visual.backgroundImage?.asset?.url && (
+                <img
+                  src={data.visual.backgroundImage.asset.url}
+                  className="absolute inset-0 h-full w-full object-cover rounded-3xl"
+                />
+              )}
 
-            {data.visual?.backgroundImage?.asset?.url && (
-              <Image
-                src={data.visual.backgroundImage.asset.url}
-                alt=""
-                fill
-                className="object-cover opacity-30"
-              />
-            )}
+              {data.visual.mainImage?.asset?.url && (
+                <img
+                  src={data.visual.mainImage.asset.url}
+                  className="relative z-10 mx-auto"
+                />
+              )}
 
-            {data.visual?.mainImage?.asset?.url && (
-              <Image
-                src={data.visual.mainImage.asset.url}
-                alt="Approach illustration"
-                width={520}
-                height={420}
-                className="relative mx-auto"
-              />
-            )}
-
-            {data.visual?.subText && (
-              <p className="mt-6 text-sm text-white/80 max-w-[420px] mx-auto text-center">
-                {data.visual.subText}
-              </p>
-            )}
-          </div>
+              {data.visual.subText && (
+                <p className="mt-6 text-darkBlue/70">
+                  {data.visual.subText}
+                </p>
+              )}
+            </div>
+          )}
 
         </div>
       </div>

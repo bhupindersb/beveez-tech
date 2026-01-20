@@ -20,40 +20,33 @@ export const ourApproach = defineType({
     }),
 
     defineField({
-      name: 'steps',
-      title: 'Steps',
-      type: 'array',
-      validation: Rule => Rule.min(1).required(),
-      of: [
-        defineField({
-          name: 'step',
-          title: 'Step',
-          type: 'object',
-          fields: [
-            defineField({
-              name: 'number',
-              title: 'Step Number',
-              type: 'number', // ✅ FIXED
-              validation: Rule => Rule.required().integer().positive(),
-            }),
-            defineField({
-              name: 'title',
-              title: 'Title',
-              type: 'string',
-              validation: Rule => Rule.required(),
-            }),
-            defineField({
-              name: 'description',
-              title: 'Description',
-              type: 'text',
-              rows: 3,
-              validation: Rule => Rule.required(),
-            }),
-          ],
-        }),
-      ],
+        name: 'steps',
+        title: 'Steps',
+        type: 'array',
+        of: [
+            {
+            type: 'object',
+            fields: [
+                {
+                name: 'number',
+                title: 'Step Number',
+                type: 'number',
+                validation: Rule => Rule.required(),
+                },
+                {
+                name: 'title',
+                type: 'string',
+                validation: Rule => Rule.required(),
+                },
+                {
+                name: 'description',
+                type: 'text',
+                validation: Rule => Rule.required(),
+                },
+            ],
+            },
+        ],
     }),
-
     defineField({
       name: 'visual',
       title: 'Right Column Visual',

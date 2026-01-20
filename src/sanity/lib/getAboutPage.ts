@@ -1,7 +1,7 @@
-import { client } from '@/sanity/lib/client'
+import { sanityClient } from '@/sanity/lib/client'
 
 export async function getAboutPage() {
-  return client.fetch(
+  return sanityClient.fetch(
     `
     *[
       _type == "page" &&

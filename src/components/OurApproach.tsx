@@ -1,3 +1,6 @@
+import { motion } from 'framer-motion'
+import { fadeUp, staggerContainer } from '@/lib/motion'
+
 interface OurApproachStep {
   number?: number
   title: string
@@ -9,12 +12,8 @@ interface OurApproachData {
   subText?: string
   steps?: OurApproachStep[]
   visual?: {
-    backgroundImage?: {
-      asset?: { url?: string }
-    }
-    mainImage?: {
-      asset?: { url?: string }
-    }
+    backgroundImage?: { asset?: { url?: string } }
+    mainImage?: { asset?: { url?: string } }
     subText?: string
   }
 }
@@ -24,30 +23,38 @@ interface OurApproachProps {
 }
 
 export default function OurApproach({ data }: OurApproachProps) {
-  if (!data?.steps || data.steps.length === 0) return null
+  if (!data.steps?.length) return null
 
   return (
-    <section className="py-32">
+    <motion.section
+      variants={staggerContainer()}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-120px' }}
+      className="py-32"
+    >
       <div className="mx-auto max-w-[1280px] px-6">
 
-        <h2 className="font-heading text-[48px] font-bold text-darkBlue">
+        <motion.h2 variants={fadeUp} className="text-[48px] font-heading font-bold">
           {data.heading}
-        </h2>
+        </motion.h2>
 
         {data.subText && (
-          <p className="mt-4 max-w-[640px] text-darkBlue/80">
+          <motion.p variants={fadeUp} className="mt-4 max-w-[640px]">
             {data.subText}
-          </p>
+          </motion.p>
         )}
 
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="mt-16 grid md:grid-cols-2 gap-12">
 
-          {/* LEFT COLUMN – STEPS */}
-          <div className="space-y-8">
+          {/* Steps */}
+          <motion.div variants={staggerContainer(0.1)} className="space-y-8">
             {data.steps.map((step, i) => (
-              <div
+              <motion.div
                 key={i}
-                className="max-w-[550px] rounded-3xl bg-orange px-8 py-10 text-white"
+                variants={fadeUp}
+                className="max-w-[550px] rounded-3xl
+                           bg-orange px-8 py-10 text-white"
               >
                 {step.number !== undefined && (
                   <div className="text-4xl font-bold opacity-60">
@@ -64,13 +71,13 @@ export default function OurApproach({ data }: OurApproachProps) {
                     {step.description}
                   </p>
                 )}
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
-          {/* RIGHT COLUMN – VISUAL */}
+          {/* Visual */}
           {data.visual && (
-            <div className="relative">
+            <motion.div variants={fadeUp} className="relative">
               {data.visual.backgroundImage?.asset?.url && (
                 <img
                   src={data.visual.backgroundImage.asset.url}
@@ -90,11 +97,10 @@ export default function OurApproach({ data }: OurApproachProps) {
                   {data.visual.subText}
                 </p>
               )}
-            </div>
+            </motion.div>
           )}
-
         </div>
       </div>
-    </section>
+    </motion.section>
   )
 }

@@ -1,13 +1,11 @@
 import Image from 'next/image'
+import { motion } from 'framer-motion'
+import { fadeUp, staggerContainer } from '@/lib/motion'
 
 interface Audience {
   title: string
   description: string
-  icon?: {
-    asset?: {
-      url?: string
-    }
-  }
+  icon?: { asset?: { url?: string } }
 }
 
 interface WhoWeWorkWithProps {
@@ -22,36 +20,45 @@ interface WhoWeWorkWithProps {
 
 export default function WhoWeWorkWithAbout({ data }: WhoWeWorkWithProps) {
   return (
-    <section className="py-[60px] md:py-[120px]">
+    <motion.section
+      variants={staggerContainer()}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-120px' }}
+      className="py-[60px] md:py-[120px]"
+    >
       <div className="mx-auto max-w-[1280px] px-6">
 
-        {/* HEADER */}
-        <div className="mx-auto max-w-[1280px] flex items-center grid grid-cols-1 md:grid-cols-4 gap-10 px-6 mb-16">
-          <div className='md:col-span-3'>
-            <h2 className="text-[48px] md:text-[72px] font-bold font-heading text-darkBlue leading-none text-center md:text-left">
+        {/* Header */}
+        <motion.div variants={fadeUp} className="mb-16 grid md:grid-cols-4 gap-10">
+          <div className="md:col-span-3">
+            <h2 className="text-[48px] md:text-[72px]
+                           font-heading font-bold text-darkBlue">
               {data.headline}
             </h2>
 
             {data.description && (
-              <p className="mt-6 text-lg text-darkBlue text-center md:text-left">
+              <p className="mt-6 text-lg text-darkBlue">
                 {data.description}
               </p>
             )}
           </div>
 
           {data.sideNote && (
-            <p className="text-base text-darkBlue text-center md:text-left">
-              {data.sideNote}
-            </p>
+            <p className="text-darkBlue">{data.sideNote}</p>
           )}
-        </div>
+        </motion.div>
 
-        {/* CARDS */}
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-10">
+        {/* Cards */}
+        <motion.div
+          variants={staggerContainer(0.12)}
+          className="grid md:grid-cols-3 gap-10"
+        >
           {data.audiences.map((item, i) => (
-            <div
+            <motion.div
               key={i}
-              className="rounded-[40px] bg-[#e5e9eb] p-10 text-left"
+              variants={fadeUp}
+              className="rounded-[40px] bg-[#e5e9eb] p-10"
             >
               {item.icon?.asset?.url && (
                 <Image
@@ -66,20 +73,19 @@ export default function WhoWeWorkWithAbout({ data }: WhoWeWorkWithProps) {
                 {item.title}
               </h3>
 
-              <p className="mt-3 text-darkBlue text-base">
+              <p className="mt-3 text-darkBlue">
                 {item.description}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        {/* FOOTER */}
         {data.footerText && (
-          <p className="mt-16 text-center text-darkBlue text-base">
+          <motion.p variants={fadeUp} className="mt-16 text-center">
             {data.footerText}
-          </p>
+          </motion.p>
         )}
       </div>
-    </section>
+    </motion.section>
   )
 }

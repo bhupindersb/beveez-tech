@@ -21,6 +21,7 @@ import { blockContentType } from './blockContentType'
 import { aboutPage } from './aboutPage'
 import { ourApproach } from './ourApproach'
 import { whyChooseUsAbout } from './whyChooseUsAbout'
+import { ourApproachStep } from './ourApproachStep'
 
 
 export const schemaTypes = [
@@ -30,6 +31,7 @@ export const schemaTypes = [
   page,
   aboutPage,
   ourApproach,
+  ourApproachStep,
   whyChooseUsAbout,
 
   /* =====================

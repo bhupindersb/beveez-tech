@@ -1,7 +1,7 @@
 import { defineType, defineField } from 'sanity'
 
 export const ourApproachStep = defineType({
-  name: 'ourApproachStep',
+  name: 'ourApproachStep', // ⚠️ MUST match exactly
   title: 'Approach Step',
   type: 'object',
   fields: [

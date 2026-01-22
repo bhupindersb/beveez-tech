@@ -20,13 +20,12 @@ export const ourApproach = defineType({
       name: 'steps',
       title: 'Steps',
       type: 'array',
-      of: [{ type: 'ourApproachStep' }], // ✅ FIX
+      of: [{ type: 'ourApproachStep' }], // ✅ reference
       validation: Rule => Rule.min(1),
     }),
 
     defineField({
       name: 'visual',
-      title: 'Visual',
       type: 'object',
       fields: [
         {

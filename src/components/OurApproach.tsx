@@ -62,12 +62,12 @@ export default function OurApproach({ data }: OurApproachProps) {
                   </div>
                 )}
                 <div className="card-content pl-4">
-                    <h3 className="font-heading text-xl font-semibold">
+                    <h3 className="font-heading text-2xl font-semibold">
                     {step.title}
                     </h3>
 
                     {step.description && (
-                    <p className="mt-2 text-white/90">
+                    <p className="mt-1 text-white/80">
                         {step.description}
                     </p>
                     )}
@@ -94,8 +94,8 @@ export default function OurApproach({ data }: OurApproachProps) {
               )}
 
               {data.visual.subText && (
-                <div className="max-w-[320px] ml-32">
-                    <p className="mt-32 text-white">
+                <div className="max-w-[320px] md:ml-32 mx-auto text-center md:text-left">
+                    <p className="mt-16 md:mt-32 text-white">
                         {data.visual.subText}
                     </p>
                 </div>

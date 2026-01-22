@@ -19,6 +19,7 @@ export async function getAboutPage() {
           }
         }
       },
+
       values[]{
         title,
         description,
@@ -28,6 +29,7 @@ export async function getAboutPage() {
           }
         }
       },
+
       whoWeWorkWith{
         headline,
         description,
@@ -43,6 +45,7 @@ export async function getAboutPage() {
           }
         }
       },
+
       ourApproach{
         heading,
         subText,
@@ -53,25 +56,29 @@ export async function getAboutPage() {
         },
         visual{
           backgroundImage{
-            asset->{ url }
+            asset->{
+              url
+            }
           },
           mainImage{
-            asset->{ url }
+            asset->{
+              url
+            }
           },
           subText
         }
-      }
-    },
-    whyChooseUs{
+      },
+
+      whyChooseUsAbout{
         heading,
-        points[],
+        points,
         description,
         testimonial{
-            quote,
-            author
+          quote,
+          author
         }
+      }
     }
-
     `
   )
 }

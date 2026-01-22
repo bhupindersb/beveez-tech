@@ -114,9 +114,9 @@ export const aboutPage = defineType({
       ],
     }),
     defineField({
-        name: 'whyChooseUs',
+        name: 'whyChooseUsAbout',
         title: 'Why Choose Us Section',
-        type: 'whyChooseUs',
+        type: 'whyChooseUsAbout',
         hidden: ({ parent }) => parent?.template !== 'about',
     }),
 

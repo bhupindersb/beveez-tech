@@ -54,15 +54,15 @@ export default function OurApproach({ data }: OurApproachProps) {
                 key={i}
                 variants={fadeUp}
                 className="max-w-[550px] rounded-3xl
-                           bg-orange px-8 py-10 text-white flex items-start"
+                           bg-orange px-8 py-8 text-white flex items-start"
               >
                 {step.number !== undefined && (
-                  <div className="text-4xl font-bold opacity-60">
+                  <div className="text-6xl">
                     {step.number}
                   </div>
                 )}
-                <div className="card-content">
-                    <h3 className="mt-2 text-xl font-semibold">
+                <div className="card-content pl-4">
+                    <h3 className="font-heading text-xl font-semibold">
                     {step.title}
                     </h3>
 
@@ -82,7 +82,7 @@ export default function OurApproach({ data }: OurApproachProps) {
               {data.visual.backgroundImage?.asset?.url && (
                 <img
                   src={data.visual.backgroundImage.asset.url}
-                  className="absolute inset-0 h-full w-full object-cover rounded-3xl"
+                  className="absolute inset-0"
                 />
               )}
 
@@ -94,7 +94,7 @@ export default function OurApproach({ data }: OurApproachProps) {
               )}
 
               {data.visual.subText && (
-                <p className="mt-6 text-darkBlue/70">
+                <p className="mt-6 text-white">
                   {data.visual.subText}
                 </p>
               )}

@@ -130,10 +130,9 @@ export default function AboutClient({ data }: { data: AboutPageData }) {
           initial={{ opacity: 0.5, scale: 1 }}
           animate={{ opacity: [0.45, 0.6, 0.45], scale: [1, 1.05, 1] }}
           transition={{ duration: 16, repeat: Infinity }}
-          className="absolute left-1/2 top-[45%]
+          className="absolute left-0 right-0 mx-auto top-[10%]
                      h-[700px] w-[700px]
-                     -translate-x-1/2 -translate-y-1/2
-                     rounded-full bg-[#7becff]/50 blur-[250px]"
+                     rounded-full bg-[#7becff]/70 blur-[250px]"
         />
 
         {/* Hero Content */}

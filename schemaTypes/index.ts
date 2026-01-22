@@ -18,7 +18,6 @@ import { postType } from './postType'
 import { authorType } from './authorType'
 import { categoryType } from './categoryType'
 import { blockContentType } from './blockContentType'
-import { aboutPage } from './aboutPage'
 import { ourApproach } from './ourApproach'
 import { whyChooseUsAbout } from './whyChooseUsAbout'
 import { ourApproachStep } from './ourApproachStep'
@@ -29,7 +28,6 @@ export const schemaTypes = [
   footerSettings,
 
   page,
-  aboutPage,
   ourApproach,
   ourApproachStep,
   whyChooseUsAbout,

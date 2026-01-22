@@ -281,5 +281,13 @@ export const page = defineType({
     hidden: ({ parent }) => parent?.template !== 'about',
   }),
 
+  defineField({
+    name: 'whyChooseUsAbout',
+    title: 'Why Choose Us',
+    type: 'whyChooseUsAbout',
+    hidden: ({ parent }) => parent?.template !== 'about',
+  }),
+
+
   ],
 })

@@ -19,7 +19,7 @@ export default function WhyChooseUs({ data }: WhyChooseUsProps) {
   const reduceMotion = useReducedMotion()
 
   return (
-    <section className="py-[100px] md:py-[140px]">
+    <section className="py-[60px] md:py-[120px]">
       <motion.div
         variants={reduceMotion ? undefined : staggerContainer()}
         initial="hidden"

@@ -94,8 +94,8 @@ export default function OurApproach({ data }: OurApproachProps) {
               )}
 
               {data.visual.subText && (
-                <div className="max-w-[320px] ml-20">
-                    <p className="mt-16 text-white">
+                <div className="max-w-[320px] ml-32">
+                    <p className="mt-32 text-white">
                         {data.visual.subText}
                     </p>
                 </div>

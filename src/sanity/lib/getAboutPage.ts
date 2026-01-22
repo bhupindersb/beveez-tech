@@ -14,9 +14,7 @@ export async function getAboutPage() {
         ctaText,
         ctaUrl,
         backgroundImage{
-          asset->{
-            url
-          }
+          asset->{ url }
         }
       },
 
@@ -24,9 +22,7 @@ export async function getAboutPage() {
         title,
         description,
         icon{
-          asset->{
-            url
-          }
+          asset->{ url }
         }
       },
 
@@ -39,9 +35,7 @@ export async function getAboutPage() {
           title,
           description,
           icon{
-            asset->{
-              url
-            }
+            asset->{ url }
           }
         }
       },
@@ -55,16 +49,8 @@ export async function getAboutPage() {
           description
         },
         visual{
-          backgroundImage{
-            asset->{
-              url
-            }
-          },
-          mainImage{
-            asset->{
-              url
-            }
-          },
+          backgroundImage{ asset->{ url } },
+          mainImage{ asset->{ url } },
           subText
         }
       },

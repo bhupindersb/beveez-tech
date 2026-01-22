@@ -32,8 +32,7 @@ export default function WhoWeWorkWithAbout({ data }: WhoWeWorkWithProps) {
         {/* Header */}
         <motion.div variants={fadeUp} className="mb-16 grid md:grid-cols-4 gap-10">
           <div className="md:col-span-3">
-            <h2 className="text-[48px] md:text-[72px]
-                           font-heading font-bold text-darkBlue">
+            <h2 className="text-[48px] md:text-[72px] font-bold font-heading text-darkBlue leading-none text-center md:text-left">
               {data.headline}
             </h2>
 

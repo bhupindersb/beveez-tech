@@ -89,14 +89,16 @@ export default function OurApproach({ data }: OurApproachProps) {
               {data.visual.mainImage?.asset?.url && (
                 <img
                   src={data.visual.mainImage.asset.url}
-                  className="relative z-10 mx-auto"
+                  className="relative z-10 mx-auto mt-16"
                 />
               )}
 
               {data.visual.subText && (
-                <p className="mt-6 text-white">
-                  {data.visual.subText}
-                </p>
+                <div className="max-w-[320px] ml-20">
+                    <p className="mt-16 text-white">
+                        {data.visual.subText}
+                    </p>
+                </div>
               )}
             </motion.div>
           )}

@@ -65,6 +65,14 @@ export async function getAboutPage() {
         }
       }
     }
+    ctaOverride{
+        heading,
+        subText,
+        primaryCtaText,
+        primaryCtaUrl,
+        secondaryCtaText,
+        secondaryCtaUrl
+    }
     `
   )
 }

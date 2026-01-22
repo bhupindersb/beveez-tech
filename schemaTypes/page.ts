@@ -288,6 +288,18 @@ export const page = defineType({
     hidden: ({ parent }) => parent?.template !== 'about',
   }),
 
+  defineField({
+    name: 'ctaOverride',
+    title: 'CTA Section (Optional Override)',
+    type: 'object',
+    hidden: ({ parent }) => parent?.template !== 'about',
+    fields: [
+      { name: 'heading', type: 'string' },
+      { name: 'subText', type: 'text' },
+      { name: 'primaryCtaText', type: 'string' },
+      { name: 'primaryCtaUrl', type: 'string' },
+    ],
+  })
 
   ],
 })

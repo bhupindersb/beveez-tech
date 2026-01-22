@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import WhoWeWorkWithAbout from '@/components/WhoWeWorkWithAbout'
 import OurApproach from '@/components/OurApproach'
 import WhyChooseUsAbout from '@/components/WhyChooseUsAbout'
+import CTASection from '@/components/CtaSection'
 import { fadeUp, staggerContainer } from '@/lib/motion'
 
 /* ================= TYPES ================= */
@@ -65,17 +66,47 @@ interface WhyChooseUsAboutData {
   }
 }
 
+interface CTAData {
+  heading?: string
+  subText?: string
+  primaryCtaText?: string
+  primaryCtaUrl?: string
+  secondaryCtaText?: string
+  secondaryCtaUrl?: string
+}
+
 interface AboutPageData {
   aboutHero?: AboutHero
   values?: AboutValueItem[]
   whoWeWorkWith?: WhoWeWorkWithData
   ourApproach?: OurApproachData
   whyChooseUsAbout?: WhyChooseUsAboutData
+  ctaOverride?: CTAData
 }
+
 
 /* ================= PAGE ================= */
 
-export default function AboutClient({ data }: { data: AboutPageData }) {
+interface CTAData {
+  heading?: string
+  subText?: string
+  primaryCtaText?: string
+  primaryCtaUrl?: string
+  secondaryCtaText?: string
+  secondaryCtaUrl?: string
+}
+
+interface SiteSettings {
+  cta: CTAData
+}
+
+interface AboutClientProps {
+  data: AboutPageData
+  siteSettings: SiteSettings
+}
+
+export default function AboutClient({ data, siteSettings }: AboutClientProps) {
+
   const reduceMotion = useReducedMotion()
 
   /* 🔍 DEBUG: Why Choose Us data from Sanity */
@@ -229,6 +260,12 @@ export default function AboutClient({ data }: { data: AboutPageData }) {
       {data.whyChooseUsAbout && (
         <WhyChooseUsAbout data={data.whyChooseUsAbout} />
       )}
+
+      <CTASection
+        data={data.ctaOverride ?? siteSettings.cta}
+      />
+
+
     </>
   )
 }

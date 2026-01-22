@@ -1,9 +1,12 @@
-
 import { getAboutPage } from '@/sanity/lib/getAboutPage'
+import { getSiteSettings } from '@/sanity/lib/getSiteSettings'
 import AboutClient from './AboutClient'
 
 export default async function AboutPage() {
-  const data = await getAboutPage()
+  const [data, siteSettings] = await Promise.all([
+    getAboutPage(),
+    getSiteSettings(),
+  ])
 
   if (!data?.aboutHero) {
     return (
@@ -13,8 +16,5 @@ export default async function AboutPage() {
     )
   }
 
-  return <AboutClient data={data} />
+  return <AboutClient data={data} siteSettings={siteSettings} />
 }
-
-
-

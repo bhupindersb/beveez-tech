@@ -61,7 +61,17 @@ export async function getAboutPage() {
           subText
         }
       }
+    },
+    whyChooseUs{
+        heading,
+        points[],
+        description,
+        testimonial{
+            quote,
+            author
+        }
     }
+
     `
   )
 }

@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import WhoWeWorkWithAbout from '@/components/WhoWeWorkWithAbout'
 import OurApproach from '@/components/OurApproach'
 import { fadeUp, staggerContainer } from '@/lib/motion'
+import WhyChooseUs from '@/components/WhyChooseUsAbout'
 
 /* ================= TYPES ================= */
 
@@ -54,11 +55,22 @@ interface OurApproachData {
   }
 }
 
+interface WhyChooseUsAboutData {
+  heading: string
+  points: string[]
+  description?: string
+  testimonial?: {
+    quote?: string
+    author?: string
+  }
+}
+
 interface AboutPageData {
   aboutHero?: AboutHero
   values?: AboutValueItem[]
   whoWeWorkWith?: WhoWeWorkWithData
   ourApproach?: OurApproachData
+  whyChooseUsAbout?: WhyChooseUsAboutData
 }
 
 /* ================= PAGE ================= */
@@ -210,6 +222,11 @@ export default function AboutClient({ data }: { data: AboutPageData }) {
 
         {/* ================= OUR APPROACH ================= */}
         {hasApproach && <OurApproach data={ourApproach!} />}
+
+        {data.whyChooseUsAbout && (
+            <WhyChooseUs data={data.whyChooseUsAbout} />
+        )}
+
     </>
   )
 }

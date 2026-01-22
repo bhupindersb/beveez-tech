@@ -20,6 +20,7 @@ import { categoryType } from './categoryType'
 import { blockContentType } from './blockContentType'
 import { aboutPage } from './aboutPage'
 import { ourApproach } from './ourApproach'
+import { whyChooseUsAbout } from './whyChooseUsAbout'
 
 
 export const schemaTypes = [
@@ -29,6 +30,7 @@ export const schemaTypes = [
   page,
   aboutPage,
   ourApproach,
+  whyChooseUsAbout,
 
   /* =====================
      HOMEPAGE / SECTIONS

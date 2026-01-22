@@ -19,22 +19,38 @@ export default function WhyChooseUsAbout({ data }: WhyChooseUsAboutProps) {
   const reduceMotion = useReducedMotion()
 
   return (
-    <section className="py-32 bg-[#f7f9fa]">
+    <section className="py-[60px] md:py-[120px]">
       <motion.div
         variants={reduceMotion ? undefined : staggerContainer()}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: '-120px' }}
-        className="mx-auto max-w-[1280px] px-6 grid grid-cols-1 md:grid-cols-2 gap-16"
+        className="mx-auto max-w-[1280px] grid grid-cols-1 lg:grid-cols-2 gap-16 px-6"
       >
         {/* LEFT COLUMN */}
         <div>
           <motion.h2
             variants={reduceMotion ? undefined : fadeUp}
-            className="font-heading text-[48px] md:text-[64px] font-bold text-darkBlue"
+            className="font-heading text-[48px] md:text-[64px] font-bold text-darkBluetext-[48px] md:text-[72px] font-heading font-bold text-darkBlue leading-none text-center md:text-left"
           >
             {data.heading}
           </motion.h2>
+
+          <motion.ul
+            variants={reduceMotion ? undefined : staggerContainer(0.08)}
+            className="mt-6 space-y-2 text-darkBlue"
+          >
+            {data.points.map((point, i) => (
+              <motion.li
+                key={i}
+                variants={reduceMotion ? undefined : fadeUp}
+                className="flex gap-3 items-start justify-center md:justify-start text-center md:text-left"
+              >
+                <span className="text-darkBlue text-[24px] leading-none hidden md:block">»</span>
+                {point}
+              </motion.li>
+            ))}
+          </motion.ul>
 
           {data.description && (
             <motion.p
@@ -44,36 +60,20 @@ export default function WhyChooseUsAbout({ data }: WhyChooseUsAboutProps) {
               {data.description}
             </motion.p>
           )}
-
-          <motion.ul
-            variants={reduceMotion ? undefined : staggerContainer(0.08)}
-            className="mt-8 space-y-4"
-          >
-            {data.points.map((point, i) => (
-              <motion.li
-                key={i}
-                variants={reduceMotion ? undefined : fadeUp}
-                className="text-darkBlue text-base flex items-start gap-3"
-              >
-                <span className="mt-2 h-2 w-2 rounded-full bg-orange" />
-                {point}
-              </motion.li>
-            ))}
-          </motion.ul>
         </div>
 
         {/* RIGHT COLUMN – TESTIMONIAL */}
         {data.testimonial?.quote && (
           <motion.div
             variants={reduceMotion ? undefined : fadeUp}
-            className="rounded-3xl bg-white p-10 shadow-lg self-center"
+            className="bg-white rounded-[32px] p-10 md:p-20 shadow-sm"
           >
-            <p className="text-xl text-darkBlue italic leading-relaxed">
+            <p className="text-2xl font-body text-gray-700 leading-relaxed">
               “{data.testimonial.quote}”
             </p>
-
+            <div className="my-6 h-px bg-gray-200" />
             {data.testimonial.author && (
-              <p className="mt-6 font-semibold text-darkBlue">
+              <p className="font-normal text-lg text-darkBlue">
                 — {data.testimonial.author}
               </p>
             )}

@@ -206,7 +206,7 @@ export default function AboutClient({ data, siteSettings }: AboutClientProps) {
             >
               {data.values.map((item, i) => {
                 const offset =
-                  i === 1 || i === 2 ? 'md:mt-[80px]' : 'md:mt-0'
+                  i === 1 || i === 2 ? 'transform md:-translate-x-8' : 'transform md:-translate-x-0'
 
                 return (
                   <motion.div

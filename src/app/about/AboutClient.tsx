@@ -102,8 +102,7 @@ export default function AboutClient({ data, siteSettings }: AboutClientProps) {
 
   /* 🔍 DEBUG: Why Choose Us data from Sanity */
   console.log('WHY CHOOSE US:', data.whyChooseUsAbout)
-  console.log('CTA OVERRIDE:', data.ctaOverride)
-  console.log('SITE CTA:', siteSettings.cta)
+  console.log('CTA OVERRIDE FULL:', data.ctaOverride)
 
   if (!data?.aboutHero) {
     return (

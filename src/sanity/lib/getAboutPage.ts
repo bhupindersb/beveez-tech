@@ -68,11 +68,20 @@ export async function getAboutPage() {
       ctaOverride{
         heading,
         subText,
+
+        backgroundImage{
+          asset->{
+            _id,
+            url
+          }
+        },
+
         primaryCtaText,
         primaryCtaUrl,
         secondaryCtaText,
         secondaryCtaUrl
       }
+
     }
     `
   )

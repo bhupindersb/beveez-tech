@@ -87,15 +87,6 @@ interface AboutPageData {
 
 /* ================= PAGE ================= */
 
-interface CTAData {
-  heading?: string
-  subText?: string
-  primaryCtaText?: string
-  primaryCtaUrl?: string
-  secondaryCtaText?: string
-  secondaryCtaUrl?: string
-}
-
 interface SiteSettings {
   cta: CTAData
 }
@@ -111,6 +102,8 @@ export default function AboutClient({ data, siteSettings }: AboutClientProps) {
 
   /* 🔍 DEBUG: Why Choose Us data from Sanity */
   console.log('WHY CHOOSE US:', data.whyChooseUsAbout)
+  console.log('CTA OVERRIDE:', data.ctaOverride)
+  console.log('SITE CTA:', siteSettings.cta)
 
   if (!data?.aboutHero) {
     return (

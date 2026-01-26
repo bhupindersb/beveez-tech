@@ -63,15 +63,16 @@ export async function getAboutPage() {
           quote,
           author
         }
-      }
-    }
-    ctaOverride{
+      },
+
+      ctaOverride{
         heading,
         subText,
         primaryCtaText,
         primaryCtaUrl,
         secondaryCtaText,
         secondaryCtaUrl
+      }
     }
     `
   )

@@ -202,7 +202,7 @@ export default function AboutClient({ data, siteSettings }: AboutClientProps) {
           {data.values && data.values.length > 0 && (
           <motion.div
             variants={reduceMotion ? undefined : staggerContainer(0.12)}
-            className="mt-24 grid grid-cols-1 md:grid-cols-4 gap-8"
+            className="mt-4 grid grid-cols-1 md:grid-cols-4 gap-8"
           >
             {data.values.map((item, i) => {
               const offset =

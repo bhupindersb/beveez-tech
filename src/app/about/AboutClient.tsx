@@ -200,43 +200,46 @@ export default function AboutClient({ data, siteSettings }: AboutClientProps) {
 
           {/* ================= VALUE BOXES ================= */}
           {data.values && data.values.length > 0 && (
-            <motion.div
-              variants={reduceMotion ? undefined : staggerContainer(0.12)}
-              className="mt-24 grid grid-cols-1 md:grid-cols-4 gap-8"
-            >
-              {data.values.map((item, i) => {
-                const offset =
-                  i === 1 || i === 2 ? 'md:translate-y-[80px]' : 'md:translate-y-0'
+          <motion.div
+            variants={reduceMotion ? undefined : staggerContainer(0.12)}
+            className="mt-24 grid grid-cols-1 md:grid-cols-4 gap-8"
+          >
+            {data.values.map((item, i) => {
+              const offset =
+                i === 1 || i === 2
+                  ? 'md:relative md:top-[80px]'
+                  : 'md:relative md:top-0'
 
-                return (
-                  <motion.div
-                    key={i}
-                    variants={reduceMotion ? undefined : fadeUp}
-                    className={`rounded-3xl bg-white p-8 text-left
-                                shadow-md ${offset}`}
-                  >
-                    {item.icon?.asset?.url && (
-                      <Image
-                        src={item.icon.asset.url}
-                        alt={item.title}
-                        width={120}
-                        height={120}
-                        className="mx-auto"
-                      />
-                    )}
+              return (
+                <motion.div
+                  key={i}
+                  variants={reduceMotion ? undefined : fadeUp}
+                  className={`rounded-3xl bg-white p-8 text-left
+                              shadow-md ${offset}`}
+                >
+                  {item.icon?.asset?.url && (
+                    <Image
+                      src={item.icon.asset.url}
+                      alt={item.title}
+                      width={120}
+                      height={120}
+                      className="mx-auto"
+                    />
+                  )}
 
-                    <h3 className="mt-6 text-xl font-semibold text-darkBlue">
-                      {item.title}
-                    </h3>
+                  <h3 className="mt-6 text-xl font-semibold text-darkBlue">
+                    {item.title}
+                  </h3>
 
-                    <p className="mt-3 text-sm text-gray-600">
-                      {item.description}
-                    </p>
-                  </motion.div>
-                )
-              })}
-            </motion.div>
-          )}
+                  <p className="mt-3 text-sm text-gray-600">
+                    {item.description}
+                  </p>
+                </motion.div>
+              )
+            })}
+          </motion.div>
+        )}
+
         </motion.div>
       </section>
 

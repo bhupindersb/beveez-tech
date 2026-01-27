@@ -37,8 +37,8 @@ export default function Navbar({ settings }: any) {
     <>
       {/* NAV BAR */}
       <nav
-        className={`fixed top-4 md:left-1/2 left-0 right-0 mx-auto z-50 w-[90%] md:max-w-[900px]
-        md:-translate-x-1/2 rounded-full py-3 pl-5 pr-3 md:top-6
+        className={`fixed top-4 left-0 right-0 mx-auto z-50 w-[90%] md:max-w-[900px]
+         rounded-full py-3 pl-5 pr-3 md:top-6
         transition-all duration-300 
         ${
           scrolled

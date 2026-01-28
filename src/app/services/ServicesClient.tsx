@@ -9,6 +9,7 @@ import ServiceDetailSection from '@/components/ServiceDetailSection'
 import CTASection from '@/components/CtaSection'
 import { fadeUp, staggerContainer } from '@/lib/motion'
 import ServiceSEO from '@/components/ServiceSEO'
+import RemoteLottie from '@/components/RemoteLottie'
 
 
 /* ================= TYPES ================= */
@@ -148,6 +149,7 @@ export default function ServicesClient({ data, siteSettings }: Props) {
                 </motion.div>
               )
             })}
+
           </motion.div>
         </motion.div>
       </section>
@@ -169,19 +171,15 @@ export default function ServicesClient({ data, siteSettings }: Props) {
 
 /* ================= LOTTIE HOVER ================= */
 
+
 function HoverLottie({ src }: { src?: string }) {
   if (!src) return null
 
   return (
-    <Lottie
-      animationData={undefined}
-      path={src}
-      autoplay
-      loop={false}
-      onMouseEnter={e => {
-        e.currentTarget?.play?.()
-      }}
-      className="h-[96px] w-[96px] cursor-pointer"
+    <RemoteLottie
+      src={src}
+      size={96}
     />
   )
 }
+

@@ -1,8 +1,7 @@
 import { sanityClient } from '@/sanity/lib/client'
 
 export async function getServicesPage() {
-  return sanityClient.fetch(
-    `
+  return sanityClient.fetch(`
     *[
       _type == "page" &&
       template == "services"
@@ -10,17 +9,17 @@ export async function getServicesPage() {
       hero{
         headline,
         subText,
-        backgroundImage{
-          asset->{ url }
-        }
+        primaryCtaText,
+        primaryCtaUrl,
+        secondaryCtaText,
+        secondaryCtaUrl,
+        backgroundImage{ asset->{ url } }
       },
 
       heroIcons[]{
         label,
         description,
-        icon{
-          asset->{ url }
-        }
+        icon{ asset->{ url } }
       },
 
       serviceDetails[]{
@@ -33,12 +32,7 @@ export async function getServicesPage() {
         accent,
         visual{
           type,
-          lottieFile{
-            asset->{ url }
-          },
-          image{
-            asset->{ url }
-          }
+          image{ asset->{ url } }
         }
       },
 
@@ -49,11 +43,9 @@ export async function getServicesPage() {
         primaryCtaUrl,
         secondaryCtaText,
         secondaryCtaUrl,
-        backgroundImage{
-          asset->{ url }
-        }
+        backgroundImage{ asset->{ url } }
       }
     }
-    `
-  )
+  `)
 }
+

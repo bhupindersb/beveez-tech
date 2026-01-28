@@ -39,28 +39,4 @@ export const servicesPageFields = [
     validation: Rule => Rule.min(1),
   }),
 
-  /* ================= CTA OVERRIDE ================= */
-
-  defineField({
-    name: 'ctaOverride',
-    title: 'CTA Section (Optional Override)',
-    type: 'object',
-    fields: [
-      { name: 'heading', type: 'string' },
-      { name: 'subText', type: 'text' },
-
-      { name: 'primaryCtaText', type: 'string' },
-      { name: 'primaryCtaUrl', type: 'string' },
-
-      { name: 'secondaryCtaText', type: 'string' },
-      { name: 'secondaryCtaUrl', type: 'string' },
-
-      {
-        name: 'backgroundImage',
-        title: 'Background Image',
-        type: 'image',
-        options: { hotspot: true },
-      },
-    ],
-  }),
 ]

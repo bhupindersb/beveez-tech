@@ -293,7 +293,8 @@ export const page = defineType({
     name: 'ctaOverride',
     title: 'CTA Section (Optional Override)',
     type: 'object',
-    hidden: ({ parent }) => parent?.template !== 'about',
+    hidden: ({ parent }) =>
+      !['about', 'services', 'pricing'].includes(parent?.template),
     fields: [
       defineField({
         name: 'backgroundImage',
@@ -344,6 +345,6 @@ export const page = defineType({
 
   })),
 
-  
+
   ],
 })

@@ -1,22 +1,19 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { motion, useReducedMotion } from 'framer-motion'
-import Lottie from 'lottie-react'
 
 import ServiceDetailSection from '@/components/ServiceDetailSection'
 import CTASection from '@/components/CtaSection'
-import { fadeUp, staggerContainer } from '@/lib/motion'
 import ServiceSEO from '@/components/ServiceSEO'
 import RemoteLottie from '@/components/RemoteLottie'
-
+import { fadeUp, staggerContainer } from '@/lib/motion'
 
 /* ================= TYPES ================= */
 
-interface LottieVisual {
-  type: 'lottie'
-  lottieFile: {
+interface HeroIcon {
+  label: string
+  icon: {
     asset?: { url?: string }
   }
 }
@@ -36,7 +33,17 @@ interface ServiceDetail {
   ctaText?: string
   ctaUrl?: string
   accent?: string
-  visual: LottieVisual | ImageVisual
+  visual: ImageVisual
+}
+
+interface CTAData {
+  heading?: string
+  subText?: string
+  primaryCtaText?: string
+  primaryCtaUrl?: string
+  secondaryCtaText?: string
+  secondaryCtaUrl?: string
+  backgroundImage?: { asset?: { url?: string } }
 }
 
 interface ServicesPageData {
@@ -45,12 +52,13 @@ interface ServicesPageData {
     subText?: string
     backgroundImage?: { asset?: { url?: string } }
   }
+  heroIcons?: HeroIcon[]
   serviceDetails?: ServiceDetail[]
-  ctaOverride?: any
+  ctaOverride?: CTAData
 }
 
 interface SiteSettings {
-  cta: any
+  cta: CTAData
 }
 
 interface Props {
@@ -127,50 +135,40 @@ export default function ServicesClient({ data, siteSettings }: Props) {
           )}
 
           {/* HERO ICON GRID */}
-          <motion.div
-            variants={staggerContainer(0.15)}
-            className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-12"
-          >
-            {data.serviceDetails?.map((service, i) => {
-              if (service.visual.type !== 'lottie') return null
-
-              return (
+          {data.heroIcons && data.heroIcons.length > 0 && (
+            <motion.div
+              variants={staggerContainer(0.15)}
+              className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-12"
+            >
+              {data.heroIcons.map((icon, i) => (
                 <motion.div
                   key={i}
                   variants={fadeUp}
                   className="flex flex-col items-center"
                 >
-                  <HoverLottie
-                    src={service.visual.lottieFile.asset?.url}
-                  />
+                  <HoverLottie src={icon.icon.asset?.url} />
                   <p className="mt-4 font-semibold text-darkBlue text-center">
-                    {service.heading}
+                    {icon.label}
                   </p>
                 </motion.div>
-              )
-            })}
-
-          </motion.div>
+              ))}
+            </motion.div>
+          )}
         </motion.div>
       </section>
 
       {/* ================= SERVICE DETAILS ================= */}
-      {data.serviceDetails
-        ?.filter(s => s.visual.type === 'image')
-        .map((service, i) => (
-            <ServiceDetailSection key={i} data={service as any} />
-    ))}
-
+      {data.serviceDetails?.map((service, i) => (
+        <ServiceDetailSection key={i} data={service} />
+      ))}
 
       {/* ================= CTA ================= */}
-      <CTASection data={data.ctaOverride ?? siteSettings.cta}/>
-
+      <CTASection data={data.ctaOverride ?? siteSettings.cta} />
     </>
   )
 }
 
-/* ================= LOTTIE HOVER ================= */
-
+/* ================= LOTTIE (AUTOPLAY ONCE + HOVER) ================= */
 
 function HoverLottie({ src }: { src?: string }) {
   if (!src) return null
@@ -179,7 +177,8 @@ function HoverLottie({ src }: { src?: string }) {
     <RemoteLottie
       src={src}
       size={96}
+      autoplay
+      loop={false}
     />
   )
 }
-

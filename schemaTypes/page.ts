@@ -191,22 +191,25 @@ export const page = defineType({
 
     defineField({
       name: 'values',
-      title: 'Core Values',
+      title: 'Core Services',
       type: 'array',
-      of: [{
-        type: 'object',
-        fields: [
-          { name: 'title', type: 'string' },
-          { name: 'description', type: 'text' },
-          {
-            name: 'icon',
-            type: 'image',
-            options: { hotspot: true }
-          }
-        ]
-      }]
+      hidden: ({ parent }) => parent?.template !== 'about',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'title', type: 'string' },
+            { name: 'description', type: 'text' },
+            {
+              name: 'icon',
+              type: 'image',
+              options: { hotspot: true }
+            }
+          ]
+        }
+      ]
     }),
-
+    
     /* =======================
     ABOUT – WHO WE WORK WITH
   ======================= */

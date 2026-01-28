@@ -15,6 +15,13 @@ export async function getServicesPage() {
         }
       },
 
+      heroIcons[]{
+        label,
+        icon{
+          asset->{ url }
+        }
+      },
+
       serviceDetails[]{
         heading,
         subText,

@@ -2,7 +2,6 @@ import { defineField } from 'sanity'
 
 export const servicesPageFields = [
   /* ================= HERO ================= */
-
   defineField({
     name: 'hero',
     title: 'Services Hero',
@@ -29,8 +28,35 @@ export const servicesPageFields = [
     ],
   }),
 
-  /* ================= SERVICE DETAILS ================= */
+  /* ================= HERO ICONS ================= */
+  defineField({
+    name: 'heroIcons',
+    title: 'Hero Service Icons',
+    type: 'array',
+    validation: Rule => Rule.min(1).max(4),
+    of: [
+      {
+        type: 'object',
+        fields: [
+          defineField({
+            name: 'label',
+            title: 'Label',
+            type: 'string',
+          }),
+          defineField({
+            name: 'icon',
+            title: 'Lottie JSON',
+            type: 'file',
+            options: {
+              accept: '.json',
+            },
+          }),
+        ],
+      },
+    ],
+  }),
 
+  /* ================= SERVICE DETAILS ================= */
   defineField({
     name: 'serviceDetails',
     title: 'Service Sections',
@@ -38,5 +64,4 @@ export const servicesPageFields = [
     of: [{ type: 'serviceDetail' }],
     validation: Rule => Rule.min(1),
   }),
-
 ]

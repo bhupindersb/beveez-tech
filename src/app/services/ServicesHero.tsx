@@ -130,7 +130,7 @@ export default function ServicesHero({ hero, heroIcons }: Props) {
                   <RemoteLottie src={icon.icon.asset.url} size={96} />
                 )}
 
-                <p className="mt-4 text-xl text-orange font-heading">
+                <p className="mt-4 text-xl text-orange font-bold font-heading">
                   {icon.label}
                 </p>
 

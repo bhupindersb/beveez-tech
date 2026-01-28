@@ -36,11 +36,17 @@ export default function RemoteLottie({
 
   if (!animationData) return null
 
+  const handleHover = () => {
+    if (!lottieRef.current) return
+    lottieRef.current.stop()
+    lottieRef.current.play()
+  }
+
   return (
     <div
       style={{ width: size, height: size }}
       className="cursor-pointer"
-      onMouseEnter={() => lottieRef.current?.play()}
+      onMouseEnter={handleHover}
     >
       <Lottie
         lottieRef={lottieRef}

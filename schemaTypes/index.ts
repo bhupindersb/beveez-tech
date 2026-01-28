@@ -22,6 +22,7 @@ import { ourApproach } from './ourApproach'
 import { whyChooseUsAbout } from './whyChooseUsAbout'
 import { ourApproachStep } from './ourApproachStep'
 
+import { serviceDetail } from './serviceDetails'
 
 export const schemaTypes = [
   siteSettings,
@@ -50,4 +51,6 @@ export const schemaTypes = [
   authorType,
   categoryType,
   blockContentType,
+
+  serviceDetail,
 ]

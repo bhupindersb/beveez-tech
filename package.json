@@ -12,6 +12,7 @@
     "@sanity/vision": "^4.0.0",
     "@upstash/redis": "^1.36.0",
     "framer-motion": "^12.27.2",
+    "lottie-react": "^2.4.1",
     "next": "^15.1.0",
     "next-sanity": "^10.1.4",
     "razorpay": "^2.9.6",

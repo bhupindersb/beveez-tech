@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { servicesPageFields } from './servicesPageFields'
 
 export const page = defineType({
   name: 'page',
@@ -332,7 +333,17 @@ export const page = defineType({
       }),
     ],
   }),
+  /* =======================
+    SERVICES PAGE
+  ======================= */
 
+  ...servicesPageFields.map(field => ({
+    ...field,
+    hidden: ({ parent }: { parent?: { template?: string } }) =>
+    parent?.template !== 'services'
 
+  })),
+
+  
   ],
 })

@@ -13,9 +13,20 @@ import { fadeUp, staggerContainer } from '@/lib/motion'
 
 interface HeroIcon {
   label: string
+  description?: string
   icon: {
     asset?: { url?: string }
   }
+}
+
+interface ServiceHero {
+  headline: string
+  subText?: string
+  backgroundImage?: { asset?: { url?: string } }
+  primaryCtaText?: string
+  primaryCtaUrl?: string
+  secondaryCtaText?: string
+  secondaryCtaUrl?: string
 }
 
 interface ImageVisual {
@@ -47,20 +58,10 @@ interface CTAData {
 }
 
 interface ServicesPageData {
-  hero: {
-    headline: string
-    subText?: string
-    backgroundImage?: { asset?: { url?: string } }
-  }
+  hero: ServiceHero
   heroIcons?: HeroIcon[]
   serviceDetails?: ServiceDetail[]
   ctaOverride?: CTAData
-
-  /* OPTIONAL – future-ready */
-  seo?: {
-    seoTitle?: string
-    seoDescription?: string
-  }
 }
 
 interface SiteSettings {
@@ -79,16 +80,12 @@ export default function ServicesClient({ data, siteSettings }: Props) {
 
   return (
     <>
-      {/* ================= SEO (FIXED) ================= */}
-      <ServiceSEO
-        seo={data.seo}
-        services={data.serviceDetails ?? []}
-      />
+      {/* ================= SEO ================= */}
+      <ServiceSEO services={data.serviceDetails ?? []} />
 
       {/* ================= HERO ================= */}
       <section className="relative overflow-hidden">
 
-        {/* Background Image */}
         {data.hero.backgroundImage?.asset?.url && (
           <Image
             src={data.hero.backgroundImage.asset.url}
@@ -99,11 +96,9 @@ export default function ServicesClient({ data, siteSettings }: Props) {
           />
         )}
 
-        {/* Orange Gradient */}
         <div className="absolute inset-x-0 bottom-0 h-[40%]
                         bg-gradient-to-t from-[#f28f23]/50 to-transparent" />
 
-        {/* Blue Glow */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0.45 }}
@@ -115,36 +110,39 @@ export default function ServicesClient({ data, siteSettings }: Props) {
                      rounded-full bg-[#7becff]/50 blur-[250px]"
         />
 
-        {/* Hero Content */}
         <motion.div
           variants={reduceMotion ? undefined : staggerContainer()}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
+          animate="visible"
           className="relative z-10 mx-auto max-w-[1280px]
                      px-6 pt-[180px] pb-[140px] text-center"
         >
-          <motion.h1
-            variants={fadeUp}
-            className="font-heading font-bold text-darkBlue
-                       text-[36px] sm:text-[48px]
-                       md:text-[64px] lg:text-[72px]"
-          >
+          <motion.h1 variants={fadeUp} className="text-[64px] font-heading font-bold text-darkBlue">
             {data.hero.headline}
           </motion.h1>
 
           {data.hero.subText && (
-            <motion.p
-              variants={fadeUp}
-              className="mt-8 text-lg text-darkBlue/90
-                         max-w-[680px] mx-auto"
-            >
+            <motion.p variants={fadeUp} className="mt-6 text-lg text-darkBlue/90">
               {data.hero.subText}
             </motion.p>
           )}
 
+          {/* ✅ HERO CTA */}
+          <motion.div variants={fadeUp} className="mt-10 flex justify-center gap-6">
+            {data.hero.primaryCtaText && data.hero.primaryCtaUrl && (
+              <a href={data.hero.primaryCtaUrl} className="rounded-full bg-orange px-10 py-5 text-white font-semibold">
+                {data.hero.primaryCtaText}
+              </a>
+            )}
+            {data.hero.secondaryCtaText && data.hero.secondaryCtaUrl && (
+              <a href={data.hero.secondaryCtaUrl} className="rounded-full bg-white px-10 py-5 font-semibold">
+                {data.hero.secondaryCtaText}
+              </a>
+            )}
+          </motion.div>
+
           {/* HERO ICON GRID */}
-          {data.heroIcons && data.heroIcons.length > 0 && (
+          {data.heroIcons?.length ? (
             <motion.div
               variants={staggerContainer(0.15)}
               className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-12"
@@ -153,42 +151,35 @@ export default function ServicesClient({ data, siteSettings }: Props) {
                 <motion.div
                   key={i}
                   variants={fadeUp}
-                  className="flex flex-col items-center"
+                  className="flex flex-col items-center text-center"
                 >
-                  <HoverLottie src={icon.icon.asset?.url} />
+                  <RemoteLottie
+                    src={icon.icon.asset!.url!}
+                    size={96}
+                  />
 
-                  <p className="mt-4 font-semibold text-darkBlue text-center">
+                  <p className="mt-4 font-semibold text-darkBlue">
                     {icon.label}
                   </p>
+
+                  {icon.description && (
+                    <p className="mt-1 text-sm text-darkBlue/70">
+                      {icon.description}
+                    </p>
+                  )}
                 </motion.div>
               ))}
             </motion.div>
-          )}
+          ) : null}
+
         </motion.div>
       </section>
 
-      {/* ================= SERVICE DETAILS ================= */}
-      {data.serviceDetails?.map((service, i) => (
-        <ServiceDetailSection key={i} data={service} />
+      {data.serviceDetails?.map((s, i) => (
+        <ServiceDetailSection key={i} data={s} />
       ))}
 
-      {/* ================= CTA ================= */}
       <CTASection data={data.ctaOverride ?? siteSettings.cta} />
     </>
-  )
-}
-
-/* ================= LOTTIE (AUTOPLAY ONCE + HOVER) ================= */
-
-function HoverLottie({ src }: { src?: string }) {
-  if (!src) return null
-
-  return (
-    <RemoteLottie
-      src={src}
-      size={96}
-      autoplay
-      loop={false}
-    />
   )
 }

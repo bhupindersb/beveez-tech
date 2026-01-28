@@ -94,16 +94,16 @@ export default function ServiceDetailSection({ data }: Props) {
             {data.description?.split('\n\n').map((para, i) => (
               <p
                 key={i}
-                className="text-gray-600 leading-relaxed mb-4 last:mb-0"
+                className="text-darkBlue leading-relaxed mb-4 last:mb-0"
               >
                 {para}
               </p>
             ))}
 
-            <p className="text-orange font-semibold">Includes:</p>
+            <p className="text-orange font-semibold text-xl">Includes:</p>
 
             {data.includes && data.includes.length > 0 && (
-              <ul className="space-y-3">
+              <ul className="space-y-3 !mt-0">
                 {data.includes.map((item, i) => (
                   <li
                     key={i}

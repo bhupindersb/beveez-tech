@@ -94,25 +94,51 @@ export default function ServicesHero({ hero, heroIcons }: Props) {
         )}
 
         {/* CTA */}
-        <div className="mt-10 flex flex-col sm:flex-row gap-6 justify-center">
+        <motion.div
+          variants={staggerContainer(0.12)}
+          initial="hidden"
+          animate="visible"
+          className="mt-10 flex flex-col sm:flex-row gap-6 justify-center"
+        >
           {hero.primaryCtaText && hero.primaryCtaUrl && (
-            <a
+            <motion.a
+              variants={fadeUp}
               href={hero.primaryCtaUrl}
-              className="rounded-full bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] px-12 py-6 text-white font-semibold text-center transition-all hover:from-[#f68f1e] hover:to-[#cf5a20]"
+              whileHover={{
+                y: -4,
+                scale: 1.04,
+              }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: 'spring', stiffness: 260, damping: 18 }}
+              className="rounded-full bg-gradient-to-r
+                        from-[#cf5a20] to-[#f68f1e]
+                        px-12 py-6 text-white font-semibold text-center
+                        transition-colors hover:from-[#f68f1e] hover:to-[#cf5a20]"
             >
               {hero.primaryCtaText}
-            </a>
+            </motion.a>
           )}
 
           {hero.secondaryCtaText && hero.secondaryCtaUrl && (
-            <a
+            <motion.a
+              variants={fadeUp}
               href={hero.secondaryCtaUrl}
-              className="rounded-full border-2 border-darkBlue px-12 py-6 text-darkBlue font-semibold text-center hover:bg-darkBlue hover:text-white transition-all"
+              whileHover={{
+                y: -4,
+                scale: 1.04,
+              }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: 'spring', stiffness: 260, damping: 18 }}
+              className="rounded-full border-2 border-darkBlue
+                        px-12 py-6 text-darkBlue font-semibold text-center
+                        hover:bg-darkBlue hover:text-white
+                        transition-colors"
             >
               {hero.secondaryCtaText}
-            </a>
+            </motion.a>
           )}
-        </div>
+        </motion.div>
+
 
         {/* HERO ICONS */}
         {heroIcons && heroIcons.length > 0 && (
@@ -130,7 +156,7 @@ export default function ServicesHero({ hero, heroIcons }: Props) {
                   <RemoteLottie src={icon.icon.asset.url} size={96} />
                 )}
 
-                <p className="mt-4 text-xl text-orange font-bold font-heading">
+                <p className="mt-4 text-xl text-orange font-semibold font-heading">
                   {icon.label}
                 </p>
 

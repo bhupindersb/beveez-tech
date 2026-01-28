@@ -1,118 +1,149 @@
 'use client'
 
 import Image from 'next/image'
-import { motion } from 'framer-motion'
-import AnimatedServiceIcon from '@/components/AnimatedServiceIcon'
+import { motion, useReducedMotion } from 'framer-motion'
+import RemoteLottie from '@/components/RemoteLottie'
+import { fadeUp, staggerContainer } from '@/lib/motion'
 
-// Lottie JSON imports
-import webDesign from '@/assets/lottie/web-design.json'
-import webCode from '@/assets/lottie/web-code.json'
-import cms from '@/assets/lottie/cms-system.json'
-import seo from '@/assets/lottie/seo.json'
+/* ================= TYPES ================= */
 
-const services = [
-  {
-    title: 'Website Design & Development',
-    subtitle: 'Conversion-focused modern websites',
-    icon: webDesign,
-  },
-  {
-    title: 'WordPress Optimization',
-    subtitle: 'Speed, security, performance',
-    icon: webCode,
-  },
-  {
-    title: 'Headless CMS Development',
-    subtitle: 'Scalable content architectures',
-    icon: cms,
-  },
-  {
-    title: 'SEO-Friendly Website Builds',
-    subtitle: 'Visibility built into structure',
-    icon: seo,
-  },
-]
+interface HeroIcon {
+  label: string
+  description?: string
+  icon?: {
+    asset?: {
+      url?: string
+    }
+  }
+}
 
-export default function ServicesHero({
-  backgroundImage,
-}: {
-  backgroundImage?: string
-}) {
+interface ServicesHeroData {
+  headline: string
+  subText?: string
+  backgroundImage?: {
+    asset?: { url?: string }
+  }
+  primaryCtaText?: string
+  primaryCtaUrl?: string
+  secondaryCtaText?: string
+  secondaryCtaUrl?: string
+}
+
+interface Props {
+  hero: ServicesHeroData
+  heroIcons?: HeroIcon[]
+}
+
+/* ================= COMPONENT ================= */
+
+export default function ServicesHero({ hero, heroIcons }: Props) {
+  const reduceMotion = useReducedMotion()
+
   return (
     <section className="relative overflow-hidden">
       {/* Background Image */}
-      {backgroundImage && (
+      {hero.backgroundImage?.asset?.url && (
         <Image
-          src={backgroundImage}
+          src={hero.backgroundImage.asset.url}
           alt=""
           fill
-          priority
           className="object-cover"
+          priority
         />
       )}
 
-      {/* Orange Glow */}
-      <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-[#f28f23]/50 to-transparent" />
+      {/* Orange Gradient */}
+      <div className="absolute inset-x-0 bottom-0 h-[40%]
+                      bg-gradient-to-t from-[#f28f23]/50 to-transparent" />
 
       {/* Blue Glow */}
-      <div className="absolute left-1/2 top-[45%] h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#7becff]/60 blur-[260px]" />
+      <motion.div
+        aria-hidden
+        initial={{ opacity: 0.45 }}
+        animate={{ opacity: [0.45, 0.6, 0.45] }}
+        transition={{ duration: 14, repeat: Infinity }}
+        className="absolute left-1/2 top-[45%]
+                   h-[700px] w-[700px]
+                   -translate-x-1/2 -translate-y-1/2
+                   rounded-full bg-[#7becff]/50 blur-[250px]"
+      />
 
       {/* Content */}
-      <div className="relative z-10 mx-auto max-w-7xl px-6 pt-[180px] pb-[140px] text-center">
+      <motion.div
+        variants={reduceMotion ? undefined : staggerContainer()}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="relative z-10 mx-auto max-w-[1280px]
+                   px-6 pt-[180px] pb-[140px] text-center"
+      >
         <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="font-heading text-[34px] md:text-[64px] font-bold text-darkBlue"
+          variants={fadeUp}
+          className="font-heading font-bold text-darkBlue leading-tight text-[30px] sm:text-[40px] md:text-[64px] lg:text-[72px]"
         >
-          Performance-Driven Web Solutions Built For Growth
+          {hero.headline}
         </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.8 }}
-          className="mt-6 text-lg text-darkBlue max-w-2xl mx-auto"
-        >
-          From optimized WordPress builds to headless CMS architectures,
-          we create fast, scalable, and SEO-ready websites that help
-          businesses grow with confidence.
-        </motion.p>
+        {hero.subText && (
+          <motion.p
+            variants={fadeUp}
+            className="mt-8 md:mt-12 text-lg text-darkBlue md:max-w-[640px] mx-auto"
+          >
+            {hero.subText}
+          </motion.p>
+        )}
 
-        {/* Service Icons */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: {},
-            visible: {
-              transition: { staggerChildren: 0.12 },
-            },
-          }}
-          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-10"
-        >
-          {services.map((service, i) => (
-            <motion.div
-              key={i}
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0 },
-              }}
-              className="flex flex-col items-center text-center"
+        {/* CTA */}
+        <div className="mt-10 flex flex-col sm:flex-row gap-6 justify-center">
+          {hero.primaryCtaText && hero.primaryCtaUrl && (
+            <a
+              href={hero.primaryCtaUrl}
+              className="rounded-full bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] px-12 py-8 text-white font-semibold text-center transition-all hover:from-[#f68f1e] hover:to-[#cf5a20]"
             >
-              <AnimatedServiceIcon animationData={service.icon} size={72} />
+              {hero.primaryCtaText}
+            </a>
+          )}
 
-              <h3 className="mt-5 text-sm font-semibold text-darkBlue">
-                {service.title}
-              </h3>
+          {hero.secondaryCtaText && hero.secondaryCtaUrl && (
+            <a
+              href={hero.secondaryCtaUrl}
+              className="rounded-full border-2 border-darkBlue px-12 py-8 text-darkBlue font-semibold text-center hover:bg-darkBlue hover:text-white transition-all"
+            >
+              {hero.secondaryCtaText}
+            </a>
+          )}
+        </div>
 
-              <p className="mt-1 text-xs text-gray-600">
-                {service.subtitle}
-              </p>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
+        {/* HERO ICONS */}
+        {heroIcons && heroIcons.length > 0 && (
+          <motion.div
+            variants={staggerContainer(0.15)}
+            className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-12"
+          >
+            {heroIcons.map((icon, i) => (
+              <motion.div
+                key={i}
+                variants={fadeUp}
+                className="flex flex-col items-center text-center"
+              >
+                {icon.icon?.asset?.url && (
+                  <RemoteLottie src={icon.icon.asset.url} size={96} />
+                )}
+
+                <p className="mt-4 font-semibold text-darkBlue">
+                  {icon.label}
+                </p>
+
+                {icon.description && (
+                  <p className="mt-1 text-sm text-darkBlue/70">
+                    {icon.description}
+                  </p>
+                )}
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </motion.div>
     </section>
   )
 }

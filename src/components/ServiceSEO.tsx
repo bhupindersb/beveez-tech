@@ -1,58 +1,55 @@
-'use client'
-
-import { useEffect } from 'react'
-
-/* ================= TYPES ================= */
-
-interface ServiceDetail {
-  heading: string
-  description?: string
-  ctaUrl?: string
-}
+import Head from 'next/head'
 
 interface Props {
-  services: ServiceDetail[]
+  seo?: {
+    seoTitle?: string
+    seoDescription?: string
+  }
+  services: {
+    heading: string
+    description?: string
+  }[]
 }
 
-/* ================= COMPONENT ================= */
+export default function ServiceSEO({ seo, services }: Props) {
+  const title =
+    seo?.seoTitle ?? 'Services | Beveez'
 
-export default function ServiceSEO({ services }: Props) {
-  useEffect(() => {
-    if (!services || services.length === 0) return
+  const description =
+    seo?.seoDescription ??
+    'Professional web design, WordPress optimization, headless CMS development, and SEO-friendly builds.'
 
-    const schema = {
-      '@context': 'https://schema.org',
-      '@type': 'Service',
-      provider: {
-        '@type': 'Organization',
-        name: 'Beveez',
-        url: 'https://beveez.tech',
-      },
-      hasOfferCatalog: {
-        '@type': 'OfferCatalog',
-        name: 'Services',
-        itemListElement: services.map((service, index) => ({
-          '@type': 'Offer',
-          position: index + 1,
-          itemOffered: {
+  return (
+    <Head>
+      <title>{title}</title>
+      <meta name="description" content={description} />
+
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
             '@type': 'Service',
-            name: service.heading,
-            description: service.description,
-            url: service.ctaUrl,
-          },
-        })),
-      },
-    }
-
-    const script = document.createElement('script')
-    script.type = 'application/ld+json'
-    script.text = JSON.stringify(schema)
-    document.head.appendChild(script)
-
-    return () => {
-      document.head.removeChild(script)
-    }
-  }, [services])
-
-  return null
+            provider: {
+              '@type': 'Organization',
+              name: 'Beveez',
+            },
+            hasOfferCatalog: {
+              '@type': 'OfferCatalog',
+              name: 'Services',
+              itemListElement: services.map(service => ({
+                '@type': 'Offer',
+                itemOffered: {
+                  '@type': 'Service',
+                  name: service.heading,
+                  description: service.description,
+                },
+              })),
+            },
+          }),
+        }}
+      />
+    </Head>
+  )
 }

@@ -7,21 +7,17 @@ export const servicesPageFields = [
     title: 'Services Hero',
     type: 'object',
     fields: [
-      {
-        name: 'headline',
-        title: 'Headline',
-        type: 'string',
-        validation: Rule => Rule.required(),
-      },
-      {
-        name: 'subText',
-        title: 'Sub Text',
-        type: 'text',
-        rows: 3,
-      },
+      { name: 'headline', type: 'string', validation: Rule => Rule.required() },
+      { name: 'subText', type: 'text' },
+
+      { name: 'primaryCtaText', type: 'string' },
+      { name: 'primaryCtaUrl', type: 'string' },
+
+      { name: 'secondaryCtaText', type: 'string' },
+      { name: 'secondaryCtaUrl', type: 'string' },
+
       {
         name: 'backgroundImage',
-        title: 'Background Image',
         type: 'image',
         options: { hotspot: true },
       },
@@ -33,27 +29,19 @@ export const servicesPageFields = [
     name: 'heroIcons',
     title: 'Hero Service Icons',
     type: 'array',
-    validation: Rule => Rule.min(1).max(4),
-    of: [
-      {
-        type: 'object',
-        fields: [
-          defineField({
-            name: 'label',
-            title: 'Label',
-            type: 'string',
-          }),
-          defineField({
-            name: 'icon',
-            title: 'Lottie JSON',
-            type: 'file',
-            options: {
-              accept: '.json',
-            },
-          }),
-        ],
-      },
-    ],
+    of: [{
+      type: 'object',
+      fields: [
+        { name: 'label', type: 'string' },
+        { name: 'description', type: 'string', title: 'Short Description' },
+        {
+          name: 'icon',
+          title: 'Lottie JSON',
+          type: 'file',
+          options: { accept: '.json' },
+        },
+      ],
+    }],
   }),
 
   /* ================= SERVICE DETAILS ================= */

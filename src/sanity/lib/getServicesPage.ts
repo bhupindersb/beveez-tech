@@ -17,6 +17,7 @@ export async function getServicesPage() {
 
       heroIcons[]{
         label,
+        description,
         icon{
           asset->{ url }
         }

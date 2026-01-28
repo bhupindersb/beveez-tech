@@ -55,6 +55,12 @@ interface ServicesPageData {
   heroIcons?: HeroIcon[]
   serviceDetails?: ServiceDetail[]
   ctaOverride?: CTAData
+
+  /* OPTIONAL – future-ready */
+  seo?: {
+    seoTitle?: string
+    seoDescription?: string
+  }
 }
 
 interface SiteSettings {
@@ -73,8 +79,11 @@ export default function ServicesClient({ data, siteSettings }: Props) {
 
   return (
     <>
-      {/* ================= SEO ================= */}
-      <ServiceSEO services={data.serviceDetails ?? []} />
+      {/* ================= SEO (FIXED) ================= */}
+      <ServiceSEO
+        seo={data.seo}
+        services={data.serviceDetails ?? []}
+      />
 
       {/* ================= HERO ================= */}
       <section className="relative overflow-hidden">
@@ -147,6 +156,7 @@ export default function ServicesClient({ data, siteSettings }: Props) {
                   className="flex flex-col items-center"
                 >
                   <HoverLottie src={icon.icon.asset?.url} />
+
                   <p className="mt-4 font-semibold text-darkBlue text-center">
                     {icon.label}
                   </p>

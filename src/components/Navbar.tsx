@@ -4,11 +4,16 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { motion, AnimateSharedLayout } from 'framer-motion'
 
 export default function Navbar({ settings }: any) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
+
+  // Normalize pathname
+  const currentPath =
+    pathname !== '/' ? pathname.replace(/\/$/, '') : '/'
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -29,8 +34,8 @@ export default function Navbar({ settings }: any) {
 
   // Active link matcher
   const isActive = (url: string) => {
-    if (url === '/') return pathname === '/'
-    return pathname.startsWith(url)
+    if (url === '/') return currentPath === '/'
+    return currentPath === url || currentPath.startsWith(`${url}/`)
   }
 
   return (
@@ -38,8 +43,8 @@ export default function Navbar({ settings }: any) {
       {/* NAV BAR */}
       <nav
         className={`fixed top-4 left-0 right-0 mx-auto z-50 w-[90%] md:max-w-[900px]
-         rounded-full py-3 pl-5 pr-3 md:top-6
-        transition-all duration-300 
+        rounded-full py-3 pl-5 pr-3 md:top-6
+        transition-all duration-300
         ${
           scrolled
             ? 'bg-darkBlue/60 backdrop-blur-xl shadow-lg'
@@ -47,7 +52,6 @@ export default function Navbar({ settings }: any) {
         }`}
       >
         <div className="flex items-center justify-between">
-
           {/* LOGO */}
           <Link href="/" className="flex items-center">
             {settings?.logo?.asset?.url && (
@@ -63,33 +67,43 @@ export default function Navbar({ settings }: any) {
           </Link>
 
           {/* DESKTOP MENU */}
-          <ul className="hidden items-center gap-8 text-white md:flex">
-            {settings?.navigation?.map((item: any, i: number) => {
-              const active = isActive(item.url)
+          <AnimateSharedLayout>
+            <ul className="hidden items-center gap-8 text-white md:flex">
+              {settings?.navigation?.map((item: any, i: number) => {
+                const active = isActive(item.url)
 
-              return (
-                <li key={i}>
-                  <Link
-                    href={item.url}
-                    className={`relative transition
-                      ${
-                        active
-                          ? 'text-orange font-semibold'
-                          : 'text-white hover:text-orange'
-                      }
-                    `}
-                  >
-                    {item.label}
+                return (
+                  <li key={i} className="relative">
+                    <Link
+                      href={item.url}
+                      className={`relative px-1 transition
+                        ${
+                          active
+                            ? 'text-orange font-semibold'
+                            : 'text-white hover:text-orange'
+                        }
+                      `}
+                    >
+                      {item.label}
 
-                    {/* Active underline */}
-                    {active && (
-                      <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-orange rounded-full" />
-                    )}
-                  </Link>
-                </li>
-              )
-            })}
-          </ul>
+                      {/* 🔥 Animated underline */}
+                      {active && (
+                        <motion.span
+                          layoutId="nav-underline"
+                          className="absolute -bottom-1 left-0 h-[2px] w-full bg-orange rounded-full"
+                          transition={{
+                            type: 'spring',
+                            stiffness: 500,
+                            damping: 30,
+                          }}
+                        />
+                      )}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          </AnimateSharedLayout>
 
           {/* DESKTOP CTA */}
           {settings?.navCtaText && settings?.navCtaUrl && (

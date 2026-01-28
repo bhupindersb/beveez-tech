@@ -98,7 +98,7 @@ export default function ServicesHero({ hero, heroIcons }: Props) {
           {hero.primaryCtaText && hero.primaryCtaUrl && (
             <a
               href={hero.primaryCtaUrl}
-              className="rounded-full bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] px-12 py-8 text-white font-semibold text-center transition-all hover:from-[#f68f1e] hover:to-[#cf5a20]"
+              className="rounded-full bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] px-12 py-6 text-white font-semibold text-center transition-all hover:from-[#f68f1e] hover:to-[#cf5a20]"
             >
               {hero.primaryCtaText}
             </a>
@@ -107,7 +107,7 @@ export default function ServicesHero({ hero, heroIcons }: Props) {
           {hero.secondaryCtaText && hero.secondaryCtaUrl && (
             <a
               href={hero.secondaryCtaUrl}
-              className="rounded-full border-2 border-darkBlue px-12 py-8 text-darkBlue font-semibold text-center hover:bg-darkBlue hover:text-white transition-all"
+              className="rounded-full border-2 border-darkBlue px-12 py-6 text-darkBlue font-semibold text-center hover:bg-darkBlue hover:text-white transition-all"
             >
               {hero.secondaryCtaText}
             </a>
@@ -130,7 +130,7 @@ export default function ServicesHero({ hero, heroIcons }: Props) {
                   <RemoteLottie src={icon.icon.asset.url} size={96} />
                 )}
 
-                <p className="mt-4 font-semibold text-darkBlue">
+                <p className="mt-4 text-xl text-orange font-heading">
                   {icon.label}
                 </p>
 

@@ -47,8 +47,7 @@ export default function ServiceDetailSection({ data }: Props) {
         >
           <motion.h2
             variants={reduceMotion ? undefined : fadeUp}
-            className="md:col-span-3 font-heading font-bold
-                       text-darkBlue text-[36px] md:text-[48px]"
+            className="text-[48px] md:text-[72px] font-bold font-heading text-darkBlue leading-none text-center md:text-left md:col-span-3"
           >
             {data.heading}
           </motion.h2>
@@ -82,7 +81,7 @@ export default function ServiceDetailSection({ data }: Props) {
                 src={data.visual.image.asset.url}
                 alt={data.heading}
                 fill
-                className="object-contain"
+                className="object-cover rounded-2xl shadow-lg"
               />
             )}
           </motion.div>

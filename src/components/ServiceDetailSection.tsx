@@ -53,7 +53,7 @@ export default function ServiceDetailSection({
   return (
     <section
       id={id}
-      className="py-[80px] md:py-[120px] scroll-mt-[140px]"
+      className="pt-[80px] md:pt-[120px] scroll-mt-[140px]"
     >
       <div className="mx-auto max-w-[1280px] px-6">
 

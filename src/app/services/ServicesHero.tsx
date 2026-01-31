@@ -49,6 +49,7 @@ export default function ServicesHero({ hero, heroIcons }: Props) {
 
   return (
     <section className="relative overflow-hidden">
+      {/* Background */}
       {hero.backgroundImage?.asset?.url && (
         <Image
           src={hero.backgroundImage.asset.url}
@@ -59,20 +60,20 @@ export default function ServicesHero({ hero, heroIcons }: Props) {
         />
       )}
 
-      <div className="absolute inset-x-0 bottom-0 h-[40%]
-                      bg-gradient-to-t from-[#f28f23]/50 to-transparent" />
+      {/* Gradients */}
+      <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-[#f28f23]/50 to-transparent" />
 
       <motion.div
         aria-hidden
         initial={{ opacity: 0.45 }}
         animate={{ opacity: [0.45, 0.6, 0.45] }}
         transition={{ duration: 14, repeat: Infinity }}
-        className="absolute left-1/2 top-[45%]
-                   h-[700px] w-[700px]
+        className="absolute left-1/2 top-[45%] h-[700px] w-[700px]
                    -translate-x-1/2 -translate-y-1/2
                    rounded-full bg-[#7becff]/50 blur-[250px]"
       />
 
+      {/* Content */}
       <motion.div
         variants={reduceMotion ? undefined : staggerContainer()}
         initial="hidden"
@@ -83,7 +84,7 @@ export default function ServicesHero({ hero, heroIcons }: Props) {
         <motion.h1
           variants={fadeUp}
           className="font-heading font-bold text-darkBlue
-                     text-[36px] sm:text-[48px]
+                     text-[30px] sm:text-[40px]
                      md:text-[64px] lg:text-[72px]"
         >
           {hero.headline}
@@ -92,11 +93,44 @@ export default function ServicesHero({ hero, heroIcons }: Props) {
         {hero.subText && (
           <motion.p
             variants={fadeUp}
-            className="mt-8 text-lg text-darkBlue/90
-                       max-w-[680px] mx-auto"
+            className="mt-8 text-lg text-darkBlue/90 max-w-[680px] mx-auto"
           >
             {hero.subText}
           </motion.p>
+        )}
+
+        {/* ✅ HERO CTA (RESTORED) */}
+        {(hero.primaryCtaText || hero.secondaryCtaText) && (
+          <motion.div
+            variants={fadeUp}
+            className="mt-10 flex flex-col sm:flex-row gap-6 justify-center"
+          >
+            {hero.primaryCtaText && hero.primaryCtaUrl && (
+              <motion.a
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.97 }}
+                href={hero.primaryCtaUrl}
+                className="rounded-full bg-gradient-to-r
+                           from-[#cf5a20] to-[#f68f1e]
+                           px-12 py-6 text-white font-semibold text-center"
+              >
+                {hero.primaryCtaText}
+              </motion.a>
+            )}
+
+            {hero.secondaryCtaText && hero.secondaryCtaUrl && (
+              <motion.a
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.97 }}
+                href={hero.secondaryCtaUrl}
+                className="rounded-full border-2 border-darkBlue
+                           px-12 py-6 text-darkBlue font-semibold text-center
+                           hover:bg-darkBlue hover:text-white transition"
+              >
+                {hero.secondaryCtaText}
+              </motion.a>
+            )}
+          </motion.div>
         )}
 
         {/* HERO ICON LINKS */}
@@ -115,7 +149,7 @@ export default function ServicesHero({ hero, heroIcons }: Props) {
                   href={`#${anchor}`}
                   className="flex flex-col items-center text-center group"
                   onClick={() => {
-                    if (typeof window !== 'undefined' && (window as any).gtag) {
+                    if ((window as any)?.gtag) {
                       ;(window as any).gtag('event', 'service_anchor_click', {
                         event_category: 'Services',
                         event_label: icon.label,
@@ -125,10 +159,7 @@ export default function ServicesHero({ hero, heroIcons }: Props) {
                   }}
                 >
                   {icon.icon?.asset?.url && (
-                    <RemoteLottie
-                      src={icon.icon.asset.url}
-                      size={96}
-                    />
+                    <RemoteLottie src={icon.icon.asset.url} size={96} />
                   )}
 
                   <p className="mt-4 font-semibold text-darkBlue

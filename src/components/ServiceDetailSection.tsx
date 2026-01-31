@@ -4,6 +4,15 @@ import Image from 'next/image'
 import { motion, useReducedMotion } from 'framer-motion'
 import { fadeUp, staggerContainer } from '@/lib/motion'
 
+/* ================= HELPERS ================= */
+
+function slugify(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+}
+
 /* ================= TYPES ================= */
 
 interface ImageVisual {
@@ -26,18 +35,29 @@ export interface ServiceDetailData {
 
 interface Props {
   data: ServiceDetailData
+  index: number
+  total: number
 }
 
 /* ================= COMPONENT ================= */
 
-export default function ServiceDetailSection({ data }: Props) {
+export default function ServiceDetailSection({
+  data,
+  index,
+  total,
+}: Props) {
   const reduceMotion = useReducedMotion()
+  const id = slugify(data.heading)
+  const includes = data.includes ?? []
 
   return (
-    <section className="py-[80px] md:py-[120px]">
+    <section
+      id={id}
+      className="py-[80px] md:py-[120px] scroll-mt-[140px]"
+    >
       <div className="mx-auto max-w-[1280px] px-6">
 
-        {/* ================= HEADER ================= */}
+        {/* HEADER */}
         <motion.div
           variants={reduceMotion ? undefined : staggerContainer()}
           initial="hidden"
@@ -47,7 +67,10 @@ export default function ServiceDetailSection({ data }: Props) {
         >
           <motion.h2
             variants={reduceMotion ? undefined : fadeUp}
-            className="text-[48px] md:text-[72px] font-bold font-heading text-darkBlue leading-none text-center md:text-left md:col-span-3"
+            className="text-[48px] md:text-[72px]
+                       font-semibold font-heading
+                       text-darkBlue leading-none
+                       md:col-span-3"
           >
             {data.heading}
           </motion.h2>
@@ -62,7 +85,7 @@ export default function ServiceDetailSection({ data }: Props) {
           )}
         </motion.div>
 
-        {/* ================= CONTENT ================= */}
+        {/* CONTENT */}
         <motion.div
           variants={reduceMotion ? undefined : staggerContainer(0.15)}
           initial="hidden"
@@ -70,8 +93,7 @@ export default function ServiceDetailSection({ data }: Props) {
           viewport={{ once: true }}
           className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center"
         >
-
-          {/* LEFT — IMAGE */}
+          {/* IMAGE */}
           <motion.div
             variants={reduceMotion ? undefined : fadeUp}
             className="relative w-full aspect-[4/3]"
@@ -86,54 +108,73 @@ export default function ServiceDetailSection({ data }: Props) {
             )}
           </motion.div>
 
-          {/* RIGHT — CONTENT */}
+          {/* TEXT */}
           <motion.div
             variants={reduceMotion ? undefined : fadeUp}
             className="space-y-6"
           >
-            {data.description?.split('\n\n').map((para, i) => (
-              <p
-                key={i}
-                className="text-darkBlue leading-relaxed mb-4 last:mb-0"
-              >
-                {para}
-              </p>
-            ))}
+            {data.description
+              ?.split('\n\n')
+              .map((para, i) => (
+                <p key={i} className="text-darkBlue leading-relaxed">
+                  {para}
+                </p>
+              ))}
 
-            <p className="text-orange font-semibold text-xl">Includes:</p>
+            {includes.length > 0 && (
+              <>
+                <p className="text-orange font-semibold text-xl">
+                  Includes
+                </p>
 
-            {data.includes && data.includes.length > 0 && (
-              <ul className="space-y-3 !mt-0">
-                {data.includes.map((item, i) => (
-                  <li
-                    key={i}
-                    className="flex items-start gap-3 text-darkBlue"
-                  >
-                    <span
-                      className="mt-2 h-2 w-2 rounded-full"
-                      style={{
-                        backgroundColor: data.accent ?? '#f28f23',
-                      }}
-                    />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
+                <ul className="space-y-3">
+                  {includes.map((item, i) => (
+                    <li
+                      key={i}
+                      className="flex items-start gap-3"
+                    >
+                      <span
+                        className="mt-2 h-2 w-2 rounded-full"
+                        style={{
+                          backgroundColor:
+                            data.accent ?? '#f28f23',
+                        }}
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </>
             )}
 
             {data.ctaText && data.ctaUrl && (
               <a
                 href={data.ctaUrl}
                 className="inline-block mt-6 rounded-full
-                           bg-gradient-to-r from-[#cf5a20] to-[#f68f1e]
+                           bg-gradient-to-r
+                           from-[#cf5a20] to-[#f68f1e]
                            px-10 py-5 text-white font-semibold
                            transition hover:from-[#f68f1e] hover:to-[#cf5a20]"
+                onClick={() => {
+                  if (typeof window !== 'undefined' && (window as any).gtag) {
+                    ;(window as any).gtag('event', 'cta_click', {
+                      event_category: 'CTA',
+                      event_label: data.ctaText,
+                      page_location: window.location.pathname,
+                    })
+                  }
+                }}
               >
                 {data.ctaText}
               </a>
             )}
           </motion.div>
         </motion.div>
+
+        {/* DIVIDER */}
+        {index < total - 1 && (
+          <div className="mt-[120px] h-px w-full bg-darkBlue/10" />
+        )}
       </div>
     </section>
   )

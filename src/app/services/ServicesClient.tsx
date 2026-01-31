@@ -23,23 +23,31 @@ export default function ServicesClient({
   data: ServicesPageData
   siteSettings: SiteSettings
 }) {
+  // ✅ Normalize once — no more undefined checks everywhere
+  const services = data.serviceDetails ?? []
+
   return (
     <>
-      {/* SEO */}
-      <ServiceSEO services={data.serviceDetails ?? []} />
+      {/* ================= SEO ================= */}
+      <ServiceSEO services={services} />
 
-      {/* HERO */}
+      {/* ================= HERO ================= */}
       <ServicesHero
         hero={data.hero}
         heroIcons={data.heroIcons}
       />
 
-      {/* SERVICES */}
-      {data.serviceDetails?.map((service, i) => (
-        <ServiceDetailSection key={i} data={service} />
+      {/* ================= SERVICES ================= */}
+      {services.map((service, i) => (
+        <ServiceDetailSection
+          key={i}
+          data={service}
+          index={i}
+          total={services.length}
+        />
       ))}
 
-      {/* CTA */}
+      {/* ================= CTA ================= */}
       <CTASection data={data.ctaOverride ?? siteSettings.cta} />
     </>
   )

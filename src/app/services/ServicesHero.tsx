@@ -83,9 +83,7 @@ export default function ServicesHero({ hero, heroIcons }: Props) {
       >
         <motion.h1
           variants={fadeUp}
-          className="font-heading font-bold text-darkBlue
-                     text-[30px] sm:text-[40px]
-                     md:text-[64px] lg:text-[72px]"
+          className="font-heading font-bold text-darkBlue leading-tight text-[30px] sm:text-[40px] md:text-[64px] lg:text-[72px]"
         >
           {hero.headline}
         </motion.h1>
@@ -110,9 +108,7 @@ export default function ServicesHero({ hero, heroIcons }: Props) {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
                 href={hero.primaryCtaUrl}
-                className="rounded-full bg-gradient-to-r
-                           from-[#cf5a20] to-[#f68f1e]
-                           px-12 py-6 text-white font-semibold text-center"
+                className="rounded-full bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] px-12 py-8 text-white font-semibold text-center transition-all hover:from-[#f68f1e] hover:to-[#cf5a20]"
               >
                 {hero.primaryCtaText}
               </motion.a>
@@ -123,9 +119,7 @@ export default function ServicesHero({ hero, heroIcons }: Props) {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
                 href={hero.secondaryCtaUrl}
-                className="rounded-full border-2 border-darkBlue
-                           px-12 py-6 text-darkBlue font-semibold text-center
-                           hover:bg-darkBlue hover:text-white transition"
+                className="rounded-full border-2 border-darkBlue px-12 py-8 text-darkBlue font-semibold text-center hover:bg-darkBlue hover:text-white transition-all"
               >
                 {hero.secondaryCtaText}
               </motion.a>

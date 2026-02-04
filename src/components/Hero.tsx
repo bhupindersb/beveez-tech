@@ -75,7 +75,7 @@ export default function Hero({
             <a
                 href={primaryCtaUrl}
                 className="rounded-full bg-gradient-to-r from-[#cf5a20] to-[#f68f1e]
-                            px-12 py-8 text-white font-semibold text-center
+                            px-12 py-8 text-white font-normal text-center
                             transition-all hover:from-[#f68f1e] hover:to-[#cf5a20]"
                 >
                 {primaryCtaText}
@@ -87,7 +87,7 @@ export default function Hero({
             <a
                 href={secondaryCtaUrl}
                 className="rounded-full border-2 border-darkBlue
-                            px-12 py-8 text-darkBlue font-semibold text-center
+                            px-12 py-8 text-darkBlue font-normal text-center
                             hover:bg-darkBlue hover:text-white transition-all"
                 >
                 {secondaryCtaText}

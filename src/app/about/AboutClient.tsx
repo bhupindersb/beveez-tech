@@ -190,7 +190,7 @@ export default function AboutClient({ data, siteSettings }: AboutClientProps) {
             <motion.a
               variants={reduceMotion ? undefined : fadeUp}
               href={hero.ctaUrl}
-              className="rounded-full bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] px-12 py-8 text-white font-semibold text-center transition-all hover:from-[#f68f1e] hover:to-[#cf5a20]"
+              className="rounded-full bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] px-12 py-8 text-white font-normal mt-12 text-center transition-all hover:from-[#f68f1e] hover:to-[#cf5a20]"
             >
               {hero.ctaText}
             </motion.a>

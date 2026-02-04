@@ -39,7 +39,7 @@ export default function CtaSection({ data }: { data: any }) {
                 href={data.primaryCtaUrl}
                 className="rounded-full bg-gradient-to-r
                            from-[#cf5a20] to-[#f68f1e]
-                           px-12 py-8 font-semibold text-white
+                           px-12 py-8 font-normal text-white
                            transition hover:from-[#f68f1e] hover:to-[#cf5a20]"
               >
                 {data.primaryCtaText}
@@ -50,7 +50,7 @@ export default function CtaSection({ data }: { data: any }) {
               <a
                 href={data.secondaryCtaUrl}
                 className="rounded-full
-                            px-12 py-8 text-darkBlue font-semibold text-center bg-white
+                            px-12 py-8 text-darkBlue font-normal text-center bg-white
                             hover:bg-darkBlue hover:text-white transition-all"
               >
                 {data.secondaryCtaText}

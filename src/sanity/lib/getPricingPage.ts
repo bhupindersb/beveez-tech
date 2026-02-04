@@ -6,31 +6,43 @@ export async function getPricingPage() {
       _type == "page" &&
       template == "pricing"
     ][0]{
-      pricingPage{
-        hero{
-          headline,
-          subText
-        },
-        plans[]{
-          title,
-          price,
-          description,
-          bestFor,
-          features,
-          ctaText,
-          ctaUrl,
-          highlighted
-        },
-        addons[]{
-          title,
-          description
-        },
-        howItWorks,
-        faqs[]{
-          question,
-          answer
-        }
+
+      /* ================= HERO ================= */
+      pricingHero{
+        headline,
+        subText
       },
+
+      /* ================= PLANS ================= */
+      pricingPlans[]->{
+        title,
+        description,
+        price,
+        bestFor,
+        features,
+        ctaText,
+        ctaUrl,
+        highlighted,
+        order
+      } | order(order asc),
+
+      /* ================= ADD-ONS ================= */
+      pricingAddons[]{
+        title,
+        description,
+        price
+      },
+
+      /* ================= HOW IT WORKS ================= */
+      howItWorks,
+
+      /* ================= FAQ ================= */
+      pricingFaqs[]{
+        question,
+        answer
+      },
+
+      /* ================= CTA OVERRIDE ================= */
       ctaOverride{
         heading,
         subText,

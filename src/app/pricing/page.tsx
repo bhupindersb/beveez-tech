@@ -8,7 +8,7 @@ export default async function PricingPage() {
     getSiteSettings(),
   ])
 
-  if (!data?.pricingPage) {
+  if (!data?.pricingHero) {
     return (
       <div className="py-32 text-center text-gray-500">
         Pricing page content not found.
@@ -18,8 +18,7 @@ export default async function PricingPage() {
 
   return (
     <PricingClient
-      data={data.pricingPage}
-      ctaOverride={data.ctaOverride}
+      data={data}
       siteSettings={siteSettings}
     />
   )

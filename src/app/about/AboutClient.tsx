@@ -179,7 +179,7 @@ export default function AboutClient({ data, siteSettings }: AboutClientProps) {
           {hero.subText && (
             <motion.p
               variants={reduceMotion ? undefined : fadeUp}
-              className="mt-8 mb-8 text-lg
+              className="mt-8 mb-12 text-lg
                          text-darkBlue md:max-w-[640px] mx-auto"
             >
               {hero.subText}

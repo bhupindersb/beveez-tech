@@ -6,14 +6,11 @@ export async function getPricingPage() {
       _type == "page" &&
       template == "pricing"
     ][0]{
-
-      /* ================= HERO ================= */
       pricingHero{
         headline,
         subText
       },
 
-      /* ================= PLANS ================= */
       pricingPlans[]->{
         title,
         description,
@@ -26,23 +23,19 @@ export async function getPricingPage() {
         order
       } | order(order asc),
 
-      /* ================= ADD-ONS ================= */
       pricingAddons[]{
         title,
         description,
         price
       },
 
-      /* ================= HOW IT WORKS ================= */
       howItWorks,
 
-      /* ================= FAQ ================= */
       pricingFaqs[]{
         question,
         answer
       },
 
-      /* ================= CTA OVERRIDE ================= */
       ctaOverride{
         heading,
         subText,

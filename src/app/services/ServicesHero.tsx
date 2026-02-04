@@ -105,8 +105,6 @@ export default function ServicesHero({ hero, heroIcons }: Props) {
           >
             {hero.primaryCtaText && hero.primaryCtaUrl && (
               <motion.a
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
                 href={hero.primaryCtaUrl}
                 className="rounded-full bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] px-12 py-8 text-white font-normal text-center transition-all hover:from-[#f68f1e] hover:to-[#cf5a20]"
               >
@@ -116,8 +114,6 @@ export default function ServicesHero({ hero, heroIcons }: Props) {
 
             {hero.secondaryCtaText && hero.secondaryCtaUrl && (
               <motion.a
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
                 href={hero.secondaryCtaUrl}
                 className="rounded-full border-2 border-darkBlue px-12 py-8 text-darkBlue font-normal text-center hover:bg-darkBlue hover:text-white transition-all"
               >

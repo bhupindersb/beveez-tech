@@ -1,5 +1,6 @@
 import { defineType, defineField } from 'sanity'
 import { servicesPageFields } from './servicesPageFields'
+import { pricingPageFields } from './pricingPageFields'
 
 export const page = defineType({
   name: 'page',
@@ -209,7 +210,7 @@ export const page = defineType({
         }
       ]
     }),
-    
+
     /* =======================
     ABOUT – WHO WE WORK WITH
   ======================= */
@@ -346,6 +347,16 @@ export const page = defineType({
     hidden: ({ parent }: { parent?: { template?: string } }) =>
     parent?.template !== 'services'
 
+  })),
+
+  /* =======================
+    PRICING PAGE
+  ======================= */
+
+  ...pricingPageFields.map(field => ({
+    ...field,
+    hidden: ({ parent }: { parent?: { template?: string } }) =>
+      parent?.template !== 'pricing',
   })),
 
 

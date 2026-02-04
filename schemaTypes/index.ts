@@ -24,6 +24,9 @@ import { ourApproachStep } from './ourApproachStep'
 
 import { serviceDetail } from './serviceDetails'
 
+import { pricingAddon } from './pricingAddon'
+import { pricingFaq } from './pricingFaq'
+
 export const schemaTypes = [
   siteSettings,
   footerSettings,
@@ -53,4 +56,7 @@ export const schemaTypes = [
   blockContentType,
 
   serviceDetail,
+
+  pricingAddon,
+  pricingFaq,
 ]

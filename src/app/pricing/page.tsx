@@ -1,10 +1,26 @@
-export default function AboutPage() {
+import { getPricingPage } from '@/sanity/lib/getPricingPage'
+import { getSiteSettings } from '@/sanity/lib/getSiteSettings'
+import PricingClient from './PricingClient'
+
+export default async function PricingPage() {
+  const [data, siteSettings] = await Promise.all([
+    getPricingPage(),
+    getSiteSettings(),
+  ])
+
+  if (!data?.pricingPage) {
+    return (
+      <div className="py-32 text-center text-gray-500">
+        Pricing page content not found.
+      </div>
+    )
+  }
+
   return (
-    <main className="max-w-[1280px] mx-auto py-24 px-6">
-      <h1 className="text-5xl font-heading text-darkBlue">Pricing</h1>
-      <p className="mt-6 text-lg text-gray-600">
-        Content coming soon.
-      </p>
-    </main>
+    <PricingClient
+      data={data.pricingPage}
+      ctaOverride={data.ctaOverride}
+      siteSettings={siteSettings}
+    />
   )
 }

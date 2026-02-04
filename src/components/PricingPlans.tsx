@@ -3,70 +3,59 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { fadeUp, staggerContainer } from '@/lib/motion'
 
-interface PricingPlan {
+interface Plan {
   title: string
   description?: string
   price?: string
+  bestFor?: string
   features?: string[]
   ctaText?: string
   ctaUrl?: string
   highlighted?: boolean
 }
 
-export default function PricingPlans({ plans }: { plans: PricingPlan[] }) {
+export default function PricingPlans({ plans }: { plans: Plan[] }) {
   const reduceMotion = useReducedMotion()
 
   return (
-    <section className="pb-[120px]">
+    <section className="py-[120px] bg-gray-50">
       <motion.div
         variants={reduceMotion ? undefined : staggerContainer(0.15)}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="mx-auto max-w-[1280px] px-6
-                   grid grid-cols-1 md:grid-cols-3 gap-8"
+        className="mx-auto max-w-[1280px] px-6 grid grid-cols-1 md:grid-cols-3 gap-10"
       >
         {plans.map((plan, i) => (
           <motion.div
             key={i}
             variants={fadeUp}
-            className={`relative rounded-3xl p-8
-              ${plan.highlighted
-                ? 'bg-darkBlue text-white scale-[1.03]'
-                : 'bg-white text-darkBlue'}
-              shadow-xl`}
+            className={`rounded-3xl p-10 shadow-lg bg-white
+              ${plan.highlighted ? 'ring-2 ring-orange scale-[1.02]' : ''}
+            `}
           >
-            {plan.highlighted && (
-              <span className="absolute -top-4 left-1/2 -translate-x-1/2
-                               rounded-full bg-orange px-4 py-1
-                               text-sm font-semibold text-white">
-                Most Popular
-              </span>
-            )}
-
-            <h3 className="text-2xl font-heading font-semibold">
+            <h3 className="text-2xl font-heading font-semibold text-darkBlue">
               {plan.title}
             </h3>
 
-            {plan.description && (
-              <p className={`mt-3 text-sm
-                ${plan.highlighted ? 'text-white/80' : 'text-darkBlue/70'}`}>
-                {plan.description}
-              </p>
-            )}
-
             {plan.price && (
-              <p className="mt-6 text-4xl font-bold">
+              <p className="mt-4 text-4xl font-bold text-darkBlue">
                 {plan.price}
               </p>
             )}
 
-            {plan.features && plan.features.length > 0 && (
+            {plan.description && (
+              <p className="mt-4 text-darkBlue/80">
+                {plan.description}
+              </p>
+            )}
+
+            {plan.features && (
               <ul className="mt-6 space-y-3">
-                {plan.features.map((feature, idx) => (
-                  <li key={idx} className="flex gap-3 items-start">
+                {plan.features.map((f, idx) => (
+                  <li key={idx} className="flex gap-3">
                     <span className="mt-2 h-2 w-2 rounded-full bg-orange" />
-                    <span className="text-sm">{feature}</span>
+                    <span>{f}</span>
                   </li>
                 ))}
               </ul>
@@ -75,11 +64,10 @@ export default function PricingPlans({ plans }: { plans: PricingPlan[] }) {
             {plan.ctaText && plan.ctaUrl && (
               <a
                 href={plan.ctaUrl}
-                className={`mt-8 inline-block w-full text-center
-                  rounded-full px-8 py-4 font-semibold transition
-                  ${plan.highlighted
-                    ? 'bg-orange text-white hover:opacity-90'
-                    : 'bg-darkBlue text-white hover:bg-darkBlue/90'}`}
+                className="mt-8 inline-block rounded-full
+                           bg-gradient-to-r from-[#cf5a20] to-[#f68f1e]
+                           px-8 py-4 text-white font-semibold
+                           hover:from-[#f68f1e] hover:to-[#cf5a20] transition"
               >
                 {plan.ctaText}
               </a>

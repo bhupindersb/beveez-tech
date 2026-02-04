@@ -2,28 +2,24 @@
 
 import PricingHero from './PricingHero'
 import PricingPlans from '@/components/PricingPlans'
+import PricingAddons from '@/components/PricingAddons'
+import PricingFaqs from '@/components/PricingFaqs'
 import CTASection from '@/components/CtaSection'
 
-interface Props {
-  data: any
-  siteSettings: any
-}
-
-export default function PricingClient({ data, siteSettings }: Props) {
+export default function PricingClient({ data, siteSettings }: any) {
   return (
     <>
-      {/* HERO */}
       <PricingHero
         headline={data.pricingHero.headline}
         subText={data.pricingHero.subText}
       />
 
-      {/* PLANS */}
-      {data.pricingPlans?.length > 0 && (
-        <PricingPlans plans={data.pricingPlans} />
-      )}
+      <PricingPlans plans={data.pricingPlans ?? []} />
 
-      {/* CTA */}
+      <PricingAddons addons={data.pricingAddons ?? []} />
+
+      <PricingFaqs faqs={data.pricingFaqs ?? []} />
+
       <CTASection data={data.ctaOverride ?? siteSettings.cta} />
     </>
   )

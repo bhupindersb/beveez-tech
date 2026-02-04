@@ -153,7 +153,7 @@ export default function ServiceDetailSection({
                 className="inline-block mt-6 rounded-full
                            bg-gradient-to-r
                            from-[#cf5a20] to-[#f68f1e]
-                           px-10 py-5 text-white font-semibold
+                           px-10 py-8 text-white font-normal
                            transition hover:from-[#f68f1e] hover:to-[#cf5a20]"
                 onClick={() => {
                   if (typeof window !== 'undefined' && (window as any).gtag) {

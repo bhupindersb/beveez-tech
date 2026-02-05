@@ -7,6 +7,8 @@ import PricingAddons from '@/components/PricingAddons'
 import PricingFaqs from '@/components/PricingFaqs'
 import CTASection from '@/components/CtaSection'
 
+export const revalidate = 30
+
 export default async function PricingPage() {
   const [data, siteSettings] = await Promise.all([
     getPricingPage(),

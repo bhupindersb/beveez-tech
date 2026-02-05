@@ -56,9 +56,7 @@ export default function PricingHero({ hero }: Props) {
       >
         <motion.h1
           variants={fadeUp}
-          className="font-heading font-bold text-darkBlue
-                     text-[36px] sm:text-[48px]
-                     md:text-[64px] lg:text-[72px]"
+          className="font-heading font-bold text-darkBlue leading-tight text-[30px] sm:text-[40px] md:text-[64px] lg:text-[72px]"
         >
           {hero.headline}
         </motion.h1>

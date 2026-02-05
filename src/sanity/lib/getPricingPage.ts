@@ -9,7 +9,10 @@ export async function getPricingPage() {
     ][0]{
       pricingHero{
         headline,
-        subText
+        subText,
+        backgroundImage{
+            asset->{ url }
+        }
       },
 
       pricingPlans[]->{

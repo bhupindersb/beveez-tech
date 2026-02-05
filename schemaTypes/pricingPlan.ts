@@ -3,7 +3,8 @@ import { defineType, defineField } from 'sanity'
 export const pricingPlan = defineType({
   name: 'pricingPlan',
   title: 'Pricing Plan',
-  type: 'object', // ✅ CHANGED from document → object
+  type: 'document',
+
   fields: [
     defineField({
       name: 'title',
@@ -13,52 +14,85 @@ export const pricingPlan = defineType({
     }),
 
     defineField({
-      name: 'price',
-      title: 'Price',
-      type: 'string',
-      description: 'Example: $999 / Starting at $1,499 / $199/mo',
-    }),
-
-    defineField({
       name: 'description',
       title: 'Short Description',
       type: 'text',
-      rows: 2,
+      rows: 3,
+    }),
+
+    defineField({
+      name: 'price',
+      title: 'Price',
+      type: 'string',
+      description: 'Example: ₹49,999 or $999 / mo',
     }),
 
     defineField({
       name: 'bestFor',
       title: 'Best For',
       type: 'string',
-      description: 'Example: Startups, SaaS founders, Enterprises',
+      description: 'Short qualifier (e.g. Startups, Agencies)',
     }),
 
     defineField({
       name: 'features',
-      title: 'Included Features',
+      title: 'What’s Included',
       type: 'array',
       of: [{ type: 'string' }],
     }),
 
     defineField({
+      name: 'highlighted',
+      title: 'Highlight Plan',
+      type: 'boolean',
+      description: 'Visually emphasize this plan',
+      initialValue: false,
+    }),
+
+    /* ================= PAYMENT ================= */
+
+    defineField({
+      name: 'paymentProvider',
+      title: 'Payment Provider',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Stripe', value: 'stripe' },
+          { title: 'Razorpay', value: 'razorpay' },
+          { title: 'Paddle', value: 'paddle' },
+        ],
+        layout: 'radio',
+      },
+    }),
+
+    defineField({
+      name: 'paymentLink',
+      title: 'Payment Link',
+      type: 'url',
+      description: 'Hosted checkout URL',
+    }),
+
+    defineField({
       name: 'ctaText',
-      title: 'CTA Text',
+      title: 'CTA Button Text',
       type: 'string',
       initialValue: 'Get Started',
     }),
 
-    defineField({
-      name: 'ctaUrl',
-      title: 'CTA URL',
-      type: 'string',
-    }),
+    /* ================= ORDER ================= */
 
     defineField({
-      name: 'highlighted',
-      title: 'Highlight this plan',
-      type: 'boolean',
-      description: 'Use for "Most Popular" or recommended plan',
-      initialValue: false,
+      name: 'order',
+      title: 'Display Order',
+      type: 'number',
     }),
+  ],
+
+  orderings: [
+    {
+      title: 'Order Ascending',
+      name: 'orderAsc',
+      by: [{ field: 'order', direction: 'asc' }],
+    },
   ],
 })

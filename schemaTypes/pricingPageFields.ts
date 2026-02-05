@@ -1,94 +1,51 @@
 import { defineField } from 'sanity'
 
 export const pricingPageFields = [
-  /* ================= PRICING HERO ================= */
+  /* ================= HERO ================= */
 
   defineField({
     name: 'pricingHero',
     title: 'Pricing Hero',
     type: 'object',
     fields: [
-      defineField({
-        name: 'headline',
-        title: 'Headline',
-        type: 'string',
-        validation: Rule => Rule.required(),
-      }),
-
-      defineField({
-        name: 'subText',
-        title: 'Sub Text',
-        type: 'text',
-        rows: 3,
-      }),
+      { name: 'headline', type: 'string' },
+      { name: 'subText', type: 'text', rows: 3 },
     ],
   }),
 
-  /* ================= PRICING PLANS ================= */
+  /* ================= PLANS ================= */
 
   defineField({
     name: 'pricingPlans',
     title: 'Pricing Plans',
     type: 'array',
-    of: [{ type: 'pricingPlan' }],
-    validation: Rule => Rule.min(1),
+    of: [{ type: 'reference', to: [{ type: 'pricingPlan' }] }],
   }),
 
-  /* ================= ADD-ONS ================= */
+  /* ================= ADDONS ================= */
 
   defineField({
     name: 'pricingAddons',
     title: 'Add-ons',
     type: 'array',
-    of: [
-      {
-        type: 'object',
-        fields: [
-          defineField({
-            name: 'title',
-            title: 'Addon Title',
-            type: 'string',
-          }),
-          defineField({
-            name: 'description',
-            title: 'Description',
-            type: 'text',
-            rows: 2,
-          }),
-          defineField({
-            name: 'price',
-            title: 'Price',
-            type: 'string',
-            description: 'Example: $199 / $499 / Custom',
-          }),
-        ],
-      },
-    ],
+    of: [{ type: 'pricingAddon' }],
+  }),
+
+  /* ================= HOW IT WORKS ================= */
+
+  defineField({
+    name: 'howItWorks',
+    title: 'How It Works',
+    type: 'array',
+    of: [{ type: 'string' }],
   }),
 
   /* ================= FAQ ================= */
 
   defineField({
     name: 'pricingFaqs',
-    title: 'Pricing FAQs',
+    title: 'FAQs',
     type: 'array',
-    of: [
-      {
-        type: 'object',
-        fields: [
-          defineField({
-            name: 'question',
-            title: 'Question',
-            type: 'string',
-          }),
-          defineField({
-            name: 'answer',
-            title: 'Answer',
-            type: 'text',
-            rows: 3,
-          }),
-        ],
-      },
-    ],
+    of: [{ type: 'pricingFaq' }],
   }),
 ]

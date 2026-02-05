@@ -4,17 +4,24 @@ export const pricingAddon = defineType({
   name: 'pricingAddon',
   title: 'Pricing Add-on',
   type: 'object',
+
   fields: [
     defineField({
       name: 'title',
-      title: 'Add-on Title',
+      title: 'Addon Title',
       type: 'string',
     }),
+
     defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
-      rows: 2,
+    }),
+
+    defineField({
+      name: 'price',
+      title: 'Price',
+      type: 'string',
     }),
   ],
 })

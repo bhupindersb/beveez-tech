@@ -1,5 +1,8 @@
 'use client'
 
+import { motion } from 'framer-motion'
+import { fadeUp } from '@/lib/motion'
+
 interface Addon {
   title: string
   description?: string
@@ -10,35 +13,38 @@ export default function PricingAddons({ addons }: { addons: Addon[] }) {
   if (!addons?.length) return null
 
   return (
-    <section className="py-[120px]">
-      <div className="mx-auto max-w-[960px] px-6">
-        <h2 className="text-3xl md:text-4xl font-heading font-bold text-darkBlue">
+    <section className="py-[120px] bg-white">
+      <div className="mx-auto max-w-[1280px] px-6">
+        <h2 className="text-[48px] md:text-[64px] font-heading font-bold text-darkBlue mb-16">
           Optional Add-Ons
         </h2>
 
-        <div className="mt-8 space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {addons.map((addon, i) => (
-            <div
+            <motion.div
               key={i}
-              className="rounded-xl border border-darkBlue/10 p-6"
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="rounded-2xl border p-8"
             >
-              <div className="flex justify-between items-center">
-                <h3 className="font-semibold text-darkBlue">
-                  {addon.title}
-                </h3>
-                {addon.price && (
-                  <span className="text-orange font-semibold">
-                    {addon.price}
-                  </span>
-                )}
-              </div>
+              <h3 className="text-xl font-semibold text-darkBlue">
+                {addon.title}
+              </h3>
 
               {addon.description && (
-                <p className="mt-2 text-darkBlue/70">
+                <p className="mt-3 text-darkBlue/70">
                   {addon.description}
                 </p>
               )}
-            </div>
+
+              {addon.price && (
+                <p className="mt-6 text-2xl font-bold text-orange">
+                  {addon.price}
+                </p>
+              )}
+            </motion.div>
           ))}
         </div>
       </div>

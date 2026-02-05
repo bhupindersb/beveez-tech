@@ -4,35 +4,36 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { fadeUp, staggerContainer } from '@/lib/motion'
 
 interface Props {
-  headline: string
-  subText?: string
+  hero: {
+    headline: string
+    subText?: string
+  }
 }
 
-export default function PricingHero({ headline, subText }: Props) {
+export default function PricingHero({ hero }: Props) {
   const reduceMotion = useReducedMotion()
 
   return (
-    <section className="pt-[180px] pb-[120px] text-center">
+    <section className="pt-[200px] pb-[120px] text-center">
       <motion.div
         variants={reduceMotion ? undefined : staggerContainer()}
         initial="hidden"
         animate="visible"
-        className="mx-auto max-w-[960px] px-6"
+        className="mx-auto max-w-[900px] px-6"
       >
         <motion.h1
           variants={fadeUp}
-          className="font-heading text-[36px] sm:text-[48px] md:text-[64px]
-                     font-bold text-darkBlue"
+          className="text-[40px] md:text-[72px] font-heading font-bold text-darkBlue leading-tight"
         >
-          {headline}
+          {hero.headline}
         </motion.h1>
 
-        {subText && (
+        {hero.subText && (
           <motion.p
             variants={fadeUp}
-            className="mt-6 text-lg text-darkBlue/80"
+            className="mt-8 text-lg text-darkBlue/80"
           >
-            {subText}
+            {hero.subText}
           </motion.p>
         )}
       </motion.div>

@@ -1,7 +1,8 @@
 import { sanityClient } from './client'
 
 export async function getPricingPage() {
-  return sanityClient.fetch(`
+  return sanityClient.fetch(
+    `
     *[
       _type == "page" &&
       template == "pricing"
@@ -18,8 +19,9 @@ export async function getPricingPage() {
         bestFor,
         features,
         ctaText,
-        ctaUrl,
         highlighted,
+        paymentProvider,
+        paymentLink,
         order
       } | order(order asc),
 
@@ -48,5 +50,6 @@ export async function getPricingPage() {
         }
       }
     }
-  `)
+    `
+  )
 }

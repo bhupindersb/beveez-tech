@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from 'framer-motion'
 import { fadeUp, staggerContainer } from '@/lib/motion'
+import PricingPayButton from '@/components/PricingPayButton'
 
 interface Plan {
   title: string
@@ -12,6 +13,9 @@ interface Plan {
   ctaText?: string
   ctaUrl?: string
   highlighted?: boolean
+
+  paymentProvider?: 'stripe' | 'razorpay' | 'paddle'
+  paymentLink?: string
 }
 
 export default function PricingPlans({ plans }: { plans: Plan[] }) {
@@ -61,16 +65,15 @@ export default function PricingPlans({ plans }: { plans: Plan[] }) {
               </ul>
             )}
 
-            {plan.ctaText && plan.ctaUrl && (
-              <a
-                href={plan.ctaUrl}
-                className="mt-8 inline-block rounded-full
-                           bg-gradient-to-r from-[#cf5a20] to-[#f68f1e]
-                           px-8 py-4 text-white font-semibold
-                           hover:from-[#f68f1e] hover:to-[#cf5a20] transition"
-              >
-                {plan.ctaText}
-              </a>
+            {/* PAYMENT CTA */}
+            {plan.paymentProvider && plan.paymentLink && (
+              <div className="mt-8 w-full">
+                <PricingPayButton
+                  provider={plan.paymentProvider}
+                  paymentLink={plan.paymentLink}
+                  ctaText={plan.ctaText ?? 'Get Started'}
+                />
+              </div>
             )}
           </motion.div>
         ))}

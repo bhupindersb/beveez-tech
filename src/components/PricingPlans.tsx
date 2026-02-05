@@ -21,15 +21,13 @@ export default function PricingPlans({ plans }: { plans: Plan[] }) {
   const reduceMotion = useReducedMotion()
 
   return (
-    <section className="pb-[120px]">
+    <section className="py-[60px] md:py-[120px]">
       <motion.div
         variants={reduceMotion ? undefined : staggerContainer(0.15)}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="mx-auto w-[90%] max-w-[1760px]
-                   grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3
-                   gap-10 px-6"
+        className="mx-auto w-[90%] max-w-[1760px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 px-6"
       >
         {plans.map((plan, i) => (
           <motion.div

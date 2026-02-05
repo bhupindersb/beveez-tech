@@ -21,6 +21,12 @@ export const pricingPageFields = [
         type: 'text',
         rows: 3,
       }),
+      defineField({
+        name: 'backgroundImage',
+        title: 'Background Image',
+        type: 'image',
+        options: { hotspot: true },
+      }),
     ],
   }),
 

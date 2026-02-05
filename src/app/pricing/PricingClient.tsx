@@ -4,34 +4,36 @@ import PricingHero from './PricingHero'
 import PricingPlans from '@/components/PricingPlans'
 import PricingAddons from '@/components/PricingAddons'
 import PricingFaqs from '@/components/PricingFaqs'
-import PricingSEO from '@/components/PricingSEO'
 import CTASection from '@/components/CtaSection'
-import PricingComparison from '@/components/PricingComparison'
-import PricingTrust from '@/components/PricingTrust'
-import PricingFit from '@/components/PricingFit'
+import ServiceSEO from '@/components/ServiceSEO'
 
+interface PricingClientProps {
+  data: any
+  siteSettings: any
+}
 
-export default function PricingClient({ data, siteSettings }: any) {
+export default function PricingClient({
+  data,
+  siteSettings,
+}: PricingClientProps) {
+  if (!data?.pricingHero) {
+    return (
+      <div className="py-32 text-center text-gray-500">
+        Pricing page content not found.
+      </div>
+    )
+  }
+
   return (
     <>
       {/* SEO */}
-      <PricingSEO
-        plans={data.pricingPlans ?? []}
-        faqs={data.pricingFaqs ?? []}
-      />
+      <ServiceSEO services={data.pricingPlans ?? []} />
 
       {/* HERO */}
-      <PricingHero
-        headline={data.pricingHero.headline}
-        subText={data.pricingHero.subText}
-      />
+      <PricingHero hero={data.pricingHero} />
 
-      {/* PLANS */}
+      {/* PRICING PLANS */}
       <PricingPlans plans={data.pricingPlans ?? []} />
-
-      <PricingComparison />
-      <PricingTrust />
-      <PricingFit />
 
       {/* ADD-ONS */}
       <PricingAddons addons={data.pricingAddons ?? []} />

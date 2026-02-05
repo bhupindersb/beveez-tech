@@ -16,10 +16,11 @@ export default function PricingClient({
   data,
   siteSettings,
 }: PricingClientProps) {
+
   if (!data?.pricingHero) {
     return (
       <div className="py-32 text-center text-gray-500">
-        Pricing page content not found.
+        Pricing page hero not configured in Sanity.
       </div>
     )
   }
@@ -32,14 +33,20 @@ export default function PricingClient({
       {/* HERO */}
       <PricingHero hero={data.pricingHero} />
 
-      {/* PRICING PLANS */}
-      <PricingPlans plans={data.pricingPlans ?? []} />
+      {/* PLANS */}
+      {data.pricingPlans?.length > 0 && (
+        <PricingPlans plans={data.pricingPlans} />
+      )}
 
-      {/* ADD-ONS */}
-      <PricingAddons addons={data.pricingAddons ?? []} />
+      {/* ADDONS */}
+      {data.pricingAddons?.length > 0 && (
+        <PricingAddons addons={data.pricingAddons} />
+      )}
 
       {/* FAQ */}
-      <PricingFaqs faqs={data.pricingFaqs ?? []} />
+      {data.pricingFaqs?.length > 0 && (
+        <PricingFaqs faqs={data.pricingFaqs} />
+      )}
 
       {/* CTA */}
       <CTASection data={data.ctaOverride ?? siteSettings.cta} />

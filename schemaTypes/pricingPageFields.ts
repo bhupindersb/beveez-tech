@@ -5,11 +5,22 @@ export const pricingPageFields = [
 
   defineField({
     name: 'pricingHero',
-    title: 'Pricing Hero',
+    title: 'Pricing Page – Hero',
     type: 'object',
+    hidden: ({ parent }) => parent?.template !== 'pricing',
     fields: [
-      { name: 'headline', type: 'string' },
-      { name: 'subText', type: 'text', rows: 3 },
+      defineField({
+        name: 'headline',
+        title: 'Headline',
+        type: 'string',
+        validation: Rule => Rule.required(),
+      }),
+      defineField({
+        name: 'subText',
+        title: 'Sub Text',
+        type: 'text',
+        rows: 3,
+      }),
     ],
   }),
 

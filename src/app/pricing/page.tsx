@@ -17,14 +17,26 @@ export default async function PricingPage() {
 
 
   // 🚨 HARD GUARDS — REQUIRED FOR STATIC BUILDS
-  if (
-    !data ||
-    !data.pricingHero ||
-    !data.pricingHero.headline
-  ) {
+  if (!data) {
     return (
-      <div className="py-[200px] text-center text-gray-500">
-        Pricing page content not found.
+      <div className="py-[200px] text-center text-red-500">
+        Pricing page document not found in Sanity.
+      </div>
+    )
+  }
+
+  if (!data.pricingHero) {
+    return (
+      <div className="py-[200px] text-center text-orange-500">
+        Pricing Hero is missing.
+      </div>
+    )
+  }
+
+  if (!data.pricingHero.headline) {
+    return (
+      <div className="py-[200px] text-center text-yellow-500">
+        Pricing Hero headline is empty.
       </div>
     )
   }

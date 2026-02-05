@@ -13,6 +13,9 @@ export default async function PricingPage() {
     getSiteSettings(),
   ])
 
+  console.log('PRICING PAGE DATA:', data)
+
+
   // 🚨 HARD GUARDS — REQUIRED FOR STATIC BUILDS
   if (
     !data ||

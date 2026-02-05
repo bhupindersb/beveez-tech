@@ -1,4 +1,4 @@
-import { sanityClient } from './client'
+import { sanityClient } from '@/sanity/lib/client'
 
 export async function getPricingPage() {
   return sanityClient.fetch(
@@ -7,11 +7,13 @@ export async function getPricingPage() {
       _type == "page" &&
       template == "pricing"
     ][0]{
+      /* HERO */
       pricingHero{
         headline,
         subText
       },
 
+      /* PLANS */
       pricingPlans[]->{
         title,
         description,
@@ -19,25 +21,27 @@ export async function getPricingPage() {
         bestFor,
         features,
         ctaText,
+        ctaUrl,
         highlighted,
         paymentProvider,
         paymentLink,
         order
       } | order(order asc),
 
+      /* ADDONS */
       pricingAddons[]{
         title,
         description,
         price
       },
 
-      howItWorks,
-
+      /* FAQ */
       pricingFaqs[]{
         question,
         answer
       },
 
+      /* CTA */
       ctaOverride{
         heading,
         subText,

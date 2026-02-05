@@ -13,20 +13,40 @@ export default async function PricingPage() {
     getSiteSettings(),
   ])
 
-  if (!data) {
-    return <div className="py-32 text-center">Pricing not found</div>
+  // 🚨 HARD GUARDS — REQUIRED FOR STATIC BUILDS
+  if (
+    !data ||
+    !data.pricingHero ||
+    !data.pricingHero.headline
+  ) {
+    return (
+      <div className="py-[200px] text-center text-gray-500">
+        Pricing page content not found.
+      </div>
+    )
   }
 
   return (
     <>
+      {/* HERO */}
       <PricingHero hero={data.pricingHero} />
 
-      <PricingPlans plans={data.pricingPlans} />
+      {/* PLANS */}
+      {data.pricingPlans?.length > 0 && (
+        <PricingPlans plans={data.pricingPlans} />
+      )}
 
-      <PricingAddons addons={data.pricingAddons} />
+      {/* ADDONS */}
+      {data.pricingAddons?.length > 0 && (
+        <PricingAddons addons={data.pricingAddons} />
+      )}
 
-      <PricingFaqs faqs={data.pricingFaqs} />
+      {/* FAQ */}
+      {data.pricingFaqs?.length > 0 && (
+        <PricingFaqs faqs={data.pricingFaqs} />
+      )}
 
+      {/* CTA */}
       <CTASection data={data.ctaOverride ?? siteSettings.cta} />
     </>
   )

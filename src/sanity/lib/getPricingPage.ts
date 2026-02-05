@@ -32,8 +32,11 @@ export async function getPricingPage() {
       pricingAddons[]{
         title,
         description,
-        price
-      },
+        price,
+        ctaText,
+        ctaUrl,
+        order
+      } | order(order asc),
 
       pricingFaqs[]{
         question,

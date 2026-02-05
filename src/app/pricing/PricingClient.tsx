@@ -31,7 +31,11 @@ export default function PricingClient({
       <ServiceSEO services={data.pricingPlans ?? []} />
 
       {/* HERO */}
-      <PricingHero hero={data.pricingHero} />
+      {data?.pricingHero?.headline && (
+        <PricingHero
+            hero={data.pricingHero}
+        />
+      )}
 
       {/* PLANS */}
       {data.pricingPlans?.length > 0 && (

@@ -7,13 +7,11 @@ export async function getPricingPage() {
       _type == "page" &&
       template == "pricing"
     ][0]{
-      /* HERO */
       pricingHero{
         headline,
         subText
       },
 
-      /* PLANS */
       pricingPlans[]->{
         title,
         description,
@@ -28,20 +26,17 @@ export async function getPricingPage() {
         order
       } | order(order asc),
 
-      /* ADDONS */
       pricingAddons[]{
         title,
         description,
         price
       },
 
-      /* FAQ */
       pricingFaqs[]{
         question,
         answer
       },
 
-      /* CTA */
       ctaOverride{
         heading,
         subText,

@@ -97,28 +97,33 @@ export default function PricingPlans({
               )}
 
               {/* FEATURES */}
-              const features = plan.features ?? []
+              {(() => {
+                const features = plan.features ?? []
 
-              {features.length > 0 && (
-                <div className="mt-8">
-                  <p className="mb-4 font-semibold text-darkBlue">
-                    What’s included?
-                  </p>
-                  <ul className="space-y-3 text-darkBlue/80">
-                    {features.map((item, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-start gap-3 text-[14px]"
-                      >
-                        <span className="text-darkOrange text-[22px] leading-none">
-                          •
-                        </span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+                if (features.length === 0) return null
+
+                return (
+                  <div className="mt-8">
+                    <p className="mb-4 font-semibold text-darkBlue">
+                      What’s included?
+                    </p>
+
+                    <ul className="space-y-3 text-darkBlue/80">
+                      {features.map((item, idx) => (
+                        <li
+                          key={idx}
+                          className="flex items-start gap-3 text-[14px]"
+                        >
+                          <span className="text-darkOrange text-[22px] leading-none">
+                            •
+                          </span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )
+              })()}
 
               {/* CTA */}
               <Link

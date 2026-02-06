@@ -1,15 +1,6 @@
 import { getPricingPage } from '@/sanity/lib/getPricingPage'
 import { getSiteSettings } from '@/sanity/lib/getSiteSettings'
-
-import PricingHero from './PricingHero'
-import PricingHowItWorks from '@/components/PricingHowItWorks'
-import PricingPlans from '@/components/PricingPlans'
-import PricingComparison from '@/components/PricingComparison'
-import PricingTrust from '@/components/PricingTrust'
-import PricingGuarantee from '@/components/PricingGuarantee'
-import PricingAddons from '@/components/PricingAddons'
-import PricingFaqs from '@/components/PricingFaqs'
-import CTASection from '@/components/CtaSection'
+import PricingClient from './PricingClient'
 
 export const revalidate = 30
 
@@ -19,72 +10,13 @@ export default async function PricingPage() {
     getSiteSettings(),
   ])
 
-  console.log('PRICING PAGE DATA:', data)
-
-
-  // 🚨 HARD GUARDS — REQUIRED FOR STATIC BUILDS
-  if (!data) {
+  if (!data || !data.pricingHero?.headline) {
     return (
-      <div className="py-[200px] text-center text-red-500">
-        Pricing page document not found in Sanity.
+      <div className="py-[200px] text-center text-gray-500">
+        Pricing page content not found.
       </div>
     )
   }
 
-  if (!data.pricingHero) {
-    return (
-      <div className="py-[200px] text-center text-orange-500">
-        Pricing Hero is missing.
-      </div>
-    )
-  }
-
-  if (!data.pricingHero.headline) {
-    return (
-      <div className="py-[200px] text-center text-yellow-500">
-        Pricing Hero headline is empty.
-      </div>
-    )
-  }
-
-  return (
-    <>
-      {/* HERO */}
-      <PricingHero hero={data.pricingHero} />
-
-      {data.howItWorks?.length > 0 && (
-        <PricingHowItWorks steps={data.howItWorks} />
-      )}
-
-
-      {/* PLANS */}
-      {data.pricingPlans?.length > 0 && (
-        <PricingPlans plans={data.pricingPlans} />
-      )}
-
-      {/* COMPARISON */}
-      {data.pricingPlans?.length > 0 && (
-        <PricingComparison plans={data.pricingPlans} />
-      )}
-
-      {/* TRUST */}
-      <PricingTrust />
-
-      {/* GUARANTEE */}
-      <PricingGuarantee />
-
-      {/* ADDONS */}
-      {data.pricingAddons?.length > 0 && (
-        <PricingAddons addons={data.pricingAddons} />
-      )}
-
-      {/* FAQ */}
-      {data.pricingFaqs?.length > 0 && (
-        <PricingFaqs faqs={data.pricingFaqs} />
-      )}
-
-      {/* CTA */}
-      <CTASection data={data.ctaOverride ?? siteSettings.cta} />
-    </>
-  )
+  return <PricingClient data={data} siteSettings={siteSettings} />
 }

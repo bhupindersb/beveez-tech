@@ -42,7 +42,7 @@ export default function PricingFaqs({ faqs }: Props) {
   if (!faqs || faqs.length === 0) return null
 
   return (
-    <section className="py-[120px] bg-white">
+    <section className="pb-[60px] md:pb-[120px] bg-white">
       {/* SEO – FAQ Schema */}
       <script
         type="application/ld+json"

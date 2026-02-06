@@ -15,7 +15,7 @@ export default function PricingAddons({ addons }: { addons: Addon[] }) {
   const reduceMotion = useReducedMotion()
 
   return (
-    <section className="py-[120px] bg-white">
+    <section className="pb-[60px] md:pb-[120px] bg-white">
       <div className="mx-auto max-w-[1280px] px-6">
 
         {/* SECTION HEADER */}

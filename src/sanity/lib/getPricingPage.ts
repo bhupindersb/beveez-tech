@@ -15,6 +15,8 @@ export async function getPricingPage() {
         }
       },
 
+      howItWorks,
+      
       pricingPlans[]->{
         title,
         description,

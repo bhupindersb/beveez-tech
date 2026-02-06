@@ -97,6 +97,8 @@ export default function PricingPlans({
               )}
 
               {/* FEATURES */}
+              const features = plan.features ?? []
+
               {features.length > 0 && (
                 <div className="mt-8">
                   <p className="mb-4 font-semibold text-darkBlue">

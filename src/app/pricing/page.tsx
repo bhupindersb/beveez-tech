@@ -2,6 +2,7 @@ import { getPricingPage } from '@/sanity/lib/getPricingPage'
 import { getSiteSettings } from '@/sanity/lib/getSiteSettings'
 
 import PricingHero from './PricingHero'
+import PricingHowItWorks from '@/components/PricingHowItWorks'
 import PricingPlans from '@/components/PricingPlans'
 import PricingAddons from '@/components/PricingAddons'
 import PricingFaqs from '@/components/PricingFaqs'
@@ -47,6 +48,11 @@ export default async function PricingPage() {
     <>
       {/* HERO */}
       <PricingHero hero={data.pricingHero} />
+
+      {data.howItWorks?.length > 0 && (
+        <PricingHowItWorks steps={data.howItWorks} />
+      )}
+
 
       {/* PLANS */}
       {data.pricingPlans?.length > 0 && (

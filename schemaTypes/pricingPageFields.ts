@@ -54,8 +54,29 @@ export const pricingPageFields = [
     name: 'howItWorks',
     title: 'How It Works',
     type: 'array',
-    of: [{ type: 'string' }],
+    of: [
+        {
+        type: 'object',
+        fields: [
+            {
+            name: 'title',
+            title: 'Step Title',
+            type: 'string',
+            validation: Rule => Rule.required(),
+            },
+            {
+            name: 'description',
+            title: 'Step Description',
+            type: 'text',
+            rows: 3,
+            validation: Rule => Rule.required(),
+            },
+        ],
+        },
+    ],
+    validation: Rule => Rule.min(3).max(3),
   }),
+
 
   /* ================= FAQ ================= */
 

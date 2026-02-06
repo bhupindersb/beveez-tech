@@ -53,14 +53,14 @@ export default function PricingAddons({ addons }: { addons: Addon[] }) {
             <motion.div
               key={i}
               variants={fadeUp}
-              className="rounded-3xl bg-gray-50 p-10 shadow-md flex flex-col"
+              className="rounded-3xl bg-[#f2f1f6] p-10 shadow-md flex flex-col"
             >
               <h3 className="text-2xl font-heading font-semibold text-darkBlue">
                 {addon.title}
               </h3>
 
               {addon.price && (
-                <p className="mt-4 text-3xl font-bold text-darkBlue">
+                <p className="mt-4 text-3xl font-normal text-darkBlue">
                   {addon.price}
                 </p>
               )}

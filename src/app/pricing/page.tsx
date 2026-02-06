@@ -4,6 +4,9 @@ import { getSiteSettings } from '@/sanity/lib/getSiteSettings'
 import PricingHero from './PricingHero'
 import PricingHowItWorks from '@/components/PricingHowItWorks'
 import PricingPlans from '@/components/PricingPlans'
+import PricingComparison from '@/components/PricingComparison'
+import PricingTrust from '@/components/PricingTrust'
+import PricingGuarantee from '@/components/PricingGuarantee'
 import PricingAddons from '@/components/PricingAddons'
 import PricingFaqs from '@/components/PricingFaqs'
 import CTASection from '@/components/CtaSection'
@@ -58,6 +61,17 @@ export default async function PricingPage() {
       {data.pricingPlans?.length > 0 && (
         <PricingPlans plans={data.pricingPlans} />
       )}
+
+      {/* COMPARISON */}
+      {data.pricingPlans?.length > 0 && (
+        <PricingComparison plans={data.pricingPlans} />
+      )}
+
+      {/* TRUST */}
+      <PricingTrust />
+
+      {/* GUARANTEE */}
+      <PricingGuarantee />
 
       {/* ADDONS */}
       {data.pricingAddons?.length > 0 && (

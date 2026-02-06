@@ -1,87 +1,61 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { fadeUp, staggerContainer } from '@/lib/motion'
 
+const rows = [
+  { label: 'USD Pricing (Global Clients)', beveez: true, others: false },
+  { label: 'International Payments Enabled', beveez: true, others: 'partial' },
+  { label: 'Clear Scope & Deliverables', beveez: true, others: false },
+  { label: 'Direct Developer Access', beveez: true, others: false },
+  { label: 'No Long-Term Lock-in', beveez: true, others: false },
+  { label: 'Performance & SEO Focus', beveez: true, others: 'partial' },
+]
+
+
 export default function PricingComparison() {
+  const reduceMotion = useReducedMotion()
+
   return (
-    <section className="py-[80px] md:py-[120px] bg-[#f7f9fc]">
-      <div className="mx-auto max-w-[1280px] px-6">
-        <motion.div
-          variants={staggerContainer()}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="mb-16 text-center"
+    <section className="py-[120px] bg-white">
+      <motion.div
+        variants={reduceMotion ? undefined : staggerContainer(0.12)}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="mx-auto max-w-[900px] px-6"
+      >
+        <motion.h2
+          variants={fadeUp}
+          className="text-[40px] md:text-[56px] font-heading font-bold text-darkBlue text-center"
         >
-          <motion.h2
-            variants={fadeUp}
-            className="text-[40px] md:text-[56px] font-heading font-bold text-darkBlue"
-          >
-            How We Compare
-          </motion.h2>
+          Why Clients Choose Beveez Tech
+        </motion.h2>
 
-          <motion.p
-            variants={fadeUp}
-            className="mt-4 text-lg text-darkBlue/70 max-w-2xl mx-auto"
-          >
-            Transparent pricing with agency-level quality — without agency bloat.
-          </motion.p>
-        </motion.div>
+        <div className="mt-12 overflow-hidden rounded-3xl border border-darkBlue/10">
+          <div className="grid grid-cols-3 bg-gray-50 px-6 py-4 text-sm font-semibold text-darkBlue">
+            <div />
+            <div className="text-center">Beveez Tech</div>
+            <div className="text-center">Typical Agencies</div>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            {
-              title: 'Freelancers',
-              points: [
-                'Inconsistent quality',
-                'Limited scalability',
-                'Minimal process & documentation',
-                'Often disappear mid-project',
-              ],
-            },
-            {
-              title: 'Beveez Tech',
-              highlight: true,
-              points: [
-                'Senior-level execution',
-                'Clear timelines & milestones',
-                'SEO + performance built-in',
-                'Dedicated support & handover',
-              ],
-            },
-            {
-              title: 'Agencies',
-              points: [
-                'High retainers',
-                'Overloaded teams',
-                'Long turnaround times',
-                'Pay for layers you don’t need',
-              ],
-            },
-          ].map((col, i) => (
-            <div
+          {rows.map((row, i) => (
+            <motion.div
               key={i}
-              className={`rounded-3xl p-8 text-left shadow-md
-                ${col.highlight ? 'bg-darkBlue text-white scale-[1.03]' : 'bg-white'}
-              `}
+              variants={fadeUp}
+              className="grid grid-cols-3 items-center px-6 py-4 border-t border-darkBlue/10"
             >
-              <h3 className="text-2xl font-semibold mb-6">
-                {col.title}
-              </h3>
+              <div className="text-darkBlue">{row.label}</div>
 
-              <ul className="space-y-4">
-                {col.points.map((p, idx) => (
-                  <li key={idx} className="flex gap-3">
-                    <span className="mt-2 h-2 w-2 rounded-full bg-orange" />
-                    <span>{p}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+              <div className="text-center text-orange font-semibold">✓</div>
+
+              <div className="text-center text-gray-400">
+                {row.others === 'partial' ? '◐' : '✕'}
+              </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   )
 }

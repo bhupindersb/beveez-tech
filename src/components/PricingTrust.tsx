@@ -27,7 +27,7 @@ export default function PricingTrust() {
   const reduceMotion = useReducedMotion()
 
   return (
-    <section className="py-[120px] bg-gray-50">
+    <section className="py-[120px] bg-[#f2f1f6]">
       <motion.div
         variants={reduceMotion ? undefined : staggerContainer(0.15)}
         initial="hidden"
@@ -41,7 +41,7 @@ export default function PricingTrust() {
             variants={fadeUp}
             className="rounded-3xl bg-white p-8 text-center shadow-sm"
           >
-            <h3 className="text-lg font-semibold text-darkBlue">
+            <h3 className="text-lg font-heading font-semibold text-darkBlue">
               {item.title}
             </h3>
             <p className="mt-3 text-sm text-darkBlue/70">

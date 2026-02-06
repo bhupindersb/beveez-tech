@@ -52,10 +52,6 @@ export default async function PricingPage() {
       {/* HERO */}
       <PricingHero hero={data.pricingHero} />
 
-      <pre className="mx-auto max-w-[900px] p-6 text-xs bg-gray-100 overflow-auto">
-        {JSON.stringify(data.howItWorks, null, 2)}
-      </pre>
-
       {data.howItWorks?.length > 0 && (
         <PricingHowItWorks steps={data.howItWorks} />
       )}

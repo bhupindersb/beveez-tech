@@ -3,9 +3,13 @@
 import { Check, X } from 'lucide-react'
 import { comparisonGroups } from './comparisonConfig'
 
+const normalize = (value: string) =>
+  value.toLowerCase().replace(/[^a-z0-9]/g, '')
+
 interface Plan {
   title: string
-  features?: string[]
+  whatsIncluded?: string[]
+  highlighted?: boolean
 }
 
 export default function PricingComparison({ plans }: { plans: Plan[] }) {
@@ -59,7 +63,9 @@ export default function PricingComparison({ plans }: { plans: Plan[] }) {
                           {/* PLAN CELLS */}
                           {plans.map((plan, pi) => {
                             const hasFeature =
-                              plan.features?.includes(feature)
+                              plan.whatsIncluded?.some(item =>
+                                normalize(item).includes(normalize(feature))
+                              )
 
                             return (
                               <div

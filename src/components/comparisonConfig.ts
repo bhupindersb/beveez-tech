@@ -1,29 +1,29 @@
 export const comparisonGroups = [
   {
     title: 'Design',
-    items: [
-      { key: 'uiux', label: 'Custom UI/UX Design' },
-      { key: 'responsive', label: 'Responsive Layout' },
+    features: [
+      'Custom UI/UX Design',
+      'Responsive Layout',
     ],
   },
   {
     title: 'SEO & Performance',
-    items: [
-      { key: 'seo', label: 'SEO-Ready Structure' },
-      { key: 'performance', label: 'Performance Optimization' },
+    features: [
+      'SEO-Ready Structure',
+      'Performance Optimization',
     ],
   },
   {
     title: 'CMS & Content',
-    items: [
-      { key: 'cms', label: 'CMS Integration' },
-      { key: 'training', label: 'CMS Training' },
+    features: [
+      'CMS Integration',
+      'CMS Training',
     ],
   },
   {
     title: 'Support',
-    items: [
-      { key: 'support', label: 'Post-Launch Support' },
+    features: [
+      'Post-Launch Support',
     ],
   },
 ]

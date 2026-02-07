@@ -2,28 +2,49 @@ export const comparisonGroups = [
   {
     title: 'Design',
     features: [
-      'Custom UI/UX Design',
-      'Responsive Layout',
+      {
+        label: 'Custom UI / UX Design',
+        match: ['custom website design', 'ui', 'ux'],
+      },
+      {
+        label: 'Responsive Layout',
+        match: ['responsive', 'mobile-first'],
+      },
     ],
   },
   {
     title: 'SEO & Performance',
     features: [
-      'SEO-Ready Structure',
-      'Performance Optimization',
+      {
+        label: 'SEO-Ready Structure',
+        match: ['seo-ready', 'seo'],
+      },
+      {
+        label: 'Performance Optimization',
+        match: ['performance', 'optimized'],
+      },
     ],
   },
   {
     title: 'CMS & Content',
     features: [
-      'CMS Integration',
-      'CMS Training',
+      {
+        label: 'CMS Integration',
+        match: ['cms setup', 'cms'],
+      },
+      {
+        label: 'CMS Training',
+        match: ['training'],
+      },
     ],
   },
   {
     title: 'Support',
     features: [
-      'Post-Launch Support',
+      {
+        label: 'Post-Launch Support',
+        match: ['support', 'maintenance'],
+      },
     ],
   },
 ]

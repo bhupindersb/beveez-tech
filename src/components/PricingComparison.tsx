@@ -1,177 +1,184 @@
 'use client'
 
-import { Check, X } from 'lucide-react'
+import { motion } from 'framer-motion'
+import React from 'react'
 
 interface Plan {
   title: string
-  highlighted?: boolean
-  features?: string[]
+  features?: string[] // this is "What's Included" from Sanity
 }
 
-/* -------------------------------------------
-   FEATURE GROUP CONFIG
--------------------------------------------- */
+interface Props {
+  plans: Plan[]
+}
 
-const comparisonGroups = [
+/* =====================
+   CONFIG
+===================== */
+
+const PLAN_ORDER = [
+  'Starter Website Build',
+  'Growth Website',
+  'Performance & Scale',
+]
+
+const FEATURE_GROUPS = [
   {
-    title: 'Design',
+    label: 'Design',
     features: [
-      {
-        label: 'Custom UI / UX Design',
-        match: ['custom website design', 'ui', 'ux'],
-      },
-      {
-        label: 'Responsive Layout',
-        match: ['responsive', 'mobile-first'],
-      },
+      'Custom UI/UX Design',
+      'Responsive Layout',
     ],
   },
   {
-    title: 'SEO & Performance',
+    label: 'SEO & Performance',
     features: [
-      {
-        label: 'SEO-Ready Structure',
-        match: ['seo'],
-      },
-      {
-        label: 'Performance Optimization',
-        match: ['performance', 'optimized'],
-      },
+      'SEO-Ready Structure',
+      'Performance Optimization',
+      'Advanced SEO Setup',
     ],
   },
   {
-    title: 'CMS & Content',
+    label: 'CMS & Content',
     features: [
-      {
-        label: 'CMS Integration',
-        match: ['cms'],
-      },
-      {
-        label: 'CMS Training',
-        match: ['training'],
-      },
+      'CMS Integration',
+      'CMS Training',
     ],
   },
   {
-    title: 'Support',
+    label: 'Scalability',
     features: [
-      {
-        label: 'Post-Launch Support',
-        match: ['support', 'maintenance'],
-      },
+      'Architecture Planning',
+      'Growth & Traffic Readiness',
+    ],
+  },
+  {
+    label: 'Support',
+    features: [
+      'Post-Launch Support',
     ],
   },
 ]
 
-/* -------------------------------------------
-   HELPERS
--------------------------------------------- */
-
-const normalize = (v: string) => v.toLowerCase()
-
-const hasFeature = (
-  included: string[] | undefined,
-  matchTerms: string[]
-) => {
-  if (!included || included.length === 0) return false
-
-  return included.some(item =>
-    matchTerms.some(term =>
-      normalize(item).includes(normalize(term))
-    )
-  )
-}
-
-/* -------------------------------------------
+/* =====================
    COMPONENT
--------------------------------------------- */
+===================== */
 
-export default function PricingComparison({
-  plans,
-}: {
-  plans: Plan[]
-}) {
-  if (!plans || plans.length === 0) return null
+export default function PricingComparison({ plans }: Props) {
+  // normalize plans by title
+  const planMap = PLAN_ORDER.map(title =>
+    plans.find(p => p.title === title)
+  )
+
+  const planFeatures = planMap.map(
+    plan => plan?.features ?? []
+  )
+
+  // progressive inclusion logic
+  const isIncluded = (feature: string, planIndex: number) => {
+    for (let i = 0; i <= planIndex; i++) {
+      if (planFeatures[i]?.includes(feature)) return true
+    }
+    return false
+  }
 
   return (
     <section className="py-[120px] bg-gray-50">
-      <div className="mx-auto max-w-[1280px] px-6">
+      <div className="mx-auto max-w-[1400px] px-6">
 
         {/* HEADER */}
-        <h2 className="text-center text-4xl md:text-5xl font-heading font-bold text-darkBlue mb-16">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center text-[36px] md:text-[48px]
+                     font-heading font-bold text-darkBlue mb-16"
+        >
           Compare Plans
-        </h2>
+        </motion.h2>
 
         {/* TABLE */}
         <div className="overflow-x-auto rounded-3xl bg-white shadow-xl">
-          <div
-            className="grid"
-            style={{
-              gridTemplateColumns: `260px repeat(${plans.length}, minmax(200px, 1fr))`,
-            }}
-          >
+          <table className="w-full border-collapse">
 
-            {/* TABLE HEADER */}
-            <div className="sticky top-0 bg-gray-50 font-semibold text-sm text-gray-500 px-6 py-5">
-              Features
-            </div>
+            {/* HEAD */}
+            <thead>
+              <tr className="bg-gray-100 text-darkBlue">
+                <th className="p-6 text-left text-sm font-semibold">
+                  Features
+                </th>
 
-            {plans.map((plan, i) => (
-              <div
-                key={i}
-                className={`sticky top-0 px-6 py-5 text-center font-heading font-semibold
-                  ${plan.highlighted ? 'bg-orange-50 text-orange-600' : 'bg-gray-50'}
-                `}
-              >
-                {plan.title}
-              </div>
-            ))}
-
-            {/* TABLE BODY */}
-            {comparisonGroups.map((group, gi) => (
-              <div key={gi} className="contents">
-
-                {/* GROUP TITLE */}
-                <div className="col-span-full bg-gray-100 px-6 py-4 font-semibold text-darkBlue">
-                  {group.title}
-                </div>
-
-                {/* FEATURES */}
-                {group.features.map((feature, fi) => (
-                  <div key={fi} className="contents">
-
-                    {/* FEATURE LABEL */}
-                    <div className="px-6 py-4 text-sm text-darkBlue border-t">
-                      {feature.label}
-                    </div>
-
-                    {/* PLAN CELLS */}
-                    {plans.map((plan, pi) => {
-                      const included = hasFeature(
-                        plan.features,
-                        feature.match
-                      )
-
-                      return (
-                        <div
-                          key={pi}
-                          className={`flex items-center justify-center border-t
-                            ${plan.highlighted ? 'bg-orange-50/50' : ''}
-                          `}
-                        >
-                          {included ? (
-                            <Check className="h-5 w-5 text-green-600" />
-                          ) : (
-                            <X className="h-5 w-5 text-gray-300" />
-                          )}
-                        </div>
-                      )
-                    })}
-                  </div>
+                {PLAN_ORDER.map((title, idx) => (
+                  <th
+                    key={title}
+                    className={`p-6 text-center text-sm font-semibold
+                      ${idx === 1 ? 'bg-orange/10' : ''}
+                    `}
+                  >
+                    {title}
+                    {idx === 1 && (
+                      <div className="mt-1 text-xs text-orange font-medium">
+                        Most Popular
+                      </div>
+                    )}
+                  </th>
                 ))}
-              </div>
-            ))}
-          </div>
+              </tr>
+            </thead>
+
+            {/* BODY */}
+            <tbody>
+              {FEATURE_GROUPS.map(group => (
+                <React.Fragment key={group.label}>
+                  {/* GROUP HEADER */}
+                  <motion.tr
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      className="bg-gray-50"
+                    >
+
+                    <td
+                      colSpan={4}
+                      className="px-6 py-4 text-sm font-semibold
+                                 text-darkBlue"
+                    >
+                      {group.label}
+                    </td>
+                  </motion.tr>
+
+                  {/* FEATURES */}
+                  {group.features.map(feature => (
+                    <tr
+                      key={feature}
+                      className="border-t border-gray-100"
+                    >
+                      <td className="px-6 py-4 text-sm text-darkBlue/80">
+                        {feature}
+                      </td>
+
+                      {PLAN_ORDER.map((_, planIndex) => (
+                        <td
+                          key={planIndex}
+                          className="px-6 py-4 text-center"
+                        >
+                          {isIncluded(feature, planIndex) ? (
+                            <span className="inline-flex h-6 w-6 items-center
+                                             justify-center rounded-full
+                                             bg-green-100 text-green-700">
+                              ✓
+                            </span>
+                          ) : (
+                            <span className="text-gray-300">—</span>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </React.Fragment>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </section>

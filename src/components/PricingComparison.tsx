@@ -1,79 +1,141 @@
 'use client'
 
-import { useState } from 'react'
 import { motion } from 'framer-motion'
-import FeatureTooltip from './FeatureTooltip'
+import { comparisonGroups } from './pricing/comparisonConfig'
+import type { PricingPlan } from '@/types/pricing'
 
-const FEATURES = [
-  { name: 'Custom UI/UX Design', tip: 'Designed specifically for your brand and users.' },
-  { name: 'Responsive Layout', tip: 'Optimized for mobile, tablet, and desktop.' },
-  { name: 'SEO-Ready Structure', tip: 'Built with clean HTML & SEO best practices.' },
-  { name: 'Performance Optimization', tip: 'Fast load times & Core Web Vitals.' },
-  { name: 'CMS Integration', tip: 'Easily manage content without developers.' },
-  { name: 'Post-Launch Support', tip: 'We help after launch, not disappear.' },
-]
+interface Props {
+  plans: PricingPlan[]
+}
 
-export default function PricingComparison({ plans }: { plans: any[] }) {
-  const [active, setActive] = useState<number | null>(null)
-
-  if (!plans?.length) return null
+export default function PricingComparison({ plans }: Props) {
+  if (!plans || plans.length === 0) return null
 
   return (
-    <section className="py-[120px] bg-gray-50">
-      <div className="mx-auto max-w-[1400px] px-6">
-
-        <h2 className="text-center text-[40px] md:text-[56px]
-                       font-heading font-bold text-darkBlue mb-16">
+    <section className="py-[100px] bg-[#fafafa]">
+      <div className="mx-auto max-w-[1200px] px-6">
+        {/* Heading */}
+        <motion.h2
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-12 text-center text-4xl font-heading font-bold text-darkBlue"
+        >
           Compare Plans
-        </h2>
+        </motion.h2>
 
-        {/* DESKTOP */}
-        <div className="hidden md:block">
-          {FEATURES.map((f, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="grid grid-cols-[300px_repeat(3,1fr)]
-                         items-center gap-6 mb-3 rounded-2xl
-                         bg-white px-6 py-5 shadow"
-            >
-              <div className="font-medium text-darkBlue">
-                {f.name}
-                <FeatureTooltip text={f.tip} />
-              </div>
+        {/* Desktop table */}
+        <div className="hidden lg:block">
+          <div className="overflow-hidden rounded-[28px] bg-white shadow-xl">
+            <table className="w-full border-collapse">
+              {/* Header */}
+              <thead>
+                <tr className="bg-[#f5f7f9]">
+                  <th className="p-6 text-left text-sm font-semibold text-darkBlue/70">
+                    Features
+                  </th>
 
-              {plans.map((p, idx) => (
-                <div key={idx} className="text-center">
-                  {p.features?.includes(f.name) ? '✔️' : '—'}
-                </div>
-              ))}
-            </motion.div>
-          ))}
+                  {plans.map((plan, i) => (
+                    <th
+                      key={i}
+                      className={`p-6 text-center font-heading text-lg
+                        ${plan.highlighted ? 'bg-orange-50 text-darkOrange' : 'text-darkBlue'}
+                      `}
+                    >
+                      {plan.title}
+                      {plan.highlighted && (
+                        <div className="mt-1 text-xs font-semibold uppercase tracking-wide">
+                          Most Popular
+                        </div>
+                      )}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+
+              {/* Body */}
+              <tbody>
+                {comparisonGroups.map(group => (
+                  <>
+                    {/* Group title */}
+                    <tr key={group.title}>
+                      <td
+                        colSpan={plans.length + 1}
+                        className="bg-[#fafafa] px-6 py-4 text-sm font-semibold text-darkBlue"
+                      >
+                        {group.title}
+                      </td>
+                    </tr>
+
+                    {group.items.map(item => (
+                      <tr
+                        key={item.key}
+                        className="border-t border-gray-100"
+                      >
+                        <td className="px-6 py-4 text-sm text-darkBlue/80">
+                          {item.label}
+                        </td>
+
+                        {plans.map((plan, idx) => {
+                          const included = plan.includes?.[item.key as keyof typeof plan.includes]
+
+                          return (
+                            <td
+                              key={idx}
+                              className={`px-6 py-4 text-center
+                                ${plan.highlighted ? 'bg-orange-50/40' : ''}
+                              `}
+                            >
+                              {included ? (
+                                <span className="text-xl text-green-600">✔</span>
+                              ) : (
+                                <span className="text-xl text-gray-300">✕</span>
+                              )}
+                            </td>
+                          )
+                        })}
+                      </tr>
+                    ))}
+                  </>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        {/* MOBILE */}
-        <div className="md:hidden space-y-4">
-          {FEATURES.map((f, i) => (
-            <div key={i} className="rounded-2xl bg-white shadow">
-              <button
-                onClick={() => setActive(active === i ? null : i)}
-                className="w-full px-6 py-4 text-left font-semibold text-darkBlue"
-              >
-                {f.name}
-              </button>
+        {/* Mobile fallback */}
+        <div className="lg:hidden space-y-8">
+          {plans.map((plan, i) => (
+            <div
+              key={i}
+              className={`rounded-[28px] bg-white p-6 shadow-lg
+                ${plan.highlighted ? 'ring-2 ring-darkOrange' : ''}
+              `}
+            >
+              <h3 className="mb-4 text-xl font-heading font-semibold text-darkBlue">
+                {plan.title}
+              </h3>
 
-              {active === i && (
-                <div className="px-6 pb-4 space-y-2 text-sm">
-                  <p className="text-darkBlue/70">{f.tip}</p>
-                  {plans.map((p, idx) => (
-                    <p key={idx}>
-                      {p.title}: {p.features?.includes(f.name) ? 'Included' : '—'}
-                    </p>
-                  ))}
+              {comparisonGroups.map(group => (
+                <div key={group.title} className="mb-4">
+                  <p className="mb-2 text-sm font-semibold text-darkBlue">
+                    {group.title}
+                  </p>
+
+                  <ul className="space-y-2 text-sm text-darkBlue/80">
+                    {group.items.map(item => (
+                      <li key={item.key} className="flex items-center gap-2">
+                        {plan.includes?.[item.key as keyof typeof plan.includes] ? (
+                          <span className="text-green-600">✔</span>
+                        ) : (
+                          <span className="text-gray-300">✕</span>
+                        )}
+                        {item.label}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              )}
+              ))}
             </div>
           ))}
         </div>

@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import PricingBillingToggle from '@/components/PricingBillingToggle'
 import PricingHowItWorks from '@/components/PricingHowItWorks'
 import PricingPlans from '@/components/PricingPlans'
 import PricingComparison from '@/components/PricingComparison'
@@ -32,11 +31,6 @@ export default function PricingClient({ data, siteSettings }: Props) {
   return (
     <>
       <PricingHero hero={data.pricingHero} />
-
-      <PricingBillingToggle
-        value={billing}
-        onChange={setBilling}
-      />
 
       {data.howItWorks?.length > 0 && (
         <PricingHowItWorks steps={data.howItWorks} />

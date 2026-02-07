@@ -22,7 +22,7 @@ export default function PricingComparison({ plans }: { plans: Plan[] }) {
       <div className="mx-auto max-w-[1280px] px-6 overflow-x-auto">
 
         {/* STICKY HEADER */}
-        <div className="sticky top-0 z-10 bg-gray-50">
+        <div className="sticky top-0 z-10 bg-darkBlue">
           <div
             className="grid"
             style={{ gridTemplateColumns: `240px repeat(${plans.length}, 1fr)` }}

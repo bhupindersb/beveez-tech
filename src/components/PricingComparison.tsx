@@ -5,7 +5,7 @@ import { Check, X } from 'lucide-react'
 interface Plan {
   title: string
   highlighted?: boolean
-  whatsIncluded?: string[]
+  features?: string[]
 }
 
 /* -------------------------------------------
@@ -148,7 +148,7 @@ export default function PricingComparison({
                     {/* PLAN CELLS */}
                     {plans.map((plan, pi) => {
                       const included = hasFeature(
-                        plan.whatsIncluded,
+                        plan.features,
                         feature.match
                       )
 

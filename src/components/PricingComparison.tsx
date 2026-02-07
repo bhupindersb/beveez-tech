@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { comparisonGroups } from './pricing/comparisonConfig'
+import { comparisonGroups } from './comparisonConfig'
 import type { PricingPlan } from '@/types/pricing'
 
 interface Props {

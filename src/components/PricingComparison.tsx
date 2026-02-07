@@ -94,7 +94,7 @@ export default function PricingComparison({ plans }: { plans: Plan[] }) {
         {/* UPGRADE CALLOUT */}
         {plans.length >= 2 && (
           <div className="mt-10 text-center">
-            <div className="inline-block rounded-2xl bg-orange/10 px-6 py-4 text-sm text-darkBlue">
+            <div className="inline-block rounded-2xl bg-orange/20 px-6 py-4 text-sm text-darkBlue">
               <strong>Upgrade anytime:</strong> Starter → Growth → Performance  
               without rebuilding your website
             </div>

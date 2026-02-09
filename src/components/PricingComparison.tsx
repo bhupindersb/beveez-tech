@@ -67,7 +67,7 @@ export default function PricingComparison({ plans }: Props) {
                 `}
               >
                 {i === 1 && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2
+                  <span className="absolute top-[2px] left-auto -right-[45px]
                                    rounded-full bg-orange px-4 py-1
                                    text-xs font-bold text-white shadow">
                     Best Value

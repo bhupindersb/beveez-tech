@@ -18,18 +18,19 @@ export async function getPricingPage() {
       howItWorks,
       
       pricingPlans[]->{
+        planType,
         title,
         description,
         price,
         bestFor,
         features,
+        highlighted,
         ctaText,
         ctaUrl,
-        highlighted,
-        paymentProvider,
-        paymentLink,
+        monthlyPrice,
         order
-      } | order(order asc),
+      } | order(order asc)
+
 
       pricingAddons[]{
         title,

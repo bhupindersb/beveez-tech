@@ -86,6 +86,22 @@ export const pricingPlan = defineType({
       title: 'Display Order',
       type: 'number',
     }),
+    defineField({
+      name: 'planType',
+      title: 'Plan Type (System)',
+      type: 'string',
+      validation: Rule => Rule.required(),
+      options: {
+        list: [
+          { title: 'Starter Website', value: 'starter' },
+          { title: 'Growth Website', value: 'growth' },
+          { title: 'Performance & Scale', value: 'performance' },
+          { title: 'Custom Project', value: 'custom' },
+        ],
+        layout: 'radio',
+      },
+    }),
+
   ],
 
   orderings: [

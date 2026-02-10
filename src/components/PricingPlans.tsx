@@ -6,15 +6,19 @@ import { fadeUp, staggerContainer } from '@/lib/motion'
 import { PlanType, BillingType } from '@/app/start-your-project/types'
 
 interface Plan {
+  planType: 'starter' | 'growth' | 'performance' | 'custom'
+
   title: string
-  slug: PlanType
   description?: string
   price?: string
-  monthlyPrice?: string
   bestFor?: string
   features?: string[]
   highlighted?: boolean
+
   ctaText?: string
+  ctaUrl?: string
+
+  monthlyPrice?: string
 }
 
 interface Props {
@@ -113,14 +117,15 @@ export default function PricingPlans({
               )}
 
               <Link
-                href={`/start-your-project?plan=${plan.slug}`}
+                href={`/start-your-project?plan=${plan.planType}`}
                 className="mt-8 inline-block w-full text-center rounded-full
-                           bg-gradient-to-r from-[#cf5a20] to-[#f68f1e]
-                           px-8 py-4 text-white font-semibold
-                           hover:from-[#f68f1e] hover:to-[#cf5a20] transition"
+                          bg-gradient-to-r from-[#cf5a20] to-[#f68f1e]
+                          px-8 py-4 text-white font-semibold
+                          hover:from-[#f68f1e] hover:to-[#cf5a20] transition"
               >
                 {plan.ctaText ?? 'Start Your Project'}
               </Link>
+
 
               <p className="mt-4 text-xs text-center text-gray-400">
                 Prices are indicative. Final invoice shared after scope confirmation.

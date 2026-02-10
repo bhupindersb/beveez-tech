@@ -1,33 +1,23 @@
 'use client'
 
 import { useState } from 'react'
-import ProjectHero from '@/components/ProjectHero'
+import { PlanType } from '@/lib/startProject/types'
 import PlanSelector from '@/components/PlanSelector'
 import ProjectForm from '@/components/ProjectForm'
-import WhatHappensNext from '@/components/WhatHappensNext'
-import FinalCTA from '@/components/FinalCTA'
-
-import { PlanType } from '@/types/plan'
 
 export default function StartProjectClient() {
   const [selectedPlan, setSelectedPlan] = useState<PlanType | null>(null)
 
   return (
-    <>
-      <ProjectHero />
+    <section className="py-[120px]">
+      <div className="mx-auto max-w-[960px] px-6 space-y-16">
+        <PlanSelector
+          value={selectedPlan}
+          onChange={setSelectedPlan}
+        />
 
-      <PlanSelector
-        selected={selectedPlan}
-        onSelect={setSelectedPlan}
-      />
-
-      {selectedPlan && (
         <ProjectForm selectedPlan={selectedPlan} />
-      )}
-
-      <WhatHappensNext />
-
-      <FinalCTA />
-    </>
+      </div>
+    </section>
   )
 }

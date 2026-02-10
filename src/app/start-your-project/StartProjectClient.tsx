@@ -1,22 +1,32 @@
 'use client'
 
 import { useState } from 'react'
-import { PlanType } from '@/lib/startProject/types'
+import { PlanType } from './types'
+
 import PlanSelector from '@/components/PlanSelector'
-import ProjectForm from '@/components/ProjectForm'
+
+import StarterForm from './forms/StarterForm'
+import GrowthForm from './forms/GrowthForm'
+import PerformanceForm from './forms/PerformanceForm'
+import CustomForm from './forms/CustomForm'
 
 export default function StartProjectClient() {
-  const [selectedPlan, setSelectedPlan] = useState<PlanType | null>(null)
+  const [selectedPlan, setSelectedPlan] = useState<PlanType>('starter')
 
   return (
-    <section className="py-[120px]">
-      <div className="mx-auto max-w-[960px] px-6 space-y-16">
-        <PlanSelector
-          value={selectedPlan}
-          onChange={setSelectedPlan}
-        />
+    <section className="pb-[120px]">
+      {/* PLAN SELECTOR */}
+      <PlanSelector
+        value={selectedPlan}
+        onChange={setSelectedPlan}
+      />
 
-        <ProjectForm selectedPlan={selectedPlan} />
+      {/* FORMS */}
+      <div className="mt-12">
+        {selectedPlan === 'starter' && <StarterForm />}
+        {selectedPlan === 'growth' && <GrowthForm />}
+        {selectedPlan === 'performance' && <PerformanceForm />}
+        {selectedPlan === 'custom' && <CustomForm />}
       </div>
     </section>
   )

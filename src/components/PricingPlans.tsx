@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
 import { fadeUp, staggerContainer } from '@/lib/motion'
-import { PlanType, BillingType } from '@/types/plan'
+import { PlanType, BillingType } from '@/app/start-your-project/types'
 
 interface Plan {
   title: string

@@ -1,6 +1,6 @@
 'use client'
 
-import { PlanType } from '@/lib/startProject/types'
+import { PlanType } from '@/app/start-your-project/types'
 
 interface Props {
   selectedPlan: PlanType | null

@@ -1,4 +1,4 @@
-import { PlanType } from '../StartProjectClient'
+import { PlanType } from '@/types/plan'
 
 export default function ProjectForm({
   selectedPlan,

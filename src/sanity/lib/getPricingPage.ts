@@ -1,38 +1,37 @@
 import { sanityClient } from '@/sanity/lib/client'
 
 export async function getPricingPage() {
-  return sanityClient.fetch(
-    `
+  return sanityClient.fetch(`
     *[
       _type == "page" &&
       template == "pricing"
     ][0]{
+
       pricingHero{
         headline,
         subText,
         backgroundImage{
-            asset->{ url }
+          asset->{ url }
         }
       },
 
       howItWorks,
-      
-      pricingPlans[]->{
+
+      "pricingPlans": pricingPlans[]->{
         planType,
         title,
         description,
         price,
+        monthlyPrice,
         bestFor,
         features,
         highlighted,
         ctaText,
         ctaUrl,
-        monthlyPrice,
         order
-      } | order(order asc)
+      } | order(order asc),
 
-
-      pricingAddons[]{
+      "pricingAddons": pricingAddons[]{
         title,
         description,
         price,
@@ -58,6 +57,5 @@ export async function getPricingPage() {
         }
       }
     }
-    `
-  )
+  `)
 }

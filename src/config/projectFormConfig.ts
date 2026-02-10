@@ -1,4 +1,4 @@
-import { PlanType } from '@/types/plan'
+import { PlanType } from '@/app/start-your-project/types'
 
 export interface FormField {
   name: string
@@ -61,6 +61,21 @@ export const PROJECT_FORM_CONFIG: Record<PlanType, FormField[]> = {
       name: 'scalingGoals',
       label: 'Scaling & performance goals',
       type: 'textarea',
+    },
+  ],
+
+  custom: [
+    {
+      name: 'businessName',
+      label: 'Business / Brand Name',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'customRequirements',
+      label: 'Custom requirements',
+      type: 'textarea',
+      required: true,
     },
   ],
 }

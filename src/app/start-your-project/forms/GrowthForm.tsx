@@ -1,3 +1,5 @@
+import { FormWrapper, Input, Submit } from './FormUI'
+
 export default function GrowthForm() {
   return (
     <FormWrapper title="Start your Growth Website">

@@ -1,3 +1,5 @@
+import { FormWrapper, Input, Submit } from './FormUI'
+
 export default function PerformanceForm() {
   return (
     <FormWrapper title="Start Performance & Scale">

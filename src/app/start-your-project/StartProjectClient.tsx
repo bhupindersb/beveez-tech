@@ -1,14 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { PlanType } from './types'
-
 import PlanSelector from '@/components/PlanSelector'
-
 import StarterForm from './forms/StarterForm'
 import GrowthForm from './forms/GrowthForm'
 import PerformanceForm from './forms/PerformanceForm'
 import CustomForm from './forms/CustomForm'
+
 
 const VALID_PLANS: PlanType[] = [
   'starter',

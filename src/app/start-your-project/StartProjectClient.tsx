@@ -101,7 +101,10 @@ export default function StartProjectClient() {
           STEP INDICATOR
       ================================ */}
       <div className="max-w-[900px] mx-auto px-6">
-        <StepIndicator step={step} />
+        <StepIndicator 
+            step={step}
+            onStepChange={setStep}
+        />
       </div>
 
       {/* ===============================
@@ -134,11 +137,15 @@ export default function StartProjectClient() {
                         <div
                           key={plan}
                           onClick={() => setSelectedPlan(plan)}
-                          className={`cursor-pointer rounded-3xl p-8 border transition
-                            ${isActive
-                              ? 'border-orange-500 bg-orange-50 shadow-lg'
-                              : 'border-gray-200 hover:shadow-lg hover:-translate-y-1'
-                            }`}
+                          className={`
+                            cursor-pointer rounded-3xl p-8 border transition-all duration-300
+                            ${
+                                isActive
+                                ? 'border-[#cf5a20] bg-gradient-to-br from-[#fff6f0] to-[#ffe8d6] shadow-xl scale-[1.02]'
+                                : 'border-gray-200 bg-white hover:shadow-lg hover:-translate-y-1'
+                            }
+                          `}
+
                         >
                           <h3 className="text-xl font-semibold text-darkBlue">
                             {info.title}
@@ -242,7 +249,7 @@ export default function StartProjectClient() {
    STEP INDICATOR
 ================================ */
 
-function StepIndicator({ step }: { step: 1 | 2 }) {
+function StepIndicator({ step, onStepChange }: { step: 1 | 2; onStepChange: (step: 1 | 2) => void }) {
   return (
     <div className="flex items-center justify-center gap-8 mb-16 mt-12">
       <StepItem number={1} label="Choose Plan" active={step === 1} />

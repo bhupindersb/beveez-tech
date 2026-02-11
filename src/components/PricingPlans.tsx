@@ -40,7 +40,7 @@ export default function PricingPlans({
         whileInView="visible"
         viewport={{ once: true }}
         className="mx-auto w-[90%] max-w-[1760px]
-                   grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3
+                   grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4
                    gap-10 px-6"
       >
         {plans.map((plan, i) => {
@@ -117,7 +117,11 @@ export default function PricingPlans({
               )}
 
               <Link
-                href={`/start-your-project?plan=${plan.planType}`}
+                href={
+                  plan.planType
+                    ? `/start-your-project?plan=${plan.planType}`
+                    : '/start-your-project'
+                }
                 className="mt-8 inline-block w-full text-center rounded-full
                           bg-gradient-to-r from-[#cf5a20] to-[#f68f1e]
                           px-8 py-4 text-white font-semibold
@@ -125,6 +129,7 @@ export default function PricingPlans({
               >
                 {plan.ctaText ?? 'Start Your Project'}
               </Link>
+
 
 
               <p className="mt-4 text-xs text-center text-gray-400">

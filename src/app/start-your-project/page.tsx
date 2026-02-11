@@ -1,15 +1,12 @@
-import Hero from './Hero'
+import { Suspense } from 'react'
 import StartProjectClient from './StartProjectClient'
-
-export const metadata = {
-  title: 'Start Your Project – Beveez Tech',
-}
+import Hero from './Hero'
 
 export default function StartYourProjectPage() {
   return (
-    <>
+    <Suspense fallback={<div className="py-[200px] text-center">Loading...</div>}>
       <Hero />
       <StartProjectClient />
-    </>
+    </Suspense>
   )
 }

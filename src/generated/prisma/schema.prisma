@@ -21,21 +21,21 @@ enum PlanType {
 }
 
 model Lead {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
 
-  name        String
-  email       String
-  company     String?
-  goals       String?
-  details     String?
+  name    String
+  email   String
+  company String?
+  goals   String?
+  details String?
 
-  plan        PlanType
+  plan PlanType
 
-  ipAddress   String?
-  userAgent   String?
+  ipAddress String?
+  userAgent String?
 
-  status      String   @default("new") // new | contacted | closed
+  status String @default("new") // new | contacted | closed
 
   @@index([email])
   @@index([plan])

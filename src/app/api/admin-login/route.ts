@@ -1,0 +1,22 @@
+import { NextResponse } from 'next/server'
+
+export async function POST(req: Request) {
+  const { password } = await req.json()
+
+  if (password === process.env.ADMIN_SECRET) {
+    const response = NextResponse.json({ success: true })
+
+    response.cookies.set('admin_token', password, {
+      httpOnly: true,
+      secure: true,
+      path: '/',
+    })
+
+    return response
+  }
+
+  return NextResponse.json(
+    { error: 'Invalid password' },
+    { status: 401 }
+  )
+}

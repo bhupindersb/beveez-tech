@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PlanType } from './types'
+import StepIndicator from '@/components/StepIndicator'
 
 /* ===============================
    CONFIG
@@ -63,22 +64,107 @@ export default function StartProjectClient() {
   const searchParams = useSearchParams()
   const planParam = searchParams.get('plan')
 
-  const [selectedPlan, setSelectedPlan] = useState<PlanType>('starter')
+  const [selectedPlan, setSelectedPlan] =
+    useState<PlanType>('starter')
+
   const [step, setStep] = useState<1 | 2>(1)
 
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    company: '',
+    goals: '',
+    details: '',
+  })
+
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [apiError, setApiError] = useState<string | null>(null)
+
   useEffect(() => {
-    if (planParam && VALID_PLANS.includes(planParam as PlanType)) {
+    if (
+      planParam &&
+      VALID_PLANS.includes(planParam as PlanType)
+    ) {
       setSelectedPlan(planParam as PlanType)
     }
   }, [planParam])
 
   const planInfo = PLAN_DATA[selectedPlan]
 
+  /* ===============================
+     VALIDATION
+  ================================ */
+
+  function validate() {
+    const newErrors: Record<string, string> = {}
+
+    if (!form.name.trim()) {
+      newErrors.name = 'Name is required'
+    }
+
+    if (!form.email.trim()) {
+      newErrors.email = 'Email is required'
+    } else if (!/\S+@\S+\.\S+/.test(form.email)) {
+      newErrors.email = 'Enter a valid email'
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  /* ===============================
+     SUBMIT HANDLER
+  ================================ */
+
+  async function handleSubmit(
+    e: React.FormEvent<HTMLFormElement>
+  ) {
+    e.preventDefault()
+
+    setApiError(null)
+    setSuccess(false)
+
+    if (!validate()) return
+
+    try {
+      setLoading(true)
+
+      const res = await fetch('/api/start-project', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...form,
+          plan: selectedPlan,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Something went wrong')
+      }
+
+      setSuccess(true)
+      setForm({
+        name: '',
+        email: '',
+        company: '',
+        goals: '',
+        details: '',
+      })
+
+    } catch (err: any) {
+      setApiError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <>
-      {/* ===============================
-          HERO SECTION
-      ================================ */}
+      {/* HERO */}
       <section className="pt-[120px] pb-[80px] bg-gradient-to-b from-[#f7f9fc] to-white">
         <div className="max-w-[1200px] mx-auto px-6 text-center">
           <h1 className="text-5xl font-heading font-semibold text-darkBlue">
@@ -97,19 +183,12 @@ export default function StartProjectClient() {
         </div>
       </section>
 
-      {/* ===============================
-          STEP INDICATOR
-      ================================ */}
+      {/* STEP INDICATOR */}
       <div className="max-w-[900px] mx-auto px-6">
-        <StepIndicator 
-            step={step}
-            onStepChange={setStep}
-        />
+        <StepIndicator step={step} onStepChange={setStep} />
       </div>
 
-      {/* ===============================
-          CONTENT AREA
-      ================================ */}
+      {/* CONTENT */}
       <section className="pb-[120px]">
         <div className="max-w-[1200px] mx-auto px-6 grid lg:grid-cols-[2fr_1fr] gap-16">
 
@@ -140,12 +219,11 @@ export default function StartProjectClient() {
                           className={`
                             cursor-pointer rounded-3xl p-8 border transition-all duration-300
                             ${
-                                isActive
+                              isActive
                                 ? 'border-[#cf5a20] bg-gradient-to-br from-[#fff6f0] to-[#ffe8d6] shadow-xl scale-[1.02]'
                                 : 'border-gray-200 bg-white hover:shadow-lg hover:-translate-y-1'
                             }
                           `}
-
                         >
                           <h3 className="text-xl font-semibold text-darkBlue">
                             {info.title}
@@ -184,30 +262,78 @@ export default function StartProjectClient() {
                     Tell us about your project
                   </h2>
 
-                  <div className="space-y-6">
-                    <Input placeholder="Your name" />
-                    <Input placeholder="Your email" />
-                    <Input placeholder="Business / Brand name" />
-                    <Input placeholder="Project goals" />
-                    <Textarea placeholder="Tell us more about your project..." />
-                  </div>
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <Input
+                      placeholder="Your name"
+                      value={form.name}
+                      onChange={(v) =>
+                        setForm({ ...form, name: v })
+                      }
+                      error={errors.name}
+                    />
 
-                  <button
-                    className="mt-10 bg-gradient-to-r from-[#cf5a20] to-[#f68f1e]
-                               text-white px-10 py-4 rounded-full font-semibold
-                               hover:opacity-90 transition"
-                  >
-                    Submit Request
-                  </button>
+                    <Input
+                      placeholder="Your email"
+                      value={form.email}
+                      onChange={(v) =>
+                        setForm({ ...form, email: v })
+                      }
+                      error={errors.email}
+                    />
+
+                    <Input
+                      placeholder="Business / Brand name"
+                      value={form.company}
+                      onChange={(v) =>
+                        setForm({ ...form, company: v })
+                      }
+                    />
+
+                    <Input
+                      placeholder="Project goals"
+                      value={form.goals}
+                      onChange={(v) =>
+                        setForm({ ...form, goals: v })
+                      }
+                    />
+
+                    <Textarea
+                      placeholder="Tell us more about your project..."
+                      value={form.details}
+                      onChange={(v) =>
+                        setForm({ ...form, details: v })
+                      }
+                    />
+
+                    <button
+                      disabled={loading}
+                      className="mt-6 bg-gradient-to-r from-[#cf5a20] to-[#f68f1e]
+                                 text-white px-10 py-4 rounded-full font-semibold
+                                 hover:opacity-90 transition disabled:opacity-50"
+                    >
+                      {loading ? 'Sending...' : 'Submit Request'}
+                    </button>
+
+                    {success && (
+                      <div className="p-5 bg-green-50 border border-green-200 text-green-700 rounded-2xl">
+                        🎉 Thank you! We'll get back to you within 24 hours.
+                      </div>
+                    )}
+
+                    {apiError && (
+                      <div className="p-5 bg-red-50 border border-red-200 text-red-600 rounded-2xl">
+                        {apiError}
+                      </div>
+                    )}
+                  </form>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
-          {/* RIGHT SIDE - SUMMARY */}
+          {/* RIGHT SIDE */}
           <div className="hidden lg:block">
             <div className="sticky top-28 bg-white rounded-3xl p-8 shadow-xl border">
-
               <h3 className="text-xl font-semibold text-darkBlue">
                 {planInfo.title}
               </h3>
@@ -238,7 +364,6 @@ export default function StartProjectClient() {
               </div>
             </div>
           </div>
-
         </div>
       </section>
     </>
@@ -246,63 +371,59 @@ export default function StartProjectClient() {
 }
 
 /* ===============================
-   STEP INDICATOR
+   INPUT COMPONENTS
 ================================ */
 
-function StepIndicator({ step, onStepChange }: { step: 1 | 2; onStepChange: (step: 1 | 2) => void }) {
-  return (
-    <div className="flex items-center justify-center gap-8 mb-16 mt-12">
-      <StepItem number={1} label="Choose Plan" active={step === 1} />
-      <div className="w-20 h-[2px] bg-gray-300" />
-      <StepItem number={2} label="Project Details" active={step === 2} />
-    </div>
-  )
-}
-
-function StepItem({
-  number,
-  label,
-  active,
+function Input({
+  placeholder,
+  value,
+  onChange,
+  error,
 }: {
-  number: number
-  label: string
-  active: boolean
+  placeholder: string
+  value?: string
+  onChange?: (v: string) => void
+  error?: string
 }) {
   return (
-    <div className="flex items-center gap-3">
-      <div
-        className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold
-        ${active ? 'bg-orange-600 text-white' : 'bg-gray-200 text-gray-600'}`}
-      >
-        {number}
-      </div>
-      <span className={`font-medium ${active ? 'text-orange-600' : 'text-gray-400'}`}>
-        {label}
-      </span>
+    <div>
+      <input
+        type="text"
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange?.(e.target.value)}
+        className={`w-full rounded-2xl border px-6 py-4
+          focus:outline-none focus:ring-2
+          ${
+            error
+              ? 'border-red-400 focus:ring-red-400'
+              : 'border-gray-200 focus:ring-orange-500'
+          }`}
+      />
+      {error && (
+        <p className="text-sm text-red-500 mt-2">
+          {error}
+        </p>
+      )}
     </div>
   )
 }
 
-/* ===============================
-   INPUTS
-================================ */
-
-function Input({ placeholder }: { placeholder: string }) {
-  return (
-    <input
-      type="text"
-      placeholder={placeholder}
-      className="w-full rounded-2xl border border-gray-200 px-6 py-4
-                 focus:outline-none focus:ring-2 focus:ring-orange-500"
-    />
-  )
-}
-
-function Textarea({ placeholder }: { placeholder: string }) {
+function Textarea({
+  placeholder,
+  value,
+  onChange,
+}: {
+  placeholder: string
+  value?: string
+  onChange?: (v: string) => void
+}) {
   return (
     <textarea
       placeholder={placeholder}
       rows={5}
+      value={value}
+      onChange={(e) => onChange?.(e.target.value)}
       className="w-full rounded-2xl border border-gray-200 px-6 py-4
                  focus:outline-none focus:ring-2 focus:ring-orange-500"
     />

@@ -8,14 +8,16 @@
     "start": "next start"
   },
   "dependencies": {
+    "@prisma/client": "^7.4.0",
     "@sanity/image-url": "^1.2.0",
     "@sanity/vision": "^4.0.0",
-    "@upstash/redis": "^1.36.0",
+    "@upstash/redis": "^1.36.2",
     "framer-motion": "^12.27.2",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.563.0",
     "next": "^15.1.0",
     "next-sanity": "^10.1.4",
+    "prisma": "^7.4.0",
     "razorpay": "^2.9.6",
     "react": "18.3.1",
     "react-dom": "18.3.1",

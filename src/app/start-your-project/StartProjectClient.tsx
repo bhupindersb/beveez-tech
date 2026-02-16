@@ -70,12 +70,14 @@ export default function StartProjectClient() {
   const [step, setStep] = useState<1 | 2>(1)
 
   const [form, setForm] = useState({
-    name: '',
-    email: '',
-    company: '',
-    goals: '',
-    details: '',
-  })
+  name: '',
+  email: '',
+  company: '',
+  goals: '',
+  details: '',
+  website: '' // honeypot
+})
+
 
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
@@ -153,6 +155,7 @@ export default function StartProjectClient() {
         company: '',
         goals: '',
         details: '',
+        website: '',
       })
 
     } catch (err: any) {
@@ -302,6 +305,15 @@ export default function StartProjectClient() {
                       value={form.details}
                       onChange={(v) =>
                         setForm({ ...form, details: v })
+                      }
+                    />
+
+                    <input
+                      type="text"
+                      style={{ display: 'none' }}
+                      value={form.website}
+                      onChange={(e) =>
+                        setForm({ ...form, website: e.target.value })
                       }
                     />
 

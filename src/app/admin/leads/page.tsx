@@ -4,7 +4,8 @@ import { redirect } from 'next/navigation'
 import LeadTable from './LeadTable'
 
 export default async function LeadsPage() {
-  const cookieStore = cookies()
+  // ✅ Next.js 15 requires await
+  const cookieStore = await cookies()
   const token = cookieStore.get('admin_token')?.value
 
   if (token !== process.env.ADMIN_SECRET) {
@@ -15,7 +16,6 @@ export default async function LeadsPage() {
     orderBy: { createdAt: 'desc' },
   })
 
-  // Convert Date → string for client component
   const leads = rawLeads.map((lead) => ({
     ...lead,
     createdAt: lead.createdAt.toISOString(),

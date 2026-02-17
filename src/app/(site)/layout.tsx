@@ -1,5 +1,5 @@
-import './globals.css'
-import { getSiteSettings } from '../sanity/lib/getSiteSettings'
+import '../globals.css'
+import { getSiteSettings } from '@/sanity/lib/getSiteSettings'
 import { getFooterSettings } from '@/sanity/lib/getFooterSettings'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'

@@ -1,7 +1,7 @@
-import { client } from './client'
+import { sanityClient } from './client'
 
 export async function getContactPage() {
-  return client.fetch(`
+  return sanityClient.fetch(`
     *[_type == "page" && template == "contact"][0]{
       title,
       seo,

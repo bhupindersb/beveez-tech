@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 import LeadTable from './LeadTable'
 
 export default async function LeadsPage() {
-  const cookieStore = await cookies()
+  const cookieStore = cookies()
   const token = cookieStore.get('admin_token')?.value
 
   if (token !== process.env.ADMIN_SECRET) {
@@ -15,18 +15,19 @@ export default async function LeadsPage() {
     orderBy: { createdAt: 'desc' },
   })
 
+  // Convert Date → string for client component
   const leads = rawLeads.map((lead) => ({
     ...lead,
     createdAt: lead.createdAt.toISOString(),
   }))
 
   return (
-    <div className="min-h-screen bg-[#f7f9fc] p-10">
-      <h1 className="text-3xl font-semibold mb-10">
+    <>
+      <h1 className="text-3xl font-semibold text-darkBlue mb-10">
         Lead Management
       </h1>
 
       <LeadTable leads={leads} />
-    </div>
+    </>
   )
 }

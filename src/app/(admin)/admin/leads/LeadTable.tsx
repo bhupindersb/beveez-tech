@@ -5,12 +5,27 @@ import { useState, useMemo } from 'react'
 interface Lead {
   id: string
   createdAt: string
+  formattedDate: string
   name: string
   email: string
   company?: string | null
   plan: string
   status: string
 }
+
+function getRelativeTime(dateString: string) {
+  const now = new Date().getTime()
+  const date = new Date(dateString).getTime()
+  const diff = Math.floor((now - date) / 1000)
+
+  if (diff < 60) return 'Just now'
+  if (diff < 3600) return `${Math.floor(diff / 60)} min ago`
+  if (diff < 86400) return `${Math.floor(diff / 3600)} hrs ago`
+  if (diff < 604800) return `${Math.floor(diff / 86400)} days ago`
+
+  return ''
+}
+
 
 export default function LeadTable({
   leads,
@@ -209,12 +224,14 @@ export default function LeadTable({
                 </td>
 
                 <td className="px-6 py-4 text-gray-500">
-                  {new Date(lead.createdAt).toLocaleDateString('en-GB', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                  })}
+                  <div className="flex flex-col">
+                    <span>{lead.formattedDate}</span>
+                    <span className="text-xs text-gray-400">
+                      {getRelativeTime(lead.createdAt)}
+                    </span>
+                  </div>
                 </td>
+
 
               </tr>
             ))}

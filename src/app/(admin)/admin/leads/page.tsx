@@ -16,10 +16,24 @@ export default async function LeadsPage() {
     orderBy: { createdAt: 'desc' },
   })
 
-  const leads = rawLeads.map((lead) => ({
-    ...lead,
-    createdAt: lead.createdAt.toISOString(),
-  }))
+  const leads = rawLeads.map((lead) => {
+    const date = new Date(lead.createdAt)
+
+    return {
+      ...lead,
+      createdAt: date.toISOString(), // keep raw ISO
+      formattedDate: date.toLocaleString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        timeZone: 'UTC', // prevents server/client mismatch
+      }),
+    }
+  })
+
 
   return (
     <>

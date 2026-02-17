@@ -10,56 +10,83 @@ export default async function AdminDashboard() {
     redirect('/admin/login')
   }
 
-  const [
-    totalLeads,
-    newLeads,
-    contactedLeads,
-    closedLeads,
-  ] = await Promise.all([
-    prisma.lead.count(),
-    prisma.lead.count({ where: { status: 'new' } }),
-    prisma.lead.count({ where: { status: 'contacted' } }),
-    prisma.lead.count({ where: { status: 'closed' } }),
-  ])
+  const totalLeads = await prisma.lead.count()
+
+  const newLeads = await prisma.lead.count({
+    where: { status: 'new' },
+  })
+
+  const contactedLeads = await prisma.lead.count({
+    where: { status: 'contacted' },
+  })
+
+  const closedLeads = await prisma.lead.count({
+    where: { status: 'closed' },
+  })
+
+  const recentLeads = await prisma.lead.findMany({
+    orderBy: { createdAt: 'desc' },
+    take: 5,
+  })
 
   return (
-    <div>
-      <h1 className="text-3xl font-semibold mb-10">
+    <div className="space-y-12">
+
+      <h1 className="text-3xl font-semibold text-darkBlue">
         Dashboard Overview
       </h1>
 
+      {/* Metric Cards */}
       <div className="grid md:grid-cols-4 gap-6">
-        <StatCard title="Total Leads" value={totalLeads} />
-        <StatCard title="New" value={newLeads} color="orange" />
-        <StatCard title="Contacted" value={contactedLeads} color="blue" />
-        <StatCard title="Closed" value={closedLeads} color="green" />
+
+        <DashboardCard title="Total Leads" value={totalLeads} color="purple" />
+        <DashboardCard title="New Leads" value={newLeads} color="yellow" />
+        <DashboardCard title="Contacted" value={contactedLeads} color="blue" />
+        <DashboardCard title="Closed" value={closedLeads} color="green" />
+
+      </div>
+
+      {/* Recent Activity */}
+      <div className="bg-white rounded-3xl shadow-xl p-8 border">
+        <h2 className="text-lg font-semibold mb-6">Recent Leads</h2>
+
+        <div className="space-y-4">
+          {recentLeads.map((lead) => (
+            <div key={lead.id} className="flex justify-between text-sm border-b pb-3">
+              <span className="font-medium">{lead.name}</span>
+              <span className="text-gray-500">
+                {new Date(lead.createdAt).toLocaleDateString('en-GB')}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
 }
 
-function StatCard({
+function DashboardCard({
   title,
   value,
-  color = 'default',
+  color,
 }: {
   title: string
   value: number
-  color?: 'default' | 'orange' | 'blue' | 'green'
+  color: 'purple' | 'yellow' | 'blue' | 'green'
 }) {
   const colors = {
-    default: 'bg-white',
-    orange: 'bg-orange-50 border-orange-200',
-    blue: 'bg-blue-50 border-blue-200',
-    green: 'bg-green-50 border-green-200',
+    purple: 'bg-purple-100 text-purple-700',
+    yellow: 'bg-yellow-100 text-yellow-700',
+    blue: 'bg-blue-100 text-blue-700',
+    green: 'bg-green-100 text-green-700',
   }
 
   return (
-    <div
-      className={`rounded-2xl p-6 border shadow-sm ${colors[color]}`}
-    >
-      <div className="text-sm text-gray-500">{title}</div>
-      <div className="text-3xl font-bold mt-2">
+    <div className="bg-white rounded-3xl shadow-xl border p-8">
+      <div className={`inline-block px-3 py-1 rounded-full text-xs ${colors[color]}`}>
+        {title}
+      </div>
+      <div className="mt-6 text-4xl font-bold text-darkBlue">
         {value}
       </div>
     </div>

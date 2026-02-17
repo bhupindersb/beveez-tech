@@ -359,6 +359,55 @@ export const page = defineType({
       parent?.template !== 'pricing',
   })),
 
+  /* =======================
+    CONTACT PAGE
+  ======================= */
+
+  defineField({
+    name: 'contactHero',
+    title: 'Contact Page – Hero Section',
+    type: 'object',
+    hidden: ({ parent }) => parent?.template !== 'contact',
+    fields: [
+      defineField({
+        name: 'headline',
+        title: 'Headline',
+        type: 'string',
+        validation: Rule => Rule.required(),
+      }),
+      defineField({
+        name: 'subText',
+        title: 'Sub Text',
+        type: 'text',
+        rows: 3,
+      }),
+      defineField({
+        name: 'backgroundImage',
+        title: 'Background Image',
+        type: 'image',
+        options: { hotspot: true },
+      }),
+    ],
+  }),
+
+  defineField({
+    name: 'contactTrustPoints',
+    title: 'Contact – Trust Points',
+    type: 'array',
+    hidden: ({ parent }) => parent?.template !== 'contact',
+    of: [{ type: 'string' }],
+  }),
+
+  defineField({
+    name: 'contactTestimonial',
+    title: 'Contact – Testimonial',
+    type: 'object',
+    hidden: ({ parent }) => parent?.template !== 'contact',
+    fields: [
+      { name: 'quote', type: 'text' },
+      { name: 'author', type: 'string' },
+    ],
+  }),
 
   ],
 })

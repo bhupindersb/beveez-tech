@@ -1,18 +1,22 @@
-import { sanityClient } from './client'
+import { client } from './client'
 
 export async function getContactPage() {
-  return await sanityClient.fetch(`
-    *[_type == "contactPage"][0]{
+  return client.fetch(`
+    *[_type == "page" && template == "contact"][0]{
+      title,
       seo,
       hero{
         headline,
         subText,
         backgroundImage{
-          asset->{ url }
+          asset->{url}
         }
       },
       trustPoints,
-      testimonial
+      testimonial{
+        quote,
+        author
+      }
     }
   `)
 }

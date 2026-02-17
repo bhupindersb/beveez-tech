@@ -209,8 +209,13 @@ export default function LeadTable({
                 </td>
 
                 <td className="px-6 py-4 text-gray-500">
-                  {new Date(lead.createdAt).toLocaleDateString()}
+                  {new Date(lead.createdAt).toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                  })}
                 </td>
+
               </tr>
             ))}
 

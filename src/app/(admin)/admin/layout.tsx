@@ -26,16 +26,13 @@ export default function AdminLayout({
             className="flex items-center gap-3"
           >
             <Image
-              src="/logo.png"
+              src="/logo-beveez.svg"
               alt="Beveez Tech"
-              width={40}
-              height={40}
+              width={160}
+              height={32}
               className="rounded-lg"
             />
             <div className="leading-tight">
-              <div className="text-lg font-semibold text-gray-900">
-                Beveez Tech
-              </div>
               <div className="text-xs text-gray-500">
                 Admin Dashboard
               </div>

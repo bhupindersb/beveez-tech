@@ -57,17 +57,22 @@ export default function ServicesSection({
             </div>
           )
 
-          return textFirst ? (
-            <>
-              {TextBox}
-              {ImageBox}
-            </>
-          ) : (
-            <>
-              {ImageBox}
-              {TextBox}
-            </>
+          return (
+            <div key={service._id || index} className="contents">
+              {textFirst ? (
+                <>
+                  {TextBox}
+                  {ImageBox}
+                </>
+              ) : (
+                <>
+                  {ImageBox}
+                  {TextBox}
+                </>
+              )}
+            </div>
           )
+
         })}
       </div>
     </section>

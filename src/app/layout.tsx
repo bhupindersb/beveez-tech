@@ -1,4 +1,12 @@
 import './globals.css'
+import { Poppins } from 'next/font/google'
+import Script from 'next/script'
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-poppins',
+})
 
 export const metadata = {
   title: 'Beveez Tech',
@@ -16,8 +24,22 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" className={poppins.variable}>
+      <body className="antialiased bg-[#f2f1f6] font-body">
+        {/* Adobe Fonts */}
+        <link
+          rel="stylesheet"
+          href="https://use.typekit.net/dco4nvv.css"
+        />
+
+        {/* Razorpay Script */}
+        <Script
+          src="https://checkout.razorpay.com/v1/checkout.js"
+          strategy="afterInteractive"
+        />
+
+        {children}
+      </body>
     </html>
   )
 }

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { motion, AnimateSharedLayout } from 'framer-motion'
+import { motion, LayoutGroup } from 'framer-motion'
 
 export default function Navbar({ settings }: any) {
   const [open, setOpen] = useState(false)
@@ -67,7 +67,7 @@ export default function Navbar({ settings }: any) {
           </Link>
 
           {/* DESKTOP MENU */}
-          <AnimateSharedLayout>
+          <LayoutGroup>
             <ul className="hidden items-center gap-8 text-white md:flex">
               {settings?.navigation?.map((item: any, i: number) => {
                 const active = isActive(item.url)
@@ -103,7 +103,7 @@ export default function Navbar({ settings }: any) {
                 )
               })}
             </ul>
-          </AnimateSharedLayout>
+          </LayoutGroup>
 
           {/* DESKTOP CTA */}
           {settings?.navCtaText && settings?.navCtaUrl && (

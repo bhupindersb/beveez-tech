@@ -10,29 +10,27 @@ export default async function AdminDashboard() {
     redirect('/admin/login')
   }
 
-  const totalLeads = await prisma.lead.count()
-
-  const newLeads = await prisma.lead.count({
-    where: { status: 'new' },
-  })
-
-  const contactedLeads = await prisma.lead.count({
-    where: { status: 'contacted' },
-  })
-
-  const closedLeads = await prisma.lead.count({
-    where: { status: 'closed' },
-  })
+  const [
+    totalLeads,
+    newLeads,
+    contactedLeads,
+    closedLeads,
+  ] = await Promise.all([
+    prisma.lead.count(),
+    prisma.lead.count({ where: { status: 'new' } }),
+    prisma.lead.count({ where: { status: 'contacted' } }),
+    prisma.lead.count({ where: { status: 'closed' } }),
+  ])
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold text-darkBlue mb-12">
+      <h1 className="text-3xl font-semibold mb-10">
         Dashboard Overview
       </h1>
 
       <div className="grid md:grid-cols-4 gap-6">
         <StatCard title="Total Leads" value={totalLeads} />
-        <StatCard title="New" value={newLeads} color="yellow" />
+        <StatCard title="New" value={newLeads} color="orange" />
         <StatCard title="Contacted" value={contactedLeads} color="blue" />
         <StatCard title="Closed" value={closedLeads} color="green" />
       </div>
@@ -47,23 +45,21 @@ function StatCard({
 }: {
   title: string
   value: number
-  color?: string
+  color?: 'default' | 'orange' | 'blue' | 'green'
 }) {
-  const colorMap: Record<string, string> = {
-    yellow: 'bg-yellow-100 text-yellow-700',
-    blue: 'bg-blue-100 text-blue-700',
-    green: 'bg-green-100 text-green-700',
-    default: 'bg-gray-100 text-gray-700',
+  const colors = {
+    default: 'bg-white',
+    orange: 'bg-orange-50 border-orange-200',
+    blue: 'bg-blue-50 border-blue-200',
+    green: 'bg-green-50 border-green-200',
   }
 
   return (
-    <div className="bg-white rounded-3xl shadow-lg p-8 border">
-      <div className="text-sm text-gray-500 mb-3">
-        {title}
-      </div>
-      <div
-        className={`inline-block px-4 py-2 rounded-full text-2xl font-bold ${colorMap[color]}`}
-      >
+    <div
+      className={`rounded-2xl p-6 border shadow-sm ${colors[color]}`}
+    >
+      <div className="text-sm text-gray-500">{title}</div>
+      <div className="text-3xl font-bold mt-2">
         {value}
       </div>
     </div>

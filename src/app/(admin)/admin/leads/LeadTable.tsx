@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 
 interface Lead {
   id: string
@@ -12,131 +12,145 @@ interface Lead {
   status: string
 }
 
-export default function LeadTable({
-  leads,
-}: {
-  leads: Lead[]
-}) {
+export default function LeadTable({ leads }: { leads: Lead[] }) {
   const [data, setData] = useState(leads)
-  const [loadingId, setLoadingId] = useState<string | null>(null)
+  const [search, setSearch] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [fromDate, setFromDate] = useState('')
+  const [toDate, setToDate] = useState('')
 
   async function updateStatus(id: string, status: string) {
-    try {
-      setLoadingId(id)
+    await fetch('/api/admin/update-lead-status', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, status }),
+    })
 
-      await fetch('/api/admin/update-lead-status', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, status }),
-      })
-
-      setData((prev) =>
-        prev.map((lead) =>
-          lead.id === id ? { ...lead, status } : lead
-        )
+    setData(prev =>
+      prev.map(lead =>
+        lead.id === id ? { ...lead, status } : lead
       )
-    } catch (error) {
-      console.error('Failed to update status', error)
-    } finally {
-      setLoadingId(null)
-    }
+    )
   }
 
-  function getStatusClasses(status: string) {
-    switch (status) {
-      case 'new':
-        return 'bg-yellow-100 text-yellow-700 border-yellow-200'
-      case 'contacted':
-        return 'bg-blue-100 text-blue-700 border-blue-200'
-      case 'closed':
-        return 'bg-green-100 text-green-700 border-green-200'
-      default:
-        return 'bg-gray-100 text-gray-600 border-gray-200'
-    }
-  }
+  const filteredLeads = useMemo(() => {
+    return data.filter(lead => {
+      const matchesSearch =
+        lead.name.toLowerCase().includes(search.toLowerCase()) ||
+        lead.email.toLowerCase().includes(search.toLowerCase())
+
+      const matchesStatus =
+        statusFilter === 'all' ||
+        lead.status === statusFilter
+
+      const leadDate = new Date(lead.createdAt)
+
+      const matchesFrom =
+        !fromDate || leadDate >= new Date(fromDate)
+
+      const matchesTo =
+        !toDate || leadDate <= new Date(toDate)
+
+      return (
+        matchesSearch &&
+        matchesStatus &&
+        matchesFrom &&
+        matchesTo
+      )
+    })
+  }, [data, search, statusFilter, fromDate, toDate])
 
   return (
-    <div className="bg-white rounded-3xl shadow-xl overflow-hidden border">
+    <div className="bg-white rounded-3xl shadow-xl p-6">
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+      {/* FILTER BAR */}
+      <div className="flex flex-wrap gap-4 mb-6">
+        <input
+          placeholder="Search name or email..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="border px-4 py-2 rounded-lg text-sm"
+        />
 
-          <thead className="bg-gray-50 text-left text-gray-600 uppercase text-xs tracking-wide">
-            <tr>
-              <th className="px-6 py-4">Name</th>
-              <th className="px-6 py-4">Email</th>
-              <th className="px-6 py-4">Plan</th>
-              <th className="px-6 py-4">Status</th>
-              <th className="px-6 py-4">Created</th>
-            </tr>
-          </thead>
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="border px-4 py-2 rounded-lg text-sm"
+        >
+          <option value="all">All Status</option>
+          <option value="new">New</option>
+          <option value="contacted">Contacted</option>
+          <option value="closed">Closed</option>
+        </select>
 
-          <tbody>
-            {data.map((lead) => (
-              <tr
-                key={lead.id}
-                className="border-t hover:bg-gray-50 transition"
-              >
-                {/* NAME */}
-                <td className="px-6 py-4 font-medium text-darkBlue">
-                  {lead.name}
-                  {lead.company && (
-                    <div className="text-xs text-gray-500 mt-1">
-                      {lead.company}
-                    </div>
-                  )}
-                </td>
+        <input
+          type="date"
+          value={fromDate}
+          onChange={(e) => setFromDate(e.target.value)}
+          className="border px-4 py-2 rounded-lg text-sm"
+        />
 
-                {/* EMAIL */}
-                <td className="px-6 py-4 text-gray-600">
-                  {lead.email}
-                </td>
-
-                {/* PLAN */}
-                <td className="px-6 py-4">
-                  <span className="px-3 py-1 text-xs rounded-full bg-purple-100 text-purple-700">
-                    {lead.plan}
-                  </span>
-                </td>
-
-                {/* STATUS */}
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-3">
-
-                    <span
-                      className={`px-3 py-1 text-xs rounded-full border ${getStatusClasses(
-                        lead.status
-                      )}`}
-                    >
-                      {lead.status}
-                    </span>
-
-                    <select
-                      value={lead.status}
-                      disabled={loadingId === lead.id}
-                      onChange={(e) =>
-                        updateStatus(lead.id, e.target.value)
-                      }
-                      className="border rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-orange-500"
-                    >
-                      <option value="new">New</option>
-                      <option value="contacted">Contacted</option>
-                      <option value="closed">Closed</option>
-                    </select>
-
-                  </div>
-                </td>
-
-                {/* CREATED */}
-                <td className="px-6 py-4 text-gray-500">
-                  {new Date(lead.createdAt).toLocaleDateString()}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-
-        </table>
+        <input
+          type="date"
+          value={toDate}
+          onChange={(e) => setToDate(e.target.value)}
+          className="border px-4 py-2 rounded-lg text-sm"
+        />
       </div>
+
+      {/* TABLE */}
+      <table className="w-full text-sm">
+        <thead className="text-left bg-gray-50">
+          <tr>
+            <th className="p-4">Name</th>
+            <th>Email</th>
+            <th>Plan</th>
+            <th>Status</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {filteredLeads.map((lead) => (
+            <tr
+              key={lead.id}
+              className="border-b hover:bg-gray-50 transition"
+            >
+              <td className="py-4 font-medium">
+                {lead.name}
+              </td>
+
+              <td>{lead.email}</td>
+
+              <td>
+                <span className="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-600">
+                  {lead.plan}
+                </span>
+              </td>
+
+              <td>
+                <select
+                  value={lead.status}
+                  onChange={(e) =>
+                    updateStatus(lead.id, e.target.value)
+                  }
+                  className="border rounded px-2 py-1 text-sm"
+                >
+                  <option value="new">New</option>
+                  <option value="contacted">Contacted</option>
+                  <option value="closed">Closed</option>
+                </select>
+              </td>
+
+              <td>
+                {new Date(
+                  lead.createdAt
+                ).toLocaleDateString()}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
 }

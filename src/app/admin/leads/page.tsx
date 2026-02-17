@@ -1,36 +1,32 @@
-<tbody>
-  {leads.map((lead) => (
-    <tr
-      key={lead.id}
-      className="border-b hover:bg-gray-50 transition"
-    >
-      <td className="py-4 font-medium">
-        {lead.name}
-      </td>
+import { prisma } from '@/lib/prisma'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
+import LeadTable from './LeadTable'
 
-      <td>{lead.email}</td>
+export default async function LeadsPage() {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('admin_token')?.value
 
-      <td>
-        <span className="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-600">
-          {lead.plan}
-        </span>
-      </td>
+  if (token !== process.env.ADMIN_SECRET) {
+    redirect('/admin/login')
+  }
 
-      <td>
-        <span className={`px-3 py-1 text-xs rounded-full ${
-          lead.status === 'new'
-            ? 'bg-yellow-100 text-yellow-600'
-            : lead.status === 'contacted'
-            ? 'bg-blue-100 text-blue-600'
-            : 'bg-green-100 text-green-600'
-        }`}>
-          {lead.status}
-        </span>
-      </td>
+  const rawLeads = await prisma.lead.findMany({
+    orderBy: { createdAt: 'desc' },
+  })
 
-      <td>
-        {new Date(lead.createdAt).toLocaleDateString()}
-      </td>
-    </tr>
-  ))}
-</tbody>
+  const leads = rawLeads.map((lead) => ({
+    ...lead,
+    createdAt: lead.createdAt.toISOString(),
+  }))
+
+  return (
+    <div className="min-h-screen bg-[#f7f9fc] p-10">
+      <h1 className="text-3xl font-semibold mb-10">
+        Lead Management
+      </h1>
+
+      <LeadTable leads={leads} />
+    </div>
+  )
+}

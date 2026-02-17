@@ -1,4 +1,4 @@
-import { PlanType } from '@/app/start-your-project/types'
+import { PlanType, BillingType } from '@/types/plan'
 
 export interface FormField {
   name: string

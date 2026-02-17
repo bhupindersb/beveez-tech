@@ -1,6 +1,7 @@
 'use client'
 
-import { PlanType } from '@/app/(site)/start-your-project/types'
+import { PlanType, BillingType } from '@/types/plan'
+
 import { CheckCircle } from 'lucide-react'
 
 interface Props {

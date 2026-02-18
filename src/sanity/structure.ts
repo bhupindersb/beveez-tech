@@ -93,4 +93,15 @@ export const structure = (S: StructureBuilder) =>
         .child(
           S.documentTypeList('blogSection').title('Blog Posts')
         ),
+
+      S.divider(),
+
+      S.listItem()
+      .title('Service Pages')
+      .schemaType('servicePage')
+      .child(
+        S.documentTypeList('servicePage')
+          .title('Service Pages')
+      ),
+
     ])

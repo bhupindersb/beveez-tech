@@ -4,16 +4,22 @@ export async function getContactPage() {
   return sanityClient.fetch(`
     *[_type == "page" && template == "contact"][0]{
       title,
-      seo,
-      hero{
+      seo {
+        seoTitle,
+        seoDescription,
+        seoImage {
+          asset->{url}
+        }
+      },
+      hero {
         headline,
         subText,
-        backgroundImage{
+        backgroundImage {
           asset->{url}
         }
       },
       trustPoints,
-      testimonial{
+      testimonial {
         quote,
         author
       }

@@ -364,8 +364,8 @@ export const page = defineType({
   ======================= */
 
   defineField({
-    name: 'contactHero',
-    title: 'Contact Page – Hero Section',
+    name: 'hero',
+    title: 'Contact Page – Hero',
     type: 'object',
     hidden: ({ parent }) => parent?.template !== 'contact',
     fields: [
@@ -373,13 +373,11 @@ export const page = defineType({
         name: 'headline',
         title: 'Headline',
         type: 'string',
-        validation: Rule => Rule.required(),
       }),
       defineField({
         name: 'subText',
         title: 'Sub Text',
         type: 'text',
-        rows: 3,
       }),
       defineField({
         name: 'backgroundImage',
@@ -391,23 +389,24 @@ export const page = defineType({
   }),
 
   defineField({
-    name: 'contactTrustPoints',
-    title: 'Contact – Trust Points',
+    name: 'trustPoints',
+    title: 'Trust Points',
     type: 'array',
     hidden: ({ parent }) => parent?.template !== 'contact',
     of: [{ type: 'string' }],
   }),
 
   defineField({
-    name: 'contactTestimonial',
-    title: 'Contact – Testimonial',
+    name: 'testimonial',
+    title: 'Testimonial',
     type: 'object',
     hidden: ({ parent }) => parent?.template !== 'contact',
     fields: [
-      { name: 'quote', type: 'text' },
-      { name: 'author', type: 'string' },
+      defineField({ name: 'quote', type: 'text' }),
+      defineField({ name: 'author', type: 'string' }),
     ],
   }),
+
 
   ],
 })

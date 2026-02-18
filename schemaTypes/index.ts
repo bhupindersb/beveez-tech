@@ -26,6 +26,8 @@ import { serviceDetail } from './serviceDetails'
 
 import { pricingAddon } from './pricingAddon'
 import { pricingFaq } from './pricingFaq'
+import { servicePage } from './servicePage'
+
 
 export const schemaTypes = [
   siteSettings,
@@ -59,4 +61,5 @@ export const schemaTypes = [
 
   pricingAddon,
   pricingFaq,
+  servicePage,
 ]

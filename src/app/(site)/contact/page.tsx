@@ -1,5 +1,6 @@
 import { getContactPage } from '@/sanity/lib/getContactPage'
 import ContactHero from '@/components/ContactHero'
+import ContactForm from '@/components/ContactForm'
 import Script from 'next/script'
 
 export async function generateMetadata() {
@@ -25,13 +26,18 @@ export default async function ContactPage() {
 
       {/* TRUST STRIP */}
       {data?.contactTrustPoints?.length > 0 && (
-        <section className="py-10 bg-white border-y">
-          <div className="max-w-[1100px] mx-auto px-6 grid md:grid-cols-3 gap-6 text-center text-sm text-gray-600">
-            {data.contactTrustPoints.map((point: string, i: number) => (
-              <div key={i} className="font-medium">
-                ✓ {point}
-              </div>
-            ))}
+        <section className="py-12 bg-white border-y">
+          <div className="max-w-[1100px] mx-auto px-6">
+            <div className="flex flex-wrap justify-center gap-x-10 gap-y-6 text-sm text-gray-600 text-center">
+              {data.contactTrustPoints.map((point: string, i: number) => (
+                <div
+                  key={i}
+                  className="font-medium min-w-[250px]"
+                >
+                  ✓ {point}
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       )}
@@ -40,30 +46,32 @@ export default async function ContactPage() {
       <section className="py-20 bg-[#f7f9fc]">
         <div className="max-w-[900px] mx-auto px-6">
           <div className="bg-white rounded-3xl shadow-xl p-10">
-            <h2 className="text-3xl font-semibold text-darkBlue mb-6">
+            <h2 className="text-3xl font-semibold text-darkBlue mb-8 text-center">
               Tell Us About Your Project
             </h2>
 
-            <p className="text-gray-600">
-              Please use the Start Your Project form to get in touch.
-            </p>
+            <ContactForm />
           </div>
         </div>
       </section>
 
       {/* TESTIMONIAL */}
-      {data?.tcontactTestimonial?.quote && (
+      {data?.contactTestimonial?.quote && (
         <section className="py-20 bg-white">
           <div className="max-w-[800px] mx-auto px-6 text-center">
-            <p className="text-xl italic text-darkBlue">
+            <p className="text-2xl italic text-darkBlue leading-relaxed">
               “{data.contactTestimonial.quote}”
             </p>
-            <div className="mt-4 font-semibold text-darkBlue">
-              — {data.contactTestimonial.author}
-            </div>
+
+            {data.contactTestimonial.author && (
+              <div className="mt-6 font-semibold text-darkBlue">
+                — {data.contactTestimonial.author}
+              </div>
+            )}
           </div>
         </section>
       )}
+
 
       {/* STRUCTURED DATA */}
       <Script

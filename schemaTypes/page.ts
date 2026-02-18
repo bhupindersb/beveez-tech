@@ -364,7 +364,7 @@ export const page = defineType({
   ======================= */
 
   defineField({
-    name: 'hero',
+    name: 'contactHero',
     title: 'Contact Page – Hero',
     type: 'object',
     hidden: ({ parent }) => parent?.template !== 'contact',
@@ -389,16 +389,16 @@ export const page = defineType({
   }),
 
   defineField({
-    name: 'trustPoints',
-    title: 'Trust Points',
+    name: 'contactTrustPoints',
+    title: 'Contact Page – Trust Points',
     type: 'array',
     hidden: ({ parent }) => parent?.template !== 'contact',
     of: [{ type: 'string' }],
   }),
 
   defineField({
-    name: 'testimonial',
-    title: 'Testimonial',
+    name: 'contactTestimonial',
+    title: 'Contact Page – Testimonial',
     type: 'object',
     hidden: ({ parent }) => parent?.template !== 'contact',
     fields: [
@@ -406,6 +406,7 @@ export const page = defineType({
       defineField({ name: 'author', type: 'string' }),
     ],
   }),
+
 
 
   ],

@@ -6,20 +6,17 @@ export async function getContactPage() {
       title,
       seo {
         seoTitle,
-        seoDescription,
-        seoImage {
-          asset->{url}
-        }
+        seoDescription
       },
-      hero {
+      contactHero {
         headline,
         subText,
         backgroundImage {
           asset->{url}
         }
       },
-      trustPoints,
-      testimonial {
+      contactTrustPoints,
+      contactTestimonial {
         quote,
         author
       }

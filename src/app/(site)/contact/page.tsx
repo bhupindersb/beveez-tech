@@ -21,13 +21,13 @@ export default async function ContactPage() {
   return (
     <>
       {/* HERO (SAFE RENDER) */}
-      {data.hero && <ContactHero hero={data.hero} />}
+      {data.contactHero && <ContactHero hero={data.contactHero} />}
 
       {/* TRUST STRIP */}
-      {data?.trustPoints?.length > 0 && (
+      {data?.contactTrustPoints?.length > 0 && (
         <section className="py-10 bg-white border-y">
           <div className="max-w-[1100px] mx-auto px-6 grid md:grid-cols-3 gap-6 text-center text-sm text-gray-600">
-            {data.trustPoints.map((point: string, i: number) => (
+            {data.contactTrustPoints.map((point: string, i: number) => (
               <div key={i} className="font-medium">
                 ✓ {point}
               </div>
@@ -52,14 +52,14 @@ export default async function ContactPage() {
       </section>
 
       {/* TESTIMONIAL */}
-      {data?.testimonial?.quote && (
+      {data?.tcontactTestimonial?.quote && (
         <section className="py-20 bg-white">
           <div className="max-w-[800px] mx-auto px-6 text-center">
             <p className="text-xl italic text-darkBlue">
-              “{data.testimonial.quote}”
+              “{data.contactTestimonial.quote}”
             </p>
             <div className="mt-4 font-semibold text-darkBlue">
-              — {data.testimonial.author}
+              — {data.contactTestimonial.author}
             </div>
           </div>
         </section>

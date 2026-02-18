@@ -20,15 +20,15 @@ export default function ContactHero({ hero }: Props) {
   return (
     <section className="relative overflow-hidden">
       {/* Background Image */}
-      {hero.backgroundImage?.asset?.url && (
+      {hero?.backgroundImage?.asset?.url && (
         <Image
-          src={hero.backgroundImage.asset.url}
-          alt=""
-          fill
-          priority
-          className="object-cover"
+            src={hero.backgroundImage.asset.url}
+            alt=""
+            fill
+            priority
+            className="object-cover"
         />
-      )}
+        )}
 
       {/* Orange Gradient */}
       <div className="absolute inset-x-0 bottom-0 h-[40%]

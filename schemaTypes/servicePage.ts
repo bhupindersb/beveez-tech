@@ -109,19 +109,44 @@ export const servicePage = defineType({
 
     /* ================= CTA ================= */
 
-    defineField({
-        name: 'ctaOverride',
-        title: 'CTA Section (Optional Override)',
-        type: 'object',
-        fields: [
-            { name: 'heading', type: 'string' },
-            { name: 'subText', type: 'text' },
-            { name: 'primaryCtaText', type: 'string' },
-            { name: 'primaryCtaUrl', type: 'string' },
-            { name: 'secondaryCtaText', type: 'string' },
-            { name: 'secondaryCtaUrl', type: 'string' },
-        ],
+   defineField({
+    name: 'ctaOverride',
+    title: 'CTA Section (Optional Override)',
+    type: 'object',
+    fields: [
+        defineField({
+        name: 'backgroundImage',
+        title: 'Background Image',
+        type: 'image',
+        options: { hotspot: true },
         }),
+        defineField({
+        name: 'heading',
+        type: 'string',
+        }),
+        defineField({
+        name: 'subText',
+        type: 'text',
+        }),
+        defineField({
+        name: 'primaryCtaText',
+        type: 'string',
+        }),
+        defineField({
+        name: 'primaryCtaUrl',
+        type: 'string',
+        }),
+        defineField({
+        name: 'secondaryCtaText',
+        type: 'string',
+        }),
+        defineField({
+        name: 'secondaryCtaUrl',
+        type: 'string',
+        }),
+    ],
+    }),
+
 
   ],
 })

@@ -40,19 +40,18 @@ export async function getServiceBySlug(slug: string) {
       ctaOverride{
         heading,
         subText,
-
-        backgroundImage{
-          asset->{
-            _id,
-            url
-          }
-        },
-
         primaryCtaText,
         primaryCtaUrl,
         secondaryCtaText,
-        secondaryCtaUrl
-      }
+        secondaryCtaUrl,
+        backgroundImage{
+            asset->{
+            _id,
+            url
+            }
+        }
+        }
+
     }
     `,
     { slug }

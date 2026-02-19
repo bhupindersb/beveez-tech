@@ -5,6 +5,7 @@ import Link from 'next/link'
 import CTASection from '@/components/CtaSection'
 import { motion } from 'framer-motion'
 import { fadeUp, staggerContainer } from '@/lib/motion'
+import ServiceFAQ from '@/components/ServiceFAQ'
 
 export default function ServiceClient({ data }: any) {
   return (
@@ -217,55 +218,33 @@ export default function ServiceClient({ data }: any) {
         </motion.section>
       )}
 
-      {/* ================= FAQ ================= */}
-      {data.faq?.length > 0 && (
+        {/* ================= FAQ ================= */}
+        {data.faq?.length > 0 && (
         <motion.section
-          variants={staggerContainer()}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="py-24 bg-white"
+            variants={staggerContainer()}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="py-24 bg-white"
         >
-          <div className="max-w-[900px] mx-auto px-6">
+            <div className="max-w-[900px] mx-auto px-6">
 
             <motion.h2
-              variants={fadeUp}
-              className="text-4xl font-bold text-darkBlue mb-16 text-center"
+                variants={fadeUp}
+                className="text-4xl font-bold text-darkBlue mb-16 text-center"
             >
-              Frequently Asked Questions
+                Frequently Asked Questions
             </motion.h2>
 
-            <div className="space-y-6">
-              {data.faq.map((item: any, i: number) => (
-                <motion.details
-                  key={i}
-                  variants={fadeUp}
-                  className="group bg-[#f7f9fc] p-6 rounded-2xl
-                             shadow-sm hover:shadow-md transition"
-                >
-                  <summary className="cursor-pointer font-semibold
-                                      text-darkBlue flex justify-between items-center">
-                    {item.question}
-                    <span className="group-open:rotate-180 transition">
-                      ▼
-                    </span>
-                  </summary>
+            <ServiceFAQ faqs={data.faq} />
 
-                  <p className="mt-4 text-gray-600 leading-relaxed">
-                    {item.answer}
-                  </p>
-                </motion.details>
-              ))}
             </div>
-
-          </div>
         </motion.section>
-      )}
+        )}
+
 
       {/* ================= CTA ================= */}
-      {data.ctaOverride && (
-        <CTASection data={data.ctaOverride} />
-      )}
+      <CTASection data={data.ctaOverride ?? null} />
     </>
   )
 }

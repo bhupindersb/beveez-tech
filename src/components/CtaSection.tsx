@@ -11,7 +11,7 @@ export default function CtaSection({ data }: { data: any }) {
         {/* Background Image */}
         {data.backgroundImage && (
           <Image
-            src={urlFor(data.backgroundImage).width(2400).height(1200).url()}
+            src={urlFor(data.backgroundImage.asset.url).width(2400).height(1200).url()}
             alt=""
             fill
             className="object-cover"

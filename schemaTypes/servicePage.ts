@@ -54,13 +54,27 @@ export const servicePage = defineType({
     /* ================= PROBLEM ================= */
 
     defineField({
-      name: 'problem',
-      title: 'Problem Section',
-      type: 'object',
-      fields: [
-        { name: 'heading', type: 'string' },
-        { name: 'content', type: 'text' },
-      ],
+    name: 'problem',
+    title: 'Problem Section',
+    type: 'object',
+    fields: [
+        defineField({
+        name: 'heading',
+        type: 'string',
+        }),
+        defineField({
+        name: 'content',
+        title: 'Content',
+        type: 'array',
+        of: [{ type: 'block' }],
+        }),
+        defineField({
+        name: 'impactPoints',
+        title: 'Impact Points (Slow websites hurt)',
+        type: 'array',
+        of: [{ type: 'string' }],
+        }),
+    ],
     }),
 
     /* ================= WHAT WE DO ================= */

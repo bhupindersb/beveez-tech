@@ -37,11 +37,21 @@ export async function getServiceBySlug(slug: string) {
         question,
         answer
       },
-      cta{
+      ctaOverride{
         heading,
         subText,
-        buttonText,
-        buttonUrl
+
+        backgroundImage{
+          asset->{
+            _id,
+            url
+          }
+        },
+
+        primaryCtaText,
+        primaryCtaUrl,
+        secondaryCtaText,
+        secondaryCtaUrl
       }
     }
     `,

@@ -1,7 +1,15 @@
-import { getServiceBySlug } from '@/sanity/lib/getServiceBySlug'
+import { getServiceBySlug, getAllServiceSlugs } from '@/sanity/lib/getServiceBySlug'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+
+export async function generateStaticParams() {
+  const slugs = await getAllServiceSlugs()
+
+  return slugs.map((slug: string) => ({
+    slug,
+  }))
+}
 
 export async function generateMetadata({ params }: any) {
   const data = await getServiceBySlug(params.slug)

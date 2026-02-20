@@ -129,30 +129,40 @@ export default function ServiceClient({ data }: any) {
           </motion.div>
         </motion.div>
         {data.heroMetrics?.length > 0 && (
+        <motion.div
+            variants={staggerContainer()}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="mt-20 max-w-[1100px] mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8"
+        >
+            {data.heroMetrics.map((metric: any, i: number) => (
             <motion.div
-                variants={staggerContainer()}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="mt-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 max-w-[1000px] mx-auto"
+                key={i}
+                variants={fadeUp}
+                className="bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-darkBlue/5 text-center hover:shadow-2xl transition"
             >
-                {data.heroMetrics.map((metric: any, i: number) => (
-                <motion.div
-                    key={i}
-                    variants={fadeUp}
-                    className="bg-white/80 backdrop-blur-md p-8 rounded-3xl shadow-xl text-center"
-                >
-                    <div className="text-5xl font-bold bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] bg-clip-text text-transparent">
-                    <AnimatedCounter value={metric.value} />
-                    </div>
+                {/* ICON */}
+                <div className="mb-4 flex justify-center">
+                <div className="h-12 w-12 rounded-xl bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] flex items-center justify-center text-white text-xl font-bold">
+                    ★
+                </div>
+                </div>
 
-                    <div className="mt-3 text-sm text-darkBlue/70 tracking-wide uppercase">
-                    {metric.label}
-                    </div>
-                </motion.div>
-                ))}
+                {/* VALUE */}
+                <div className="text-3xl font-bold text-orange-600">
+                {metric.value}
+                </div>
+
+                {/* LABEL */}
+                <div className="mt-2 text-xs tracking-wider uppercase text-darkBlue/60">
+                {metric.label}
+                </div>
             </motion.div>
+            ))}
+        </motion.div>
         )}
+
 
       </section>
 
@@ -246,35 +256,59 @@ export default function ServiceClient({ data }: any) {
       )}
 
       {/* ================= PROCESS ================= */}
-        <div className="relative">
+        {data.process?.length > 0 && (
+        <motion.section
+            variants={staggerContainer()}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="py-28 bg-white"
+        >
+            <div className="max-w-[1100px] mx-auto px-6">
 
-        <div className="absolute left-1/2 top-0 bottom-0 w-[3px] bg-gradient-to-b from-orange-400 to-orange-200 -translate-x-1/2" />
-
-        {data.process.map((step: string, i: number) => (
-            <motion.div
-            key={i}
-            variants={fadeUp}
-            className={`relative mb-20 flex ${
-                i % 2 === 0 ? 'justify-start' : 'justify-end'
-            }`}
+            <motion.h2
+                variants={fadeUp}
+                className="text-4xl font-bold text-center text-darkBlue mb-20"
             >
-            <div className="w-full md:w-1/2 px-6">
-                <div className="bg-white p-10 rounded-3xl shadow-xl border border-darkBlue/5 hover:shadow-2xl transition">
+                Our Process
+            </motion.h2>
 
-                <div className="text-sm text-orange-500 font-semibold tracking-wider uppercase mb-2">
-                    Phase {i + 1}
-                </div>
+            <div className="relative">
 
-                <div className="text-darkBlue text-lg leading-relaxed">
-                    {step}
-                </div>
-                </div>
+                {/* Center line */}
+                <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-orange-200 -translate-x-1/2" />
+
+                {data.process.map((step: string, i: number) => (
+                <motion.div
+                    key={i}
+                    variants={fadeUp}
+                    className={`relative mb-20 flex ${
+                    i % 2 === 0 ? 'justify-start' : 'justify-end'
+                    }`}
+                >
+                    <div className="w-full md:w-[48%] px-4">
+                    <div className="bg-[#f7f9fc] p-8 rounded-3xl shadow-lg border border-darkBlue/5 hover:shadow-xl transition">
+
+                        <div className="text-xs font-semibold tracking-widest text-orange-500 uppercase mb-3">
+                        Phase {i + 1}
+                        </div>
+
+                        <div className="text-darkBlue text-lg">
+                        {step}
+                        </div>
+                    </div>
+                    </div>
+
+                    <div className="absolute left-1/2 -translate-x-1/2 top-10 h-5 w-5 rounded-full bg-orange-500 ring-4 ring-orange-100" />
+                </motion.div>
+                ))}
+
             </div>
 
-            <div className="absolute left-1/2 -translate-x-1/2 top-10 h-6 w-6 rounded-full bg-orange-500 ring-4 ring-orange-100" />
-            </motion.div>
-        ))}
-        </div>
+            </div>
+        </motion.section>
+        )}
+
 
 
 
@@ -312,47 +346,68 @@ export default function ServiceClient({ data }: any) {
         </motion.section>
       )}
 
-        <div className="grid md:grid-cols-2 gap-16">
+        {data.comparison && (
+        <motion.section
+            variants={staggerContainer()}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="py-28 bg-[#f7f9fc]"
+        >
+            <div className="max-w-[1100px] mx-auto px-6">
 
-            {/* BEFORE */}
-            <motion.div
+            <motion.h2
                 variants={fadeUp}
-                className="relative bg-white p-12 rounded-3xl shadow-xl border border-red-100"
+                className="text-4xl font-bold text-center text-darkBlue mb-16"
             >
-                <div className="absolute -top-4 left-8 bg-red-500 text-white text-xs px-4 py-1 rounded-full">
-                Before
+                {data.comparison.heading}
+            </motion.h2>
+
+            <div className="grid md:grid-cols-2 gap-12">
+
+                {/* BEFORE */}
+                <motion.div
+                variants={fadeUp}
+                className="bg-white p-10 rounded-3xl shadow-xl border border-red-100"
+                >
+                <div className="inline-block mb-6 bg-red-500 text-white text-xs px-4 py-1 rounded-full">
+                    Before
                 </div>
 
-                <ul className="space-y-4 mt-6">
-                {data.comparison.beforePoints.map((point: string, i: number) => (
+                <ul className="space-y-4">
+                    {data.comparison.beforePoints.map((point: string, i: number) => (
                     <li key={i} className="flex gap-4 text-darkBlue/80">
-                    <span className="text-red-500 text-xl">✕</span>
-                    {point}
+                        <span className="text-red-500 text-lg">✕</span>
+                        {point}
                     </li>
-                ))}
+                    ))}
                 </ul>
-            </motion.div>
+                </motion.div>
 
-            {/* AFTER */}
-            <motion.div
+                {/* AFTER */}
+                <motion.div
                 variants={fadeUp}
-                className="relative bg-white p-12 rounded-3xl shadow-2xl border border-green-100"
-            >
-                <div className="absolute -top-4 left-8 bg-green-600 text-white text-xs px-4 py-1 rounded-full">
-                After
+                className="bg-white p-10 rounded-3xl shadow-2xl border border-green-100"
+                >
+                <div className="inline-block mb-6 bg-green-600 text-white text-xs px-4 py-1 rounded-full">
+                    After
                 </div>
 
-                <ul className="space-y-4 mt-6">
-                {data.comparison.afterPoints.map((point: string, i: number) => (
+                <ul className="space-y-4">
+                    {data.comparison.afterPoints.map((point: string, i: number) => (
                     <li key={i} className="flex gap-4 text-darkBlue">
-                    <span className="text-green-600 text-xl">✓</span>
-                    {point}
+                        <span className="text-green-600 text-lg">✓</span>
+                        {point}
                     </li>
-                ))}
+                    ))}
                 </ul>
-            </motion.div>
+                </motion.div>
 
-        </div>
+            </div>
+
+            </div>
+        </motion.section>
+        )}
 
 
 

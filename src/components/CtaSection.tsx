@@ -6,12 +6,15 @@ export default function CtaSection({ data }: { data: any }) {
 
   return (
     <section className="pt-0 pb-[60px] md:pb-[120px] px-[20px]">
-      <div className="mx-auto w-[100%] overflow-hidden rounded-[48px] relative">
+      <div className="mx-auto w-full overflow-hidden rounded-[48px] relative">
 
         {/* Background Image */}
-        {data.backgroundImage && (
+        {data?.backgroundImage?.asset && (
           <Image
-            src={urlFor(data.backgroundImage.asset.url).width(2400).height(1200).url()}
+            src={urlFor(data.backgroundImage)
+              .width(2400)
+              .height(1200)
+              .url()}
             alt=""
             fill
             className="object-cover"
@@ -24,15 +27,18 @@ export default function CtaSection({ data }: { data: any }) {
 
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 py-[120px]">
-          <h2 className="text-white text-[48px] md:text-[72px] font-heading font-bold leading-none max-w-4xl">
-            {data.heading}
-          </h2>
+          {data.heading && (
+            <h2 className="text-white text-[48px] md:text-[72px] font-heading font-bold leading-none max-w-4xl">
+              {data.heading}
+            </h2>
+          )}
 
-          <p className="mt-6 max-w-2xl text-white/90 text-lg">
-            {data.subText}
-          </p>
+          {data.subText && (
+            <p className="mt-6 max-w-2xl text-white/90 text-lg">
+              {data.subText}
+            </p>
+          )}
 
-          {/* CTAs */}
           <div className="mt-10 flex flex-col sm:flex-row gap-6">
             {data.primaryCtaText && data.primaryCtaUrl && (
               <a
@@ -50,8 +56,8 @@ export default function CtaSection({ data }: { data: any }) {
               <a
                 href={data.secondaryCtaUrl}
                 className="rounded-full
-                            px-12 py-8 text-darkBlue font-normal text-center bg-white
-                            hover:bg-darkBlue hover:text-white transition-all"
+                           px-12 py-8 text-darkBlue font-normal text-center bg-white
+                           hover:bg-darkBlue hover:text-white transition-all"
               >
                 {data.secondaryCtaText}
               </a>

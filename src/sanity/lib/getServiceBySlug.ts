@@ -26,9 +26,16 @@ export async function getServiceBySlug(slug: string) {
           asset->{ url }
         }
       },
+      heroMetrics,
+        comparison{
+        heading,
+        beforePoints,
+        afterPoints
+      },
       problem{
         heading,
-        content
+        content,
+        impactPoints
       },
       whatWeDo,
       process,
@@ -50,7 +57,11 @@ export async function getServiceBySlug(slug: string) {
             url
             }
         }
-        }
+      },
+      testimonial{
+            quote,
+            author
+      } 
 
     }
     `,

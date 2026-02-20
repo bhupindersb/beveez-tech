@@ -50,6 +50,21 @@ export const servicePage = defineType({
         },
       ],
     }),
+    defineField({
+        name: 'heroMetrics',
+        title: 'Hero Metrics',
+        type: 'array',
+        of: [
+            {
+            type: 'object',
+            fields: [
+                { name: 'value', type: 'string' },
+                { name: 'label', type: 'string' },
+            ],
+            },
+        ],
+    }),
+
 
     /* ================= PROBLEM ================= */
 
@@ -104,6 +119,30 @@ export const servicePage = defineType({
       of: [{ type: 'string' }],
     }),
 
+    /* ================= BEFORE/AFTER ================= */
+
+    defineField({
+        name: 'comparison',
+        title: 'Before vs After Section',
+        type: 'object',
+        fields: [
+            { name: 'heading', type: 'string' },
+
+            {
+            name: 'beforePoints',
+            title: 'Before Points',
+            type: 'array',
+            of: [{ type: 'string' }],
+            },
+            {
+            name: 'afterPoints',
+            title: 'After Points',
+            type: 'array',
+            of: [{ type: 'string' }],
+            },
+        ],
+    }),
+
     /* ================= FAQ ================= */
 
     defineField({
@@ -119,6 +158,18 @@ export const servicePage = defineType({
           ],
         },
       ],
+    }),
+
+    /* ================= TESTIMONIAL ================= */
+
+    defineField({
+        name: 'testimonial',
+        title: 'Testimonial',
+        type: 'object',
+        fields: [
+            { name: 'quote', type: 'text' },
+            { name: 'author', type: 'string' },
+        ],
     }),
 
     /* ================= CTA ================= */

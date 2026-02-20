@@ -7,6 +7,32 @@ import { motion } from 'framer-motion'
 import { fadeUp, staggerContainer } from '@/lib/motion'
 import ServiceFAQ from '@/components/ServiceFAQ'
 import { PortableText } from '@portabletext/react'
+import { useEffect, useState } from 'react'
+
+function AnimatedCounter({ value }: { value: string }) {
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    const numeric = parseInt(value.replace(/\D/g, ''))
+    let start = 0
+    const duration = 1200
+    const increment = numeric / (duration / 16)
+
+    const timer = setInterval(() => {
+      start += increment
+      if (start >= numeric) {
+        setCount(numeric)
+        clearInterval(timer)
+      } else {
+        setCount(Math.floor(start))
+      }
+    }, 16)
+
+    return () => clearInterval(timer)
+  }, [value])
+
+  return <>{value.includes('%') ? `${count}%` : value.includes('+') ? `${count}+` : count}</>
+}
 
 
 export default function ServiceClient({ data }: any) {
@@ -72,25 +98,27 @@ export default function ServiceClient({ data }: any) {
             </Link>
           </motion.div>
         </motion.div>
+        {data.heroMetrics?.length > 0 && (
         <motion.div
             variants={fadeUp}
-            className="mt-12 flex flex-wrap justify-center gap-8 text-darkBlue/70"
+            className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-10 max-w-[900px] mx-auto"
+        >
+            {data.heroMetrics.map((metric: any, i: number) => (
+            <div
+                key={i}
+                className="bg-white/60 backdrop-blur-md
+                        rounded-2xl py-8 shadow-lg"
             >
-            <div className="text-center">
-                <div className="text-3xl font-bold text-orange-500">+40%</div>
-                <div className="text-sm">Faster Load Time</div>
+                <div className="text-4xl font-bold text-orange-500">
+                <AnimatedCounter value={metric.value} />
+                </div>
+                <div className="mt-2 text-sm text-darkBlue/70">
+                {metric.label}
+                </div>
             </div>
-
-            <div className="text-center">
-                <div className="text-3xl font-bold text-orange-500">+25%</div>
-                <div className="text-sm">Conversion Lift</div>
-            </div>
-
-            <div className="text-center">
-                <div className="text-3xl font-bold text-orange-500">90+</div>
-                <div className="text-sm">Core Web Vitals</div>
-            </div>
+            ))}
         </motion.div>
+        )}
 
       </section>
 
@@ -182,36 +210,54 @@ export default function ServiceClient({ data }: any) {
       {/* ================= PROCESS ================= */}
       {data.process?.length > 0 && (
         <motion.section
-          variants={staggerContainer()}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="py-24 bg-white"
+            variants={staggerContainer()}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="py-28 bg-white"
         >
-          <div className="max-w-[900px] mx-auto px-6">
+            <div className="max-w-[1000px] mx-auto px-6">
 
             <motion.h2
-              variants={fadeUp}
-              className="text-4xl font-bold font-heading text-darkBlue mb-16 text-center"
+                variants={fadeUp}
+                className="text-4xl font-bold text-center text-darkBlue mb-20"
             >
-              Our Process
+                Our Process
             </motion.h2>
 
-            <div className="relative border-l-2 border-orange-400 pl-10 space-y-12">
-              {data.process.map((step: string, i: number) => (
-                <motion.div key={i} variants={fadeUp} className="relative">
-                  <div className="absolute -left-[22px] top-2 h-4 w-4 
-                                  rounded-full bg-orange-500" />
-                  <p className="text-darkBlue font-medium">
-                    {step}
-                  </p>
+            <div className="relative">
+
+                <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-orange-200 -translate-x-1/2" />
+
+                {data.process.map((step: string, i: number) => (
+                <motion.div
+                    key={i}
+                    variants={fadeUp}
+                    className={`relative mb-16 flex ${
+                    i % 2 === 0 ? 'justify-start' : 'justify-end'
+                    }`}
+                >
+                    <div className="w-full md:w-1/2 px-6">
+                    <div className="bg-[#f7f9fc] p-8 rounded-3xl shadow-lg">
+                        <div className="text-orange-500 font-bold mb-2">
+                        Step {i + 1}
+                        </div>
+                        <div className="text-darkBlue">
+                        {step}
+                        </div>
+                    </div>
+                    </div>
+
+                    <div className="absolute left-1/2 -translate-x-1/2 top-8
+                                    h-5 w-5 rounded-full bg-orange-500" />
                 </motion.div>
-              ))}
+                ))}
             </div>
 
-          </div>
+            </div>
         </motion.section>
       )}
+
 
       {/* ================= DELIVERABLES ================= */}
       {data.deliverables?.length > 0 && (
@@ -247,53 +293,58 @@ export default function ServiceClient({ data }: any) {
         </motion.section>
       )}
 
-      <motion.section
-        variants={staggerContainer()}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="py-28 bg-white"
+      {data.comparison && (
+        <motion.section
+            variants={staggerContainer()}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="py-28 bg-[#f7f9fc]"
         >
-        <div className="max-w-[1000px] mx-auto px-6 text-center">
+            <div className="max-w-[1100px] mx-auto px-6">
 
             <motion.h2
-            variants={fadeUp}
-            className="text-4xl font-bold text-darkBlue mb-16"
+                variants={fadeUp}
+                className="text-4xl font-bold text-center text-darkBlue mb-16"
             >
-            Before vs After Optimization
+                {data.comparison.heading}
             </motion.h2>
 
-            <div className="grid md:grid-cols-2 gap-10">
+            <div className="grid md:grid-cols-2 gap-12">
 
-            <motion.div
+                <motion.div
                 variants={fadeUp}
-                className="bg-red-50 p-10 rounded-3xl border border-red-100"
-            >
-                <h3 className="font-semibold text-red-600 mb-6">Before</h3>
-                <ul className="space-y-3 text-darkBlue/70">
-                <li>❌ 4–6s load time</li>
-                <li>❌ Poor Core Web Vitals</li>
-                <li>❌ High bounce rate</li>
-                <li>❌ SEO penalties</li>
+                className="bg-white p-10 rounded-3xl shadow-lg border border-red-100"
+                >
+                <h3 className="text-red-500 font-semibold mb-6">Before</h3>
+                <ul className="space-y-3">
+                    {data.comparison.beforePoints.map((point: string, i: number) => (
+                    <li key={i} className="flex gap-3 text-darkBlue/80">
+                        <span>❌</span> {point}
+                    </li>
+                    ))}
                 </ul>
-            </motion.div>
+                </motion.div>
 
-            <motion.div
+                <motion.div
                 variants={fadeUp}
-                className="bg-green-50 p-10 rounded-3xl border border-green-100"
-            >
-                <h3 className="font-semibold text-green-600 mb-6">After</h3>
-                <ul className="space-y-3 text-darkBlue/70">
-                <li>✅ 1.5–2s load time</li>
-                <li>✅ Passing Core Web Vitals</li>
-                <li>✅ Better rankings</li>
-                <li>✅ Higher conversions</li>
+                className="bg-white p-10 rounded-3xl shadow-lg border border-green-100"
+                >
+                <h3 className="text-green-600 font-semibold mb-6">After</h3>
+                <ul className="space-y-3">
+                    {data.comparison.afterPoints.map((point: string, i: number) => (
+                    <li key={i} className="flex gap-3 text-darkBlue/80">
+                        <span>✅</span> {point}
+                    </li>
+                    ))}
                 </ul>
-            </motion.div>
+                </motion.div>
 
             </div>
-        </div>
+
+            </div>
         </motion.section>
+      )}
 
 
         {/* ================= FAQ ================= */}
@@ -320,33 +371,31 @@ export default function ServiceClient({ data }: any) {
         </motion.section>
         )}
 
-        <motion.section
-        variants={staggerContainer()}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="py-28 bg-[#f7f9fc]"
-        >
-        <div className="max-w-[800px] mx-auto px-6 text-center">
-
-            <motion.p
-            variants={fadeUp}
-            className="text-2xl italic text-darkBlue"
+        {data.testimonial?.quote && (
+            <motion.section
+                variants={staggerContainer()}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="py-28 bg-white text-center"
             >
-            “Our website load time dropped from 5 seconds to under 2 seconds.
-            Conversions increased by 32% in 3 months.”
-            </motion.p>
+                <motion.p
+                variants={fadeUp}
+                className="text-2xl italic text-darkBlue max-w-[800px] mx-auto"
+                >
+                “{data.testimonial.quote}”
+                </motion.p>
 
-            <motion.div
-            variants={fadeUp}
-            className="mt-6 font-semibold text-darkBlue"
-            >
-            — SaaS Founder, UK
-            </motion.div>
-
-        </div>
-        </motion.section>
-        
+                {data.testimonial.author && (
+                <motion.div
+                    variants={fadeUp}
+                    className="mt-6 font-semibold text-darkBlue"
+                >
+                    — {data.testimonial.author}
+                </motion.div>
+                )}
+            </motion.section>
+        )}
 
 
       {/* ================= CTA ================= */}

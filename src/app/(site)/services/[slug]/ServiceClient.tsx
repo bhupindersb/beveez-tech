@@ -34,6 +34,36 @@ function AnimatedCounter({ value }: { value: string }) {
   return <>{value.includes('%') ? `${count}%` : value.includes('+') ? `${count}+` : count}</>
 }
 
+const portableComponents = {
+  block: {
+    normal: ({ children }: any) => (
+      <p className="mb-4 leading-relaxed text-darkBlue/80">
+        {children}
+      </p>
+    ),
+  },
+  list: {
+    bullet: ({ children }: any) => (
+      <ul className="list-disc pl-6 space-y-2 mb-6 text-darkBlue/80">
+        {children}
+      </ul>
+    ),
+    number: ({ children }: any) => (
+      <ol className="list-decimal pl-6 space-y-2 mb-6 text-darkBlue/80">
+        {children}
+      </ol>
+    ),
+  },
+  marks: {
+    strong: ({ children }: any) => (
+      <strong className="font-semibold text-darkBlue">
+        {children}
+      </strong>
+    ),
+  },
+}
+
+
 
 export default function ServiceClient({ data }: any) {
   return (
@@ -106,8 +136,9 @@ export default function ServiceClient({ data }: any) {
             {data.heroMetrics.map((metric: any, i: number) => (
             <div
                 key={i}
-                className="bg-white/60 backdrop-blur-md
-                        rounded-2xl py-8 shadow-lg"
+                className="text-4xl font-bold bg-gradient-to-r 
+           from-[#cf5a20] to-[#f68f1e]
+           bg-clip-text text-transparent"
             >
                 <div className="text-4xl font-bold text-orange-500">
                 <AnimatedCounter value={metric.value} />
@@ -139,7 +170,11 @@ export default function ServiceClient({ data }: any) {
                 </h2>
 
                 <div className="prose prose-lg max-w-none text-darkBlue/80">
-                <PortableText value={data.problem.content} />
+                <PortableText
+                    value={data.problem.content}
+                    components={portableComponents}
+                />
+
                 </div>
             </motion.div>
 
@@ -156,7 +191,7 @@ export default function ServiceClient({ data }: any) {
                 <ul className="space-y-4">
                     {data.problem.impactPoints.map((point: string, i: number) => (
                     <li key={i} className="flex items-center gap-3 text-darkBlue/80">
-                        <span className="h-2 w-2 bg-orange-500 rounded-full" />
+                        <span className="h-2 w-2 bg-darkOrange rounded-full" />
                         {point}
                     </li>
                     ))}

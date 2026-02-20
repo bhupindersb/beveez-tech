@@ -16,53 +16,61 @@ export async function getServiceBySlug(slug: string) {
   return sanityClient.fetch(
     `
     *[_type == "servicePage" && slug.current == $slug][0]{
-      title,
-      slug,
-      seo,
-      hero{
-        headline,
-        subText,
-        backgroundImage{
-          asset->{ url }
-        }
-      },
-      heroMetrics,
-        comparison{
-        heading,
-        beforePoints,
-        afterPoints
-      },
-      problem{
-        heading,
-        content,
-        impactPoints
-      },
-      whatWeDo,
-      process,
-      deliverables,
-      faq[]{
-        question,
-        answer
-      },
-      ctaOverride{
-        heading,
-        subText,
-        primaryCtaText,
-        primaryCtaUrl,
-        secondaryCtaText,
-        secondaryCtaUrl,
-        backgroundImage{
-            asset->{
-            _id,
-            url
+        title,
+        slug,
+        seo,
+
+        hero{
+            headline,
+            subText,
+            backgroundImage{
+            asset->{ url }
             }
-        }
-      },
-      testimonial{
+        },
+
+        heroMetrics[]{
+            value,
+            label
+        },
+
+        problem{
+            heading,
+            content,
+            impactPoints
+        },
+
+        whatWeDo,
+        process,
+        deliverables,
+
+        comparison{
+            heading,
+            beforePoints,
+            afterPoints
+        },
+
+        testimonial{
             quote,
             author
-      } 
+        },
 
+        faq[]{
+            question,
+            answer,
+            highlighted
+        },
+
+        ctaOverride{
+            heading,
+            subText,
+            backgroundImage{
+            asset->{ url }
+            },
+            primaryCtaText,
+            primaryCtaUrl,
+            secondaryCtaText,
+            secondaryCtaUrl
+        }
     }
     `,
     { slug }

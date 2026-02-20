@@ -129,26 +129,29 @@ export default function ServiceClient({ data }: any) {
           </motion.div>
         </motion.div>
         {data.heroMetrics?.length > 0 && (
-        <motion.div
-            variants={fadeUp}
-            className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-10 max-w-[900px] mx-auto"
-        >
-            {data.heroMetrics.map((metric: any, i: number) => (
-            <div
-                key={i}
-                className="text-4xl font-bold bg-gradient-to-r 
-           from-[#cf5a20] to-[#f68f1e]
-           bg-clip-text text-transparent"
+            <motion.div
+                variants={staggerContainer()}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="mt-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 max-w-[1000px] mx-auto"
             >
-                <div className="text-4xl font-bold text-orange-500">
-                <AnimatedCounter value={metric.value} />
-                </div>
-                <div className="mt-2 text-sm text-darkBlue/70">
-                {metric.label}
-                </div>
-            </div>
-            ))}
-        </motion.div>
+                {data.heroMetrics.map((metric: any, i: number) => (
+                <motion.div
+                    key={i}
+                    variants={fadeUp}
+                    className="bg-white/80 backdrop-blur-md p-8 rounded-3xl shadow-xl text-center"
+                >
+                    <div className="text-5xl font-bold bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] bg-clip-text text-transparent">
+                    <AnimatedCounter value={metric.value} />
+                    </div>
+
+                    <div className="mt-3 text-sm text-darkBlue/70 tracking-wide uppercase">
+                    {metric.label}
+                    </div>
+                </motion.div>
+                ))}
+            </motion.div>
         )}
 
       </section>
@@ -243,55 +246,36 @@ export default function ServiceClient({ data }: any) {
       )}
 
       {/* ================= PROCESS ================= */}
-      {data.process?.length > 0 && (
-        <motion.section
-            variants={staggerContainer()}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="py-28 bg-white"
-        >
-            <div className="max-w-[1000px] mx-auto px-6">
+        <div className="relative">
 
-            <motion.h2
-                variants={fadeUp}
-                className="text-4xl font-bold text-center text-darkBlue mb-20"
+        <div className="absolute left-1/2 top-0 bottom-0 w-[3px] bg-gradient-to-b from-orange-400 to-orange-200 -translate-x-1/2" />
+
+        {data.process.map((step: string, i: number) => (
+            <motion.div
+            key={i}
+            variants={fadeUp}
+            className={`relative mb-20 flex ${
+                i % 2 === 0 ? 'justify-start' : 'justify-end'
+            }`}
             >
-                Our Process
-            </motion.h2>
+            <div className="w-full md:w-1/2 px-6">
+                <div className="bg-white p-10 rounded-3xl shadow-xl border border-darkBlue/5 hover:shadow-2xl transition">
 
-            <div className="relative">
+                <div className="text-sm text-orange-500 font-semibold tracking-wider uppercase mb-2">
+                    Phase {i + 1}
+                </div>
 
-                <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-orange-200 -translate-x-1/2" />
-
-                {data.process.map((step: string, i: number) => (
-                <motion.div
-                    key={i}
-                    variants={fadeUp}
-                    className={`relative mb-16 flex ${
-                    i % 2 === 0 ? 'justify-start' : 'justify-end'
-                    }`}
-                >
-                    <div className="w-full md:w-1/2 px-6">
-                    <div className="bg-[#f7f9fc] p-8 rounded-3xl shadow-lg">
-                        <div className="text-orange-500 font-bold mb-2">
-                        Step {i + 1}
-                        </div>
-                        <div className="text-darkBlue">
-                        {step}
-                        </div>
-                    </div>
-                    </div>
-
-                    <div className="absolute left-1/2 -translate-x-1/2 top-8
-                                    h-5 w-5 rounded-full bg-orange-500" />
-                </motion.div>
-                ))}
+                <div className="text-darkBlue text-lg leading-relaxed">
+                    {step}
+                </div>
+                </div>
             </div>
 
-            </div>
-        </motion.section>
-      )}
+            <div className="absolute left-1/2 -translate-x-1/2 top-10 h-6 w-6 rounded-full bg-orange-500 ring-4 ring-orange-100" />
+            </motion.div>
+        ))}
+        </div>
+
 
 
       {/* ================= DELIVERABLES ================= */}
@@ -328,58 +312,48 @@ export default function ServiceClient({ data }: any) {
         </motion.section>
       )}
 
-      {data.comparison && (
-        <motion.section
-            variants={staggerContainer()}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="py-28 bg-[#f7f9fc]"
-        >
-            <div className="max-w-[1100px] mx-auto px-6">
+        <div className="grid md:grid-cols-2 gap-16">
 
-            <motion.h2
+            {/* BEFORE */}
+            <motion.div
                 variants={fadeUp}
-                className="text-4xl font-bold text-center text-darkBlue mb-16"
+                className="relative bg-white p-12 rounded-3xl shadow-xl border border-red-100"
             >
-                {data.comparison.heading}
-            </motion.h2>
+                <div className="absolute -top-4 left-8 bg-red-500 text-white text-xs px-4 py-1 rounded-full">
+                Before
+                </div>
 
-            <div className="grid md:grid-cols-2 gap-12">
-
-                <motion.div
-                variants={fadeUp}
-                className="bg-white p-10 rounded-3xl shadow-lg border border-red-100"
-                >
-                <h3 className="text-red-500 font-semibold mb-6">Before</h3>
-                <ul className="space-y-3">
-                    {data.comparison.beforePoints.map((point: string, i: number) => (
-                    <li key={i} className="flex gap-3 text-darkBlue/80">
-                        <span>❌</span> {point}
+                <ul className="space-y-4 mt-6">
+                {data.comparison.beforePoints.map((point: string, i: number) => (
+                    <li key={i} className="flex gap-4 text-darkBlue/80">
+                    <span className="text-red-500 text-xl">✕</span>
+                    {point}
                     </li>
-                    ))}
+                ))}
                 </ul>
-                </motion.div>
+            </motion.div>
 
-                <motion.div
+            {/* AFTER */}
+            <motion.div
                 variants={fadeUp}
-                className="bg-white p-10 rounded-3xl shadow-lg border border-green-100"
-                >
-                <h3 className="text-green-600 font-semibold mb-6">After</h3>
-                <ul className="space-y-3">
-                    {data.comparison.afterPoints.map((point: string, i: number) => (
-                    <li key={i} className="flex gap-3 text-darkBlue/80">
-                        <span>✅</span> {point}
+                className="relative bg-white p-12 rounded-3xl shadow-2xl border border-green-100"
+            >
+                <div className="absolute -top-4 left-8 bg-green-600 text-white text-xs px-4 py-1 rounded-full">
+                After
+                </div>
+
+                <ul className="space-y-4 mt-6">
+                {data.comparison.afterPoints.map((point: string, i: number) => (
+                    <li key={i} className="flex gap-4 text-darkBlue">
+                    <span className="text-green-600 text-xl">✓</span>
+                    {point}
                     </li>
-                    ))}
+                ))}
                 </ul>
-                </motion.div>
+            </motion.div>
 
-            </div>
+        </div>
 
-            </div>
-        </motion.section>
-      )}
 
 
         {/* ================= FAQ ================= */}

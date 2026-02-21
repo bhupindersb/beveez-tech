@@ -65,18 +65,18 @@ const portableComponents = {
   },
 }
 
-const timelineRef = useRef(null)
-
-const { scrollYProgress } = useScroll({
-  target: timelineRef,
-  offset: ['start end', 'end start'],
-})
-
-const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
-
 
 
 export default function ServiceClient({ data }: any) {
+    const timelineRef = useRef(null)
+
+    const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start end', 'end start'],
+    })
+
+    const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
+
   return (
     <>
       {/* ================= HERO ================= */}

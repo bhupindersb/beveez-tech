@@ -37,18 +37,26 @@ export const servicePage = defineType({
     /* ================= HERO ================= */
 
     defineField({
-      name: 'hero',
-      title: 'Hero Section',
-      type: 'object',
-      fields: [
-        { name: 'headline', type: 'string' },
-        { name: 'subText', type: 'text' },
-        {
-          name: 'backgroundImage',
-          type: 'image',
-          options: { hotspot: true },
-        },
-      ],
+        name: 'hero',
+        type: 'object',
+        fields: [
+            { name: 'headline', type: 'string' },
+            { name: 'subText', type: 'text' },
+            {
+            name: 'primaryCtaText',
+            title: 'Primary CTA Text',
+            type: 'string',
+            },
+            {
+            name: 'primaryCtaUrl',
+            title: 'Primary CTA URL',
+            type: 'string',
+            },
+            {
+            name: 'backgroundImage',
+            type: 'image',
+            }
+        ]
     }),
     defineField({
         name: 'heroMetrics',

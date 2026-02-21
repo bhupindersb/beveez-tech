@@ -23,8 +23,10 @@ export async function getServiceBySlug(slug: string) {
         hero{
             headline,
             subText,
+            primaryCtaText,
+            primaryCtaUrl,
             backgroundImage{
-            asset->{ url }
+                asset->{ url }
             }
         },
 

@@ -86,8 +86,9 @@ export default function ServiceClient({ data }: any) {
           <Image
             src={data.hero.backgroundImage.asset.url}
             alt=""
+            fill
             priority
-            className="object-contain"
+            className="object-contain !h-auto"
           />
         )}
 
@@ -104,7 +105,7 @@ export default function ServiceClient({ data }: any) {
           initial="hidden"
           animate="visible"
           className="relative z-10 mx-auto max-w-[960px]
-                     px-6 pt-[200px] pb-[140px]"
+                     px-6 pt-[200px] pb-[80px]"
         >
           <motion.h1
             variants={fadeUp}
@@ -125,18 +126,17 @@ export default function ServiceClient({ data }: any) {
             </motion.p>
           )}
 
-          <motion.div variants={fadeUp}>
-            <Link
-              href="/start-your-project"
-              className="inline-block mt-12
-                         bg-gradient-to-r from-[#cf5a20] to-[#f68f1e]
-                         text-white px-10 py-4 rounded-full
-                         font-semibold shadow-xl
-                         hover:scale-105 transition"
-            >
-              Get Performance Audit
-            </Link>
-          </motion.div>
+            {data.hero?.primaryCtaText && data.hero?.primaryCtaUrl && (
+            <motion.div variants={fadeUp}>
+                <Link
+                href={`/${data.hero.primaryCtaUrl.replace(/^\//, '')}`}
+                className="rounded-full bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] px-12 py-8 text-white font-normal text-center transition-all hover:from-[#f68f1e] hover:to-[#cf5a20]"
+                >
+                {data.hero.primaryCtaText}
+                </Link>
+            </motion.div>
+            )}
+
         </motion.div>
         {data.heroMetrics?.length > 0 && (
         <motion.div
@@ -144,7 +144,7 @@ export default function ServiceClient({ data }: any) {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="mt-20 max-w-[1100px] mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8"
+            className="pb-12 max-w-[1100px] mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8"
         >
             {data.heroMetrics.map((metric: any, i: number) => (
             <motion.div
@@ -286,11 +286,11 @@ export default function ServiceClient({ data }: any) {
             <div className="relative">
 
                 {/* Animated Vertical Line */}
-                <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-orange-100 -translate-x-1/2" />
+                <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-black/20 -translate-x-1/2" />
 
                 <motion.div
                 style={{ height: lineHeight }}
-                className="absolute left-1/2 top-0 w-[2px] bg-orange-500 -translate-x-1/2 origin-top"
+                className="absolute left-1/2 top-0 w-[2px] bg-darkOrange -translate-x-1/2 origin-top"
                 />
 
                 {data.process.map((step: string, i: number) => (
@@ -320,7 +320,7 @@ export default function ServiceClient({ data }: any) {
                     initial={{ scale: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4 }}
-                    className="absolute left-1/2 -translate-x-1/2 top-10 h-5 w-5 rounded-full bg-orange-500 ring-4 ring-orange-100"
+                    className="absolute left-1/2 -translate-x-1/2 top-10 h-5 w-5 rounded-full bg-darkBlue ring-4 ring-darkBlue"
                     />
                 </motion.div>
                 ))}

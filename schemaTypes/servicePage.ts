@@ -58,8 +58,24 @@ export const servicePage = defineType({
             {
             type: 'object',
             fields: [
-                { name: 'value', type: 'string' },
-                { name: 'label', type: 'string' },
+                {
+                name: 'value',
+                title: 'Value',
+                type: 'string',
+                },
+                {
+                name: 'label',
+                title: 'Label',
+                type: 'string',
+                },
+                {
+                name: 'icon',
+                title: 'Icon (SVG or PNG)',
+                type: 'image',
+                options: {
+                    hotspot: false,
+                },
+                },
             ],
             },
         ],

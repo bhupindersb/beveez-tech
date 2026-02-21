@@ -8,6 +8,8 @@ import { fadeUp, staggerContainer } from '@/lib/motion'
 import ServiceFAQ from '@/components/ServiceFAQ'
 import { PortableText } from '@portabletext/react'
 import { useEffect, useState } from 'react'
+import { useScroll, useTransform } from 'framer-motion'
+import { useRef } from 'react'
 
 function AnimatedCounter({ value }: { value: string }) {
   const [count, setCount] = useState(0)
@@ -63,6 +65,15 @@ const portableComponents = {
   },
 }
 
+const timelineRef = useRef(null)
+
+const { scrollYProgress } = useScroll({
+  target: timelineRef,
+  offset: ['start end', 'end start'],
+})
+
+const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
+
 
 
 export default function ServiceClient({ data }: any) {
@@ -75,9 +86,8 @@ export default function ServiceClient({ data }: any) {
           <Image
             src={data.hero.backgroundImage.asset.url}
             alt=""
-            fill
             priority
-            className="object-cover"
+            className="object-contain"
           />
         )}
 
@@ -143,11 +153,17 @@ export default function ServiceClient({ data }: any) {
                 className="bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-darkBlue/5 text-center hover:shadow-2xl transition"
             >
                 {/* ICON */}
-                <div className="mb-4 flex justify-center">
-                <div className="h-12 w-12 rounded-xl bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] flex items-center justify-center text-white text-xl font-bold">
-                    ★
+                {metric.icon?.asset?.url && (
+                <div className="mb-5 flex justify-center">
+                    <Image
+                    src={metric.icon.asset.url}
+                    alt={metric.label}
+                    width={48}
+                    height={48}
+                    className="object-contain"
+                    />
                 </div>
-                </div>
+                )}
 
                 {/* VALUE */}
                 <div className="text-3xl font-bold text-orange-600">
@@ -178,7 +194,7 @@ export default function ServiceClient({ data }: any) {
             <div className="max-w-[1100px] mx-auto px-6 grid md:grid-cols-2 gap-16 items-start">
 
             <motion.div variants={fadeUp}>
-                <h2 className="text-4xl font-bold text-darkBlue mb-8">
+                <h2 className="text-4xl font-bold font-heading text-darkBlue mb-8">
                 {data.problem.heading}
                 </h2>
 
@@ -197,7 +213,7 @@ export default function ServiceClient({ data }: any) {
                 className="bg-gradient-to-br from-[#f7f9fc] to-white
                             p-10 rounded-3xl shadow-xl"
                 >
-                <h3 className="font-semibold text-darkBlue mb-6 text-lg">
+                <h3 className="font-semibold  text-darkBlue mb-6 text-lg">
                     Slow websites hurt:
                 </h3>
 
@@ -229,7 +245,7 @@ export default function ServiceClient({ data }: any) {
 
             <motion.h2
               variants={fadeUp}
-              className="text-4xl font-bold font-headingtext-darkBlue mb-14 text-center"
+              className="text-4xl font-bold font-heading text-darkBlue mb-14 text-center"
             >
               What We Do
             </motion.h2>
@@ -258,59 +274,61 @@ export default function ServiceClient({ data }: any) {
       {/* ================= PROCESS ================= */}
         {data.process?.length > 0 && (
         <motion.section
-            variants={staggerContainer()}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
+            ref={timelineRef}
             className="py-28 bg-white"
         >
             <div className="max-w-[1100px] mx-auto px-6">
 
-            <motion.h2
-                variants={fadeUp}
-                className="text-4xl font-bold text-center text-darkBlue mb-20"
-            >
+            <h2 className="text-4xl font-bold text-center text-darkBlue mb-20">
                 Our Process
-            </motion.h2>
+            </h2>
 
             <div className="relative">
 
-                {/* Center line */}
-                <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-orange-200 -translate-x-1/2" />
+                {/* Animated Vertical Line */}
+                <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-orange-100 -translate-x-1/2" />
+
+                <motion.div
+                style={{ height: lineHeight }}
+                className="absolute left-1/2 top-0 w-[2px] bg-orange-500 -translate-x-1/2 origin-top"
+                />
 
                 {data.process.map((step: string, i: number) => (
                 <motion.div
                     key={i}
-                    variants={fadeUp}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
                     className={`relative mb-20 flex ${
                     i % 2 === 0 ? 'justify-start' : 'justify-end'
                     }`}
                 >
                     <div className="w-full md:w-[48%] px-4">
                     <div className="bg-[#f7f9fc] p-8 rounded-3xl shadow-lg border border-darkBlue/5 hover:shadow-xl transition">
-
                         <div className="text-xs font-semibold tracking-widest text-orange-500 uppercase mb-3">
                         Phase {i + 1}
                         </div>
-
                         <div className="text-darkBlue text-lg">
                         {step}
                         </div>
                     </div>
                     </div>
 
-                    <div className="absolute left-1/2 -translate-x-1/2 top-10 h-5 w-5 rounded-full bg-orange-500 ring-4 ring-orange-100" />
+                    <motion.div
+                    whileInView={{ scale: 1 }}
+                    initial={{ scale: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4 }}
+                    className="absolute left-1/2 -translate-x-1/2 top-10 h-5 w-5 rounded-full bg-orange-500 ring-4 ring-orange-100"
+                    />
                 </motion.div>
                 ))}
-
             </div>
 
             </div>
         </motion.section>
         )}
-
-
-
 
       {/* ================= DELIVERABLES ================= */}
       {data.deliverables?.length > 0 && (
@@ -358,7 +376,7 @@ export default function ServiceClient({ data }: any) {
 
             <motion.h2
                 variants={fadeUp}
-                className="text-4xl font-bold text-center text-darkBlue mb-16"
+                className="text-4xl font-bold font-heading text-center text-darkBlue mb-16"
             >
                 {data.comparison.heading}
             </motion.h2>

@@ -30,7 +30,10 @@ export async function getServiceBySlug(slug: string) {
 
         heroMetrics[]{
             value,
-            label
+            label,
+            icon{
+                asset->{ url }
+            }
         },
 
         problem{

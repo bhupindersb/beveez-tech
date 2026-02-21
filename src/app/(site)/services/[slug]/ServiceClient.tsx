@@ -79,9 +79,7 @@ export default function ServiceClient({ data }: any) {
 
   return (
     <>
-    <pre style={{ color: 'red' }}>
-        {JSON.stringify(data.heroMetrics, null, 2)}
-    </pre>
+
       {/* ================= HERO ================= */}
       <section className="relative overflow-hidden text-center">
 
@@ -108,7 +106,7 @@ export default function ServiceClient({ data }: any) {
           initial="hidden"
           animate="visible"
           className="relative z-10 mx-auto max-w-[960px]
-                     px-6 pt-[200px] pb-[80px]"
+                     px-6 pt-[180px] pb-[140px]"
         >
           <motion.h1
             variants={fadeUp}
@@ -286,7 +284,7 @@ export default function ServiceClient({ data }: any) {
                 Our Process
             </h2>
 
-            <div className="relative">
+            <div className="relative pt-8">
 
                 {/* Animated Vertical Line */}
                 <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-black/20 -translate-x-1/2" />
@@ -319,13 +317,22 @@ export default function ServiceClient({ data }: any) {
                     </div>
 
                     <motion.div
-                    whileInView={{ scale: 1 }}
-                    initial={{ scale: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4 }}
-                    className="absolute left-1/2 -translate-x-1/2 top-10 h-5 w-5 rounded-full bg-white ring-4 ring-darkBlue/50"
-                    />
-                </motion.div>
+                        whileInView={{ scale: 1 }}
+                        initial={{ scale: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.4 }}
+                        className={`
+                            absolute
+                            ${i % 2 === 0 ? 'left-1/2 -translate-x-[75%]' : 'left-1/2 translate-x-[75%]'}
+                            top-8
+                            h-6 w-6
+                            rounded-full
+                            bg-white
+                            border-4 border-darkOrange
+                            z-10
+                        `}
+                        />
+                    </motion.div>
                 ))}
             </div>
 

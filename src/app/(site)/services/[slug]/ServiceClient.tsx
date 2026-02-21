@@ -320,7 +320,7 @@ export default function ServiceClient({ data }: any) {
                     initial={{ scale: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4 }}
-                    className="absolute left-1/2 -translate-x-1/2 top-10 h-5 w-5 rounded-full bg-darkBlue ring-4 ring-darkBlue"
+                    className="absolute left-1/2 -translate-x-1/2 top-10 h-5 w-5 rounded-full bg-white ring-4 ring-darkBlue/50"
                     />
                 </motion.div>
                 ))}

@@ -106,7 +106,7 @@ export default function ServiceClient({ data }: any) {
           initial="hidden"
           animate="visible"
           className="relative z-10 mx-auto max-w-[960px]
-                     px-6 pt-[180px] pb-[140px]"
+                     px-6 pt-[180px] pb-[120px]"
         >
           <motion.h1
             variants={fadeUp}
@@ -128,7 +128,8 @@ export default function ServiceClient({ data }: any) {
           )}
 
             {data.hero?.primaryCtaText && data.hero?.primaryCtaUrl && (
-            <motion.div variants={fadeUp}>
+            <motion.div variants={fadeUp}
+             className="mt-[80px]">
                 <Link
                 href={`/${data.hero.primaryCtaUrl.replace(/^\//, '')}`}
                 className="rounded-full bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] px-12 py-8 text-white font-normal text-center transition-all hover:from-[#f68f1e] hover:to-[#cf5a20]"

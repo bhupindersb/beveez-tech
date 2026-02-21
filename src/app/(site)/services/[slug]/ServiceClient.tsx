@@ -79,6 +79,9 @@ export default function ServiceClient({ data }: any) {
 
   return (
     <>
+    <pre style={{ color: 'red' }}>
+        {JSON.stringify(data.heroMetrics, null, 2)}
+    </pre>
       {/* ================= HERO ================= */}
       <section className="relative overflow-hidden text-center">
 

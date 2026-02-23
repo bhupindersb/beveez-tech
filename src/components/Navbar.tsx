@@ -74,8 +74,7 @@ export default function Navbar({ settings }: any) {
 
                 return (
                   <li key={i} className="relative">
-                    <Link
-                      href={item.url}
+                    <Link href={`/${item.url.replace(/^\//, '')}`}
                       className={`relative px-1 transition
                         ${
                           active
@@ -152,8 +151,7 @@ export default function Navbar({ settings }: any) {
 
             return (
               <li key={i}>
-                <Link
-                  href={item.url}
+                <Link href={`/${item.url.replace(/^\//, '')}`}
                   onClick={() => setOpen(false)}
                   className={`text-lg transition
                     ${

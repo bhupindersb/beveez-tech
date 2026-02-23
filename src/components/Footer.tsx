@@ -31,7 +31,7 @@ export default function Footer({ data }: any) {
                     <ul className="space-y-2 text-sm text-center md:text-left">
                     {data.quickLinks?.map((item: any, i: number) => (
                         <li key={i}>
-                        <Link href={item.url} className="hover:text-darkOrange transition">
+                        <Link href={`/${item.url.replace(/^\//, '')}`} className="hover:text-darkOrange transition">
                             {item.label}
                         </Link>
                         </li>
@@ -62,7 +62,7 @@ export default function Footer({ data }: any) {
                     <ul className="space-y-2 text-sm text-center md:text-left">
                     {data.legal?.map((item: any, i: number) => (
                         <li key={i}>
-                        <Link href={item.url} className="hover:text-darkOrange transition">
+                       <Link href={`/${item.url.replace(/^\//, '')}`} className="hover:text-darkOrange transition">
                             {item.label}
                         </Link>
                         </li>

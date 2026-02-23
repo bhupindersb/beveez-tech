@@ -45,12 +45,9 @@ export default function Footer({ data }: any) {
                     <ul className="space-y-2 text-sm text-center md:text-left">
                         {data.services.map((item: any, i: number) => (
                             <li key={i}>
-                            <a
-                                href={item.url}
-                                className="hover:text-darkOrange transition"
-                            >
+                            <Link href={`/${item.url.replace(/^\//, '')}`} className="hover:text-darkOrange transition">
                                 {item.label}
-                            </a>
+                            </Link>
                             </li>
                         ))}
                     </ul>

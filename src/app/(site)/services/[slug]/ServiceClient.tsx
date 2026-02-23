@@ -8,7 +8,7 @@ import { fadeUp, staggerContainer } from '@/lib/motion'
 import ServiceFAQ from '@/components/ServiceFAQ'
 import { PortableText } from '@portabletext/react'
 import { useEffect, useState } from 'react'
-import { useScroll, useTransform } from 'framer-motion'
+import { useScroll, useTransform, useMotionValueEvent } from 'framer-motion'
 import { useRef } from 'react'
 
 function AnimatedCounter({ value }: { value: string }) {
@@ -69,13 +69,22 @@ const portableComponents = {
 
 export default function ServiceClient({ data }: any) {
     const timelineRef = useRef(null)
+    const [progressValue, setProgressValue] = useState(0)
 
     const { scrollYProgress } = useScroll({
     target: timelineRef,
-    offset: ['start end', 'end start'],
+    offset: ['start 80%', 'end 20%'],
     })
 
     const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
+    const progressPercent = useTransform(scrollYProgress, v =>
+    Math.round(v * 100)
+    )
+
+    useMotionValueEvent(progressPercent, 'change', (latest) => {
+        setProgressValue(latest)
+    })
+
 
   return (
     <>
@@ -274,25 +283,45 @@ export default function ServiceClient({ data }: any) {
       )}
 
       {/* ================= PROCESS ================= */}
-        {data.process?.length > 0 && (
+       {data.process?.length > 0 && (
         <motion.section
             ref={timelineRef}
             className="py-28 bg-white"
         >
             <div className="max-w-[1100px] mx-auto px-6">
 
-            <h2 className="text-4xl font-bold text-center text-darkBlue mb-20">
+            <h2 className="text-4xl font-bold text-center text-darkBlue mb-10">
                 Our Process
             </h2>
 
+            {/* Scroll Progress */}
+            <motion.div className="flex justify-center mb-12">
+                <motion.div className="px-6 py-2 rounded-full bg-darkOrange text-white text-sm font-semibold shadow-lg">
+                    <motion.span>{progressPercent}</motion.span>%
+                </motion.div>
+            </motion.div>
+
             <div className="relative pt-8">
 
-                {/* Animated Vertical Line */}
-                <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-black/20 -translate-x-1/2" />
+                {/* Base Line */}
+                <div className="absolute left-1/2 top-0 bottom-0 w-[3px] bg-black/10 -translate-x-1/2 rounded-full" />
 
+                {/* Animated Gradient Line */}
                 <motion.div
                 style={{ height: lineHeight }}
-                className="absolute left-1/2 top-0 w-[2px] bg-darkOrange -translate-x-1/2 origin-top"
+                className="
+                    absolute
+                    left-1/2
+                    top-0
+                    w-[3px]
+                    -translate-x-1/2
+                    origin-top
+                    rounded-full
+                    bg-gradient-to-b
+                    from-darkOrange
+                    via-orange-400
+                    to-yellow-400
+                "
                 />
 
                 {data.process.map((step: string, i: number) => (
@@ -317,26 +346,44 @@ export default function ServiceClient({ data }: any) {
                     </div>
                     </div>
 
+                    {/* Glowing Circle */}
                     <motion.div
-                        whileInView={{ scale: 1 }}
-                        initial={{ scale: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.4 }}
-                        className={`
-                            absolute
-                            ${i % 2 === 0 ? 'left-1/2 -translate-x-[75%]' : 'left-1/2 translate-x-[75%]'}
-                            top-8
-                            h-6 w-6
-                            rounded-full
-                            bg-white
-                            border-4 border-darkOrange
-                            z-10
-                        `}
-                        />
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4 }}
+                    className="
+                        absolute
+                        left-1/2
+                        -translate-x-1/2
+                        top-8
+                        h-6 w-6
+                        rounded-full
+                        bg-white
+                        border-4 border-darkOrange
+                        z-10
+                    "
+                    >
+                    <motion.div
+                        className="absolute inset-0 rounded-full bg-darkOrange"
+                        animate={{
+                        boxShadow: [
+                            '0 0 0px rgba(255,140,0,0)',
+                            '0 0 20px rgba(255,140,0,0.6)',
+                            '0 0 0px rgba(255,140,0,0)',
+                        ],
+                        }}
+                        transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                        }}
+                    />
                     </motion.div>
+                </motion.div>
                 ))}
-            </div>
 
+            </div>
             </div>
         </motion.section>
         )}

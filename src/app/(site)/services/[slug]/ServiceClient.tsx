@@ -155,7 +155,7 @@ export default function ServiceClient({ data }: any) {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="pb-12 max-w-[1100px] mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8"
+            className="pb-12 max-w-[1200px] mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8"
         >
             {data.heroMetrics.map((metric: any, i: number) => (
             <motion.div
@@ -177,7 +177,7 @@ export default function ServiceClient({ data }: any) {
                 )}
 
                 {/* VALUE */}
-                <div className="text-3xl font-bold text-orange-600">
+                <div className="text-2xl font-bold text-orange-600">
                 {metric.value}
                 </div>
 

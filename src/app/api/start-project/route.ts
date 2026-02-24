@@ -17,8 +17,10 @@ function formatDate() {
 export async function POST(req: Request) {
   try {
     const data = await req.json()
-    const formType = (data.formType || 'start-project').toLowerCase()
-    
+    const formType = (data.formType || 'start-project')
+    .toLowerCase()
+    .trim()
+
     // Honeypot spam protection
     if (data.website_hidden) {
       return NextResponse.json({ success: true })
@@ -46,7 +48,8 @@ export async function POST(req: Request) {
         userAgent,
       },
     })
-
+    console.log('RAW formType:', data.formType)
+    console.log('NORMALIZED formType:', formType)
     // -----------------------------
     // INTERNAL NOTIFICATION EMAIL
     // -----------------------------
@@ -54,7 +57,7 @@ export async function POST(req: Request) {
     await resend.emails.send({
       from: 'Beveez Tech <hello@beveez.tech>',
       to: 'robby@beveez.tech',
-      subject: `🔥 New ${data.formType?.toUpperCase() || 'START PROJECT'} Lead`,
+      subject: `🔥 New ${formType?.toUpperCase() || 'START PROJECT'} Lead`,
       html: `
       <div style="font-family:Arial,sans-serif;padding:20px;">
         <h2>New Lead Received</h2>
@@ -97,7 +100,7 @@ User Agent: ${userAgent}
     let text = ''
 
     // FREE AUDIT EMAIL
-    if (data.formType === 'free-audit') {
+    if (formType === 'free-audit') {
       subject = 'Your Free Website Audit Is In Progress 🚀'
 
       html = `
@@ -150,7 +153,7 @@ https://beveez.tech
     }
 
     // ARCHITECTURE CALL EMAIL
-    else if (data.formType === 'architecture') {
+    else if (formType === 'architecture') {
       subject = 'Let’s Architect Something Powerful 🧠'
 
       html = `
@@ -199,7 +202,7 @@ Beveez Tech
     }
 
     // START YOUR PROJECT EMAIL
-    else if (data.formType === 'start-project') {
+    else if (formType === 'start-project') {
       subject = 'Your Project Request Has Been Received 🚀'
 
       html = `

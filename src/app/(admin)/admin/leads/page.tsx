@@ -4,7 +4,6 @@ import { redirect } from 'next/navigation'
 import LeadTable from './LeadTable'
 
 export default async function LeadsPage() {
-  // ✅ Next.js 15 requires await
   const cookieStore = await cookies()
   const token = cookieStore.get('admin_token')?.value
 
@@ -14,14 +13,27 @@ export default async function LeadsPage() {
 
   const rawLeads = await prisma.lead.findMany({
     orderBy: { createdAt: 'desc' },
+    include: {
+      notes: {
+        orderBy: { createdAt: 'desc' },
+      },
+    },
   })
 
   const leads = rawLeads.map((lead) => {
     const date = new Date(lead.createdAt)
 
     return {
-      ...lead,
-      createdAt: date.toISOString(), // keep raw ISO
+      id: lead.id,
+      name: lead.name,
+      email: lead.email,
+      company: lead.company,
+      plan: lead.plan,
+      status: lead.status,
+      formType: lead.formType,
+      details: lead.details,
+
+      createdAt: date.toISOString(),
       formattedDate: date.toLocaleString('en-GB', {
         day: '2-digit',
         month: 'short',
@@ -29,11 +41,16 @@ export default async function LeadsPage() {
         hour: '2-digit',
         minute: '2-digit',
         hour12: false,
-        timeZone: 'UTC', // prevents server/client mismatch
+        timeZone: 'UTC',
       }),
+
+      notes: lead.notes.map((note) => ({
+        id: note.id,
+        text: note.text,
+        createdAt: note.createdAt.toISOString(),
+      })),
     }
   })
-
 
   return (
     <>

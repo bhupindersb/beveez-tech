@@ -1,6 +1,12 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
+
+interface Note {
+  id: string
+  text: string
+  createdAt: string
+}
 
 interface Lead {
   id: string
@@ -11,245 +17,140 @@ interface Lead {
   company?: string | null
   plan: string
   status: string
+  formType: string
+  website?: string | null
+  goals?: string | null
+  details?: string | null
+  notes?: Note[]
 }
 
-function getRelativeTime(dateString: string) {
-  const now = new Date().getTime()
-  const date = new Date(dateString).getTime()
-  const diff = Math.floor((now - date) / 1000)
-
-  if (diff < 60) return 'Just now'
-  if (diff < 3600) return `${Math.floor(diff / 60)} min ago`
-  if (diff < 86400) return `${Math.floor(diff / 3600)} hrs ago`
-  if (diff < 604800) return `${Math.floor(diff / 86400)} days ago`
-
-  return ''
-}
-
-
-export default function LeadTable({
-  leads,
-}: {
-  leads: Lead[]
-}) {
+export default function LeadTable({ leads }: { leads: Lead[] }) {
   const [data, setData] = useState(leads)
-  const [loadingId, setLoadingId] = useState<string | null>(null)
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null)
+  const [noteInput, setNoteInput] = useState('')
+  const [loadingNote, setLoadingNote] = useState(false)
 
-  // Filters
-  const [search, setSearch] = useState('')
-  const [statusFilter, setStatusFilter] = useState('all')
-  const [fromDate, setFromDate] = useState('')
-  const [toDate, setToDate] = useState('')
-
-  async function updateStatus(id: string, status: string) {
-    try {
-      setLoadingId(id)
-
-      await fetch('/api/admin/update-lead-status', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, status }),
-      })
-
-      setData((prev) =>
-        prev.map((lead) =>
-          lead.id === id ? { ...lead, status } : lead
-        )
-      )
-    } catch (error) {
-      console.error('Failed to update status', error)
-    } finally {
-      setLoadingId(null)
+  useEffect(() => {
+    function handleEsc(e: KeyboardEvent) {
+      if (e.key === 'Escape') setSelectedLead(null)
     }
-  }
+    window.addEventListener('keydown', handleEsc)
+    return () => window.removeEventListener('keydown', handleEsc)
+  }, [])
 
-  function getStatusClasses(status: string) {
-    switch (status) {
-      case 'new':
-        return 'bg-yellow-100 text-yellow-700 border-yellow-200'
-      case 'contacted':
-        return 'bg-blue-100 text-blue-700 border-blue-200'
-      case 'closed':
-        return 'bg-green-100 text-green-700 border-green-200'
-      default:
-        return 'bg-gray-100 text-gray-600 border-gray-200'
-    }
-  }
+  async function addNote() {
+    if (!noteInput.trim() || !selectedLead) return
 
-  // Filter logic
-  const filteredData = useMemo(() => {
-    return data.filter((lead) => {
-      const matchesSearch =
-        lead.name.toLowerCase().includes(search.toLowerCase()) ||
-        lead.email.toLowerCase().includes(search.toLowerCase()) ||
-        (lead.company &&
-          lead.company.toLowerCase().includes(search.toLowerCase()))
+    setLoadingNote(true)
 
-      const matchesStatus =
-        statusFilter === 'all' || lead.status === statusFilter
-
-      const leadDate = new Date(lead.createdAt)
-
-      const matchesFrom =
-        !fromDate || leadDate >= new Date(fromDate)
-
-      const matchesTo =
-        !toDate || leadDate <= new Date(toDate)
-
-      return (
-        matchesSearch &&
-        matchesStatus &&
-        matchesFrom &&
-        matchesTo
-      )
+    const res = await fetch('/api/admin/add-lead-note', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        leadId: selectedLead.id,
+        text: noteInput,
+      }),
     })
-  }, [data, search, statusFilter, fromDate, toDate])
+
+    const newNote = await res.json()
+
+    const updatedLead = {
+      ...selectedLead,
+      notes: [newNote, ...(selectedLead.notes || [])],
+    }
+
+    setData((prev) =>
+      prev.map((lead) =>
+        lead.id === selectedLead.id ? updatedLead : lead
+      )
+    )
+
+    setSelectedLead(updatedLead)
+    setNoteInput('')
+    setLoadingNote(false)
+  }
 
   return (
-    <div className="bg-white rounded-3xl shadow-xl overflow-hidden border">
-
-      {/* FILTER BAR */}
-      <div className="p-6 border-b bg-gray-50 flex flex-wrap gap-4 items-center">
-
-        <input
-          type="text"
-          placeholder="Search name, email or company..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 w-full md:w-72"
-        />
-
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="border rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
-        >
-          <option value="all">All Status</option>
-          <option value="new">New</option>
-          <option value="contacted">Contacted</option>
-          <option value="closed">Closed</option>
-        </select>
-
-        <input
-          type="date"
-          value={fromDate}
-          onChange={(e) => setFromDate(e.target.value)}
-          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
-        />
-
-        <input
-          type="date"
-          value={toDate}
-          onChange={(e) => setToDate(e.target.value)}
-          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
-        />
-
-        {(search || statusFilter !== 'all' || fromDate || toDate) && (
-          <button
-            onClick={() => {
-              setSearch('')
-              setStatusFilter('all')
-              setFromDate('')
-              setToDate('')
-            }}
-            className="text-xs text-red-500 hover:text-red-600"
-          >
-            Clear Filters
-          </button>
-        )}
-      </div>
-
-      {/* TABLE */}
-      <div className="overflow-x-auto">
+    <>
+      <div className="bg-white rounded-3xl shadow-xl overflow-hidden border">
         <table className="w-full text-sm">
-
-          <thead className="bg-gray-50 text-left text-gray-600 uppercase text-xs tracking-wide">
+          <thead className="bg-gray-50 text-xs uppercase">
             <tr>
               <th className="px-6 py-4">Name</th>
               <th className="px-6 py-4">Email</th>
-              <th className="px-6 py-4">Plan</th>
+              <th className="px-6 py-4">Form</th>
               <th className="px-6 py-4">Status</th>
-              <th className="px-6 py-4">Created</th>
             </tr>
           </thead>
-
           <tbody>
-            {filteredData.map((lead) => (
+            {data.map((lead) => (
               <tr
                 key={lead.id}
-                className="border-t hover:bg-gray-50 transition"
+                onClick={() => setSelectedLead(lead)}
+                className="border-t hover:bg-gray-50 cursor-pointer"
               >
-                <td className="px-6 py-4 font-medium text-darkBlue">
-                  {lead.name}
-                  {lead.company && (
-                    <div className="text-xs text-gray-500 mt-1">
-                      {lead.company}
-                    </div>
-                  )}
-                </td>
-
-                <td className="px-6 py-4 text-gray-600">
-                  {lead.email}
-                </td>
-
-                <td className="px-6 py-4">
-                  <span className="px-3 py-1 text-xs rounded-full bg-purple-100 text-purple-700">
-                    {lead.plan}
-                  </span>
-                </td>
-
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`px-3 py-1 text-xs rounded-full border ${getStatusClasses(
-                        lead.status
-                      )}`}
-                    >
-                      {lead.status}
-                    </span>
-
-                    <select
-                      value={lead.status}
-                      disabled={loadingId === lead.id}
-                      onChange={(e) =>
-                        updateStatus(lead.id, e.target.value)
-                      }
-                      className="border rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-orange-500"
-                    >
-                      <option value="new">New</option>
-                      <option value="contacted">Contacted</option>
-                      <option value="closed">Closed</option>
-                    </select>
-                  </div>
-                </td>
-
-                <td className="px-6 py-4 text-gray-500">
-                  <div className="flex flex-col">
-                    <span>{lead.formattedDate}</span>
-                    <span className="text-xs text-gray-400">
-                      {getRelativeTime(lead.createdAt)}
-                    </span>
-                  </div>
-                </td>
-
-
+                <td className="px-6 py-4">{lead.name}</td>
+                <td className="px-6 py-4">{lead.email}</td>
+                <td className="px-6 py-4">{lead.formType}</td>
+                <td className="px-6 py-4">{lead.status}</td>
               </tr>
             ))}
-
-            {filteredData.length === 0 && (
-              <tr>
-                <td
-                  colSpan={5}
-                  className="text-center py-10 text-gray-400"
-                >
-                  No leads match your filters.
-                </td>
-              </tr>
-            )}
           </tbody>
-
         </table>
       </div>
-    </div>
+
+      {selectedLead && (
+        <div
+          onClick={() => setSelectedLead(null)}
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white w-full max-w-2xl rounded-2xl p-8"
+          >
+            <h2 className="text-xl font-bold mb-6">Lead Details</h2>
+
+            <div className="space-y-3 text-sm mb-6">
+              <div><strong>Name:</strong> {selectedLead.name}</div>
+              <div><strong>Email:</strong> {selectedLead.email}</div>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-3">Internal Notes</h3>
+
+              <div className="space-y-3 mb-4">
+                {selectedLead.notes?.map((note) => (
+                  <div
+                    key={note.id}
+                    className="bg-gray-100 p-3 rounded text-sm"
+                  >
+                    {note.text}
+                    <div className="text-xs text-gray-400 mt-1">
+                      {new Date(note.createdAt).toLocaleString()}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex gap-2">
+                <input
+                  value={noteInput}
+                  onChange={(e) => setNoteInput(e.target.value)}
+                  className="border rounded px-3 py-2 text-sm w-full"
+                  placeholder="Add note..."
+                />
+                <button
+                  onClick={addNote}
+                  disabled={loadingNote}
+                  className="bg-orange-500 text-white px-4 rounded"
+                >
+                  {loadingNote ? 'Saving...' : 'Add'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   )
 }

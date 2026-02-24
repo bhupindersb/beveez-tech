@@ -8,6 +8,7 @@ export default function GetFreeAudit() {
         <LeadForm
           title="Get Your Free Website Performance Audit"
           subtitle="We’ll review your speed, Core Web Vitals, and technical setup."
+          formType="free-audit"
           fields={[
             { name: 'name', type: 'text', placeholder: 'Full Name', required: true },
             { name: 'email', type: 'email', placeholder: 'Email Address', required: true },

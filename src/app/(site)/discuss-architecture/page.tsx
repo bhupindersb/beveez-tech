@@ -8,7 +8,7 @@ export default function DiscussArchitecture() {
         <LeadForm
           title="Discuss Your Architecture"
           subtitle="Let’s design a scalable system that supports your growth."
-          formType='architecture-discussion'
+          formType="architecture-discussion"
           fields={[
             { name: 'name', type: 'text', placeholder: 'Full Name', required: true },
             { name: 'company', type: 'text', placeholder: 'Company Name', required: false },

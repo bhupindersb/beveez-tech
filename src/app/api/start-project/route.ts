@@ -198,7 +198,7 @@ Beveez Tech
     }
 
     // START YOUR PROJECT EMAIL
-    else if (data.formType === 'start-project') {
+    else if (data.formType === 'start-your-project') {
       subject = 'Your Project Request Has Been Received 🚀'
 
       html = `

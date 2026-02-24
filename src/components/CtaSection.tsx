@@ -42,11 +42,15 @@ export default function CtaSection({ data }: { data: any }) {
           <div className="mt-10 flex flex-col sm:flex-row gap-6">
             {data.primaryCtaText && data.primaryCtaUrl && (
               <a
-                href={data.primaryCtaUrl}
+                href={
+                  data.primaryCtaUrl.startsWith('/')
+                    ? data.primaryCtaUrl
+                    : `/${data.primaryCtaUrl}`
+                }
                 className="rounded-full bg-gradient-to-r
-                           from-[#cf5a20] to-[#f68f1e]
-                           px-12 py-8 font-normal text-white
-                           transition hover:from-[#f68f1e] hover:to-[#cf5a20]"
+                          from-[#cf5a20] to-[#f68f1e]
+                          px-12 py-8 font-normal text-white
+                          transition hover:from-[#f68f1e] hover:to-[#cf5a20]"
               >
                 {data.primaryCtaText}
               </a>

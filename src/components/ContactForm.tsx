@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { form } from 'sanity/structure'
 
 export default function ContactForm() {
   const [loading, setLoading] = useState(false)
@@ -14,12 +15,18 @@ export default function ContactForm() {
 
     await fetch('/api/start-project', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         name: formData.get('name'),
         email: formData.get('email'),
         company: formData.get('company'),
         goals: formData.get('message'),
+        details: null,
         plan: 'custom',
+        formType: 'contact-form',
+        website: '',
       }),
     })
 

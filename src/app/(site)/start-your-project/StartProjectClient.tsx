@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PlanType } from './types'
 import StepIndicator from '@/components/StepIndicator'
+import { FromTo } from 'sanity'
 
 /* ===============================
    CONFIG
@@ -139,6 +140,7 @@ export default function StartProjectClient() {
         body: JSON.stringify({
           ...form,
           plan: selectedPlan,
+          FromType: 'start-project',
         }),
       })
 

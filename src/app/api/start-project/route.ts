@@ -27,10 +27,11 @@ export async function POST(req: Request) {
       data: {
         name: data.name,
         email: data.email,
-        company: data.company,
-        goals: data.goals,
-        details: data.details,
-        plan: data.plan,
+        company: data.company || null,
+        goals: data.goals || null,
+        details: data.details || null,
+        plan: data.plan || null,
+        formType: data.formType || 'start-project',
         ipAddress: ip,
         userAgent,
       },
@@ -40,7 +41,7 @@ export async function POST(req: Request) {
     await resend.emails.send({
       from: 'Beveez Tech <hello@beveez.tech>',
       to: 'robby@beveez.tech',
-      subject: `🔥 New ${data.plan} Lead`,
+      subject: `🔥 New ${data.formType?.toUpperCase() || 'START PROJECT'} Lead`,
       html: `
         <h2>New Lead Received</h2>
         <p><strong>Name:</strong> ${data.name}</p>

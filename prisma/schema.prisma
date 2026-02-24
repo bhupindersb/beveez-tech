@@ -32,6 +32,7 @@ model Lead {
   details     String?
 
   plan        PlanType
+  formType   String   @default("start-project")
 
   ipAddress   String?
   userAgent   String?

@@ -5,7 +5,7 @@ import { useState } from 'react'
 export default function LeadForm({
   title,
   subtitle,
-  fields, 
+  fields,
   formType,
 }: {
   title: string
@@ -13,7 +13,6 @@ export default function LeadForm({
   fields: any[]
   formType: string
 }) {
-
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
 
@@ -40,12 +39,10 @@ export default function LeadForm({
       },
       body: JSON.stringify(payload),
     })
-    
+
     setLoading(false)
     setSuccess(true)
     e.target.reset()
-  }
-
   }
 
   if (success) {

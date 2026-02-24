@@ -17,7 +17,8 @@ function formatDate() {
 export async function POST(req: Request) {
   try {
     const data = await req.json()
-
+    const formType = (data.formType || 'start-project').toLowerCase()
+    
     // Honeypot spam protection
     if (data.website_hidden) {
       return NextResponse.json({ success: true })
@@ -198,7 +199,7 @@ Beveez Tech
     }
 
     // START YOUR PROJECT EMAIL
-    else if (data.formType === 'start-your-project') {
+    else if (data.formType === 'start-project') {
       subject = 'Your Project Request Has Been Received 🚀'
 
       html = `

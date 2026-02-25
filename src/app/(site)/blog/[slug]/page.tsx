@@ -4,7 +4,7 @@ import { urlFor } from '@/sanity/lib/image'
 
 export default async function BlogPost({ params }: any) {
   const post = await sanityClient.fetch(`
-    *[_type == "blog" && slug.current == $slug][0]{
+    *[_type == "blogSection" && slug.current == $slug][0]{
       title,
       coverImage,
       content

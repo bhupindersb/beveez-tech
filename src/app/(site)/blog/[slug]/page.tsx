@@ -7,6 +7,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import ReadingProgress from '@/components/ReadingProgress'
+import FadeInHeading from '@/components/FadeInHeading'
 
 
 // ==============================
@@ -29,14 +30,14 @@ function calculateReadingTime(blocks: any[]) {
 const portableTextComponents: PortableTextComponents = {
   block: {
     h2: ({ children }) => (
-      <h2 className="text-3xl md:text-4xl font-heading font-semibold mt-16 mb-6 text-darkBlue">
+      <FadeInHeading as="h2">
         {children}
-      </h2>
+      </FadeInHeading>
     ),
     h3: ({ children }) => (
-      <h3 className="text-2xl font-heading font-semibold mt-12 mb-4 text-darkBlue">
+      <FadeInHeading as="h3">
         {children}
-      </h3>
+      </FadeInHeading>
     ),
     normal: ({ children }) => (
       <p className="text-lg leading-relaxed text-gray-700 mb-6">
@@ -44,6 +45,7 @@ const portableTextComponents: PortableTextComponents = {
       </p>
     ),
   },
+
   list: {
     bullet: ({ children }) => (
       <ul className="list-disc pl-6 space-y-3 text-gray-700 mb-6">
@@ -56,15 +58,32 @@ const portableTextComponents: PortableTextComponents = {
       </ol>
     ),
   },
+
   marks: {
     strong: ({ children }) => (
-      <strong className="font-semibold text-darkBlue">{children}</strong>
+      <strong className="font-semibold text-darkBlue">
+        {children}
+      </strong>
     ),
+
     code: ({ children }) => (
-      <code className="bg-gray-100 px-2 py-1 rounded text-sm">
+      <code className="bg-darkBlue/5 text-darkOrange px-2 py-1 rounded-md text-sm font-mono">
         {children}
       </code>
     ),
+  },
+
+  types: {
+    block: ({ value }: any) => {
+      if (value.style === 'code') {
+        return (
+          <pre className="bg-[#0B1C2D] text-green-300 p-6 rounded-2xl overflow-x-auto text-sm leading-relaxed mb-8 shadow-lg">
+            <code>{value.children?.map((c: any) => c.text).join('')}</code>
+          </pre>
+        )
+      }
+      return null
+    },
   },
 }
 

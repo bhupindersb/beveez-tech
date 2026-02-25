@@ -45,7 +45,6 @@ const portableTextComponents: PortableTextComponents = {
       </p>
     ),
   },
-
   list: {
     bullet: ({ children }) => (
       <ul className="list-disc pl-6 space-y-3 text-gray-700 mb-6">
@@ -58,21 +57,16 @@ const portableTextComponents: PortableTextComponents = {
       </ol>
     ),
   },
-
   marks: {
     strong: ({ children }) => (
-      <strong className="font-semibold text-darkBlue">
-        {children}
-      </strong>
+      <strong className="font-semibold text-darkBlue">{children}</strong>
     ),
-
     code: ({ children }) => (
-      <code className="bg-darkBlue/5 text-darkOrange px-2 py-1 rounded-md text-sm font-mono">
+      <code className="bg-gray-100 px-2 py-1 rounded text-sm">
         {children}
       </code>
     ),
   },
-
   types: {
     block: ({ value }: any) => {
       if (value.style === 'code') {

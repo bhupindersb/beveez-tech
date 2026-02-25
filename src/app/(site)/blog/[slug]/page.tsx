@@ -6,10 +6,6 @@ import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import Link from 'next/link'
 
-interface BlogPostProps {
-  params: { slug: string }
-}
-
 // -------------------------
 // Reading Time Helper
 // -------------------------
@@ -31,7 +27,7 @@ function calculateReadingTime(blocks: any[]) {
 // SEO Metadata
 // -------------------------
 export async function generateMetadata(
-  { params }: BlogPostProps
+  { params }: { params: { slug: string } }
 ): Promise<Metadata> {
   const post = await sanityClient.fetch(
     `
@@ -76,7 +72,9 @@ export async function generateMetadata(
 // -------------------------
 // PAGE
 // -------------------------
-export default async function BlogPost({ params }: BlogPostProps) {
+export default async function BlogPost(
+  { params }: { params: { slug: string } }
+) {
   const post = await sanityClient.fetch(
     `
     *[_type == "blogSection" && slug.current == $slug][0]{

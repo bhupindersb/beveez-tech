@@ -15,7 +15,7 @@ import { blogSection } from './blog'
 
 // Blog system
 import { postType } from './postType'
-import { authorType } from './authorType'
+import { author } from './author'
 import { categoryType } from './categoryType'
 import { blockContentType } from './blockContentType'
 import { ourApproach } from './ourApproach'
@@ -53,7 +53,7 @@ export const schemaTypes = [
   blogSection,
 
   postType,
-  authorType,
+  author,
   categoryType,
   blockContentType,
 

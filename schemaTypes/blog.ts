@@ -12,6 +12,12 @@ export const blogSection = defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'author',
+      title: 'Author',
+      type: 'reference',
+      to: [{ type: 'author' }],
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',

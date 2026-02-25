@@ -24,11 +24,14 @@ function calculateReadingTime(blocks: any[]) {
 }
 
 // -------------------------
-// SEO Metadata
+// SEO Metadata (Next 15)
 // -------------------------
 export async function generateMetadata(
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
+
+  const { slug } = await params
+
   const post = await sanityClient.fetch(
     `
     *[_type == "blogSection" && slug.current == $slug][0]{
@@ -41,7 +44,7 @@ export async function generateMetadata(
       }
     }
   `,
-    { slug: params.slug }
+    { slug }
   )
 
   if (!post) return {}
@@ -56,7 +59,7 @@ export async function generateMetadata(
         ? [{ url: post.coverImage.asset.url }]
         : [],
       type: 'article',
-      url: `https://beveez.tech/blog/${params.slug}`,
+      url: `https://beveez.tech/blog/${slug}`,
     },
     twitter: {
       card: 'summary_large_image',
@@ -70,11 +73,14 @@ export async function generateMetadata(
 }
 
 // -------------------------
-// PAGE
+// PAGE (Next 15)
 // -------------------------
 export default async function BlogPost(
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
+
+  const { slug } = await params
+
   const post = await sanityClient.fetch(
     `
     *[_type == "blogSection" && slug.current == $slug][0]{
@@ -92,7 +98,7 @@ export default async function BlogPost(
       }
     }
   `,
-    { slug: params.slug }
+    { slug }
   )
 
   if (!post) return notFound()
@@ -215,22 +221,6 @@ export default async function BlogPost(
           </section>
         )}
 
-        {/* Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Article',
-              headline: post.title,
-              datePublished: post.publishedAt,
-              author: {
-                '@type': 'Person',
-                name: post.author?.name,
-              },
-            }),
-          }}
-        />
       </div>
     </article>
   )

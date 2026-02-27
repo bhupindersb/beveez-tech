@@ -28,6 +28,18 @@ export const blogSection = defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'categories',
+      title: 'Categories',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'category' }] }],
+    }),
+    defineField({
+      name: 'tags',
+      title: 'Tags',
+      type: 'array',
+      of: [{ type: 'string' }],
+    }),
+    defineField({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',
@@ -48,7 +60,10 @@ export const blogSection = defineType({
       name: 'content',
       title: 'Content',
       type: 'array',
-      of: [{ type: 'block' }],
+      of: [
+        { type: 'block' },
+        { type: 'code' }
+      ],
     }),
   ],
 })

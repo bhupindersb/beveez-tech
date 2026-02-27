@@ -27,6 +27,7 @@ import { serviceDetail } from './serviceDetails'
 import { pricingAddon } from './pricingAddon'
 import { pricingFaq } from './pricingFaq'
 import { servicePage } from './servicePage'
+import { category } from './category'
 
 
 export const schemaTypes = [

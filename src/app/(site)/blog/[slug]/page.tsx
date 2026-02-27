@@ -34,17 +34,26 @@ const portableTextComponents: PortableTextComponents = {
         {children}
       </FadeInHeading>
     ),
+
     h3: ({ children }) => (
       <FadeInHeading as="h3">
         {children}
       </FadeInHeading>
     ),
+
     normal: ({ children }) => (
       <p className="text-lg leading-relaxed text-gray-700 mb-6">
         {children}
       </p>
     ),
+
+    code: ({ children }) => (
+      <pre className="bg-[#0B1C2D] text-green-300 p-6 rounded-2xl overflow-x-auto text-sm leading-relaxed mb-8 shadow-lg">
+        <code>{children}</code>
+      </pre>
+    ),
   },
+
   list: {
     bullet: ({ children }) => (
       <ul className="list-disc pl-6 space-y-3 text-gray-700 mb-6">
@@ -57,27 +66,19 @@ const portableTextComponents: PortableTextComponents = {
       </ol>
     ),
   },
+
   marks: {
     strong: ({ children }) => (
-      <strong className="font-semibold text-darkBlue">{children}</strong>
+      <strong className="font-semibold text-darkBlue">
+        {children}
+      </strong>
     ),
+
     code: ({ children }) => (
-      <code className="bg-gray-100 px-2 py-1 rounded text-sm">
+      <code className="bg-darkBlue/5 text-darkOrange px-2 py-1 rounded-md text-sm font-mono">
         {children}
       </code>
     ),
-  },
-  types: {
-    block: ({ value }: any) => {
-      if (value.style === 'code') {
-        return (
-          <pre className="bg-[#0B1C2D] text-green-300 p-6 rounded-2xl overflow-x-auto text-sm leading-relaxed mb-8 shadow-lg">
-            <code>{value.children?.map((c: any) => c.text).join('')}</code>
-          </pre>
-        )
-      }
-      return null
-    },
   },
 }
 

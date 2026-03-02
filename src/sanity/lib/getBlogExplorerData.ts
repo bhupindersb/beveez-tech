@@ -10,7 +10,7 @@ export async function getBlogExplorerData(
     sanityClient.fetch(
       `
       *[_type == "blogSection"]
-      | order(publishedAt desc)[$offset...$end]{
+        | order(publishedAt desc)[$offset...$end]{
         _id,
         title,
         slug,
@@ -18,10 +18,11 @@ export async function getBlogExplorerData(
         coverImage,
         publishedAt,
         tags,
+        content, // 👈 ADD THIS
         categories[]->{
-          _id,
-          title,
-          slug
+            _id,
+            title,
+            slug
         }
       }
       `,

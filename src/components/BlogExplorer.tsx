@@ -93,7 +93,7 @@ export default function BlogExplorer({
                 </p>
 
                 <div className="mt-4 text-sm text-gray-300">
-                  {calculateReadingTime(featured.content)} min read
+                  {featured.readingTime} min read min read
                 </div>
               </div>
             </div>
@@ -186,7 +186,7 @@ export default function BlogExplorer({
                 </p>
 
                 <div className="mt-4 text-sm text-gray-500">
-                  {calculateReadingTime(post.content)} min read
+                    {post.readingTime} min read min read
                 </div>
               </div>
             </motion.article>

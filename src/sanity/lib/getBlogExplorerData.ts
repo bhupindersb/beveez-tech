@@ -5,12 +5,13 @@ export async function getBlogExplorerData(
   pageSize: number
 ) {
   const offset = (page - 1) * pageSize
+  const end = offset + pageSize
 
   const [blogs, totalCount, categories] = await Promise.all([
     sanityClient.fetch(
       `
       *[_type == "blogSection"]
-        | order(publishedAt desc)[$offset...$end]{
+      | order(publishedAt desc)[$offset...$end]{
         _id,
         title,
         slug,
@@ -18,18 +19,15 @@ export async function getBlogExplorerData(
         coverImage,
         publishedAt,
         tags,
-        content, // 👈 ADD THIS
         categories[]->{
-            _id,
-            title,
-            slug
-        }
+          _id,
+          title,
+          slug
+        },
+        "readingTime": round(length(pt::text(content)) / 5 / 200)
       }
       `,
-      {
-        offset,
-        end: offset + pageSize,
-      }
+      { offset, end }
     ),
 
     sanityClient.fetch(

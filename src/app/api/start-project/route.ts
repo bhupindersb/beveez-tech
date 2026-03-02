@@ -46,8 +46,6 @@ export async function POST(req: Request) {
         userAgent,
       },
     })
-    console.log('RAW formType:', data.formType)
-    console.log('NORMALIZED formType:', formType)
 
 
     const apiKey = process.env.RESEND_API_KEY

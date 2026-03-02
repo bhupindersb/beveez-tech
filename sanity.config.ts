@@ -3,6 +3,7 @@ import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemaTypes'
 import { structure } from './src/sanity/structure'
+import { codeInput } from '@sanity/code-input'
 
 const projectId = 't3775is3'
 const dataset = 'production'
@@ -24,5 +25,6 @@ export default defineConfig({
   plugins: [
     structureTool({ structure }),
     visionTool({ defaultApiVersion: apiVersion }),
+    codeInput(),
   ],
 })

@@ -102,7 +102,7 @@ export default function BlogExplorer({
       )}
 
       {/* ================= STICKY FILTER BAR ================= */}
-      <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200">
+      <div className="sticky top-[100px] z-40 bg-white/80 backdrop-blur-md border-b border-gray-200">
         <div className="mx-auto max-w-[1280px] px-6 py-4 flex flex-col md:flex-row md:items-center gap-4">
 
           <input

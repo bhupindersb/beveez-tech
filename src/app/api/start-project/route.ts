@@ -2,8 +2,6 @@ import { prisma } from '@/lib/prisma'
 import { Resend } from 'resend'
 import { NextResponse } from 'next/server'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 function formatDate() {
   return new Date().toLocaleString('en-GB', {
     day: '2-digit',
@@ -50,6 +48,19 @@ export async function POST(req: Request) {
     })
     console.log('RAW formType:', data.formType)
     console.log('NORMALIZED formType:', formType)
+
+
+    const apiKey = process.env.RESEND_API_KEY
+
+    if (!apiKey) {
+      console.warn('RESEND_API_KEY is not defined')
+      return NextResponse.json(
+        { error: 'Email service not configured' },
+        { status: 500 }
+      )
+    }
+
+    const resend = new Resend(apiKey)
     // -----------------------------
     // INTERNAL NOTIFICATION EMAIL
     // -----------------------------

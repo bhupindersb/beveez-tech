@@ -2,17 +2,18 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function POST(req: Request) {
   try {
     const data = await req.json()
 
     if (!data.name || !data.email || !data.message) {
-      return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      )
     }
 
-    // Save to DB
+    // Save to database
     await prisma.lead.create({
       data: {
         name: data.name,
@@ -23,6 +24,19 @@ export async function POST(req: Request) {
         plan: 'custom',
       },
     })
+
+    // Initialize Resend SAFELY inside handler
+    const apiKey = process.env.RESEND_API_KEY
+
+    if (!apiKey) {
+      console.warn('RESEND_API_KEY is not defined')
+      return NextResponse.json(
+        { error: 'Email service not configured' },
+        { status: 500 }
+      )
+    }
+
+    const resend = new Resend(apiKey)
 
     // Send email
     await resend.emails.send({
@@ -40,7 +54,11 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error(error)
-    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+    console.error('Contact API error:', error)
+
+    return NextResponse.json(
+      { error: 'Server error' },
+      { status: 500 }
+    )
   }
 }

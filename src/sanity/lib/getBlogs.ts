@@ -1,7 +1,8 @@
 import { sanityClient } from './client'
 
 export async function getBlogs(limit = 3) {
-  return sanityClient.fetch(`
+  return sanityClient.fetch(
+    `
     *[_type == "blogSection"]
     | order(publishedAt desc)[0...$limit]{
       _id,
@@ -9,7 +10,19 @@ export async function getBlogs(limit = 3) {
       slug,
       excerpt,
       coverImage,
-      publishedAt
+      publishedAt,
+
+      author->{
+        name,
+        image
+      },
+
+      category->{
+        title,
+        slug
+      }
     }
-  `, { limit })
+  `,
+    { limit }
+  )
 }

@@ -8,7 +8,8 @@ import Link from 'next/link'
 import { Suspense } from 'react'
 import ReadingProgress from '@/components/ReadingProgress'
 import FadeInHeading from '@/components/FadeInHeading'
-
+import CodeBlock from '@/components/CodeBlock'
+import TableOfContents from '@/components/TableOfContents'
 
 // ==============================
 // Reading Time Helper
@@ -28,6 +29,7 @@ function calculateReadingTime(blocks: any[]) {
 // PortableText Styling
 // ==============================
 const portableTextComponents: PortableTextComponents = {
+
   block: {
     h2: ({ children }) => (
       <FadeInHeading as="h2">
@@ -46,11 +48,14 @@ const portableTextComponents: PortableTextComponents = {
         {children}
       </p>
     ),
+  },
 
-    code: ({ children }) => (
-      <pre className="bg-[#0B1C2D] text-green-300 p-6 rounded-2xl overflow-x-auto text-sm leading-relaxed mb-8 shadow-lg">
-        <code>{children}</code>
-      </pre>
+  types: {
+    code: ({ value }) => (
+      <CodeBlock
+        code={value.code}
+        language={value.language || 'javascript'}
+      />
     ),
   },
 
@@ -60,6 +65,7 @@ const portableTextComponents: PortableTextComponents = {
         {children}
       </ul>
     ),
+
     number: ({ children }) => (
       <ol className="list-decimal pl-6 space-y-3 text-gray-700 mb-6">
         {children}
@@ -207,6 +213,7 @@ export default async function BlogPost(
 
       {/* CONTENT */}
       <section className="pb-[120px] pt-16">
+        <TableOfContents />
         <div className="mx-auto max-w-[820px] px-6">
 
           <PortableText

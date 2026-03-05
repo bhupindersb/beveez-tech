@@ -1,30 +1,44 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import slugify from 'slugify'
 
-interface Props {
-  children: React.ReactNode
+export default function FadeInHeading({
+  as = 'h2',
+  children,
+}: {
   as?: 'h2' | 'h3'
-}
-
-export default function FadeInHeading({ children, as = 'h2' }: Props) {
+  children: any
+}) {
   const Tag = as
+
+  const text = String(children)
+
+  const id = slugify(text, {
+    lower: true,
+    strict: true,
+  })
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
+      transition={{ duration: 0.4 }}
+      viewport={{ once: true }}
     >
       <Tag
-        className={
-          as === 'h2'
-            ? 'text-3xl md:text-4xl font-heading font-semibold mt-16 mb-6 text-darkBlue'
-            : 'text-2xl font-heading font-semibold mt-12 mb-4 text-darkBlue'
-        }
+        id={id}
+        className="group scroll-mt-[140px] font-heading font-bold text-darkBlue mt-16 mb-6"
       >
-        {children}
+        <a
+          href={`#${id}`}
+          className="group-hover:text-darkOrange transition"
+        >
+          {children}
+          <span className="ml-2 opacity-0 group-hover:opacity-100 text-darkOrange">
+            #
+          </span>
+        </a>
       </Tag>
     </motion.div>
   )

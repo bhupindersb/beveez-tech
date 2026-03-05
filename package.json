@@ -22,13 +22,16 @@
     "razorpay": "^2.9.6",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-syntax-highlighter": "^16.1.1",
     "resend": "^6.6.0",
+    "slugify": "^1.6.6",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {
     "@types/node": "^20.19.27",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "autoprefixer": "^10.4.23",
     "eslint": "^8",
     "eslint-config-next": "^15.1.0",

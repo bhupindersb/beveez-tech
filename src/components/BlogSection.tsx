@@ -46,12 +46,14 @@ export default function BlogSection({ blogs }: { blogs: any[] }) {
                 {/* IMAGE */}
                 {post.coverImage && (
                   <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
+                    <Link href={`/blog/${post.slug.current}`}>
                     <Image
                       src={urlFor(post.coverImage).width(600).height(450).url()}
                       alt={post.title}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
+                    </Link>
                   </div>
                 )}
 

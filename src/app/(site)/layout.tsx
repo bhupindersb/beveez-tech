@@ -2,6 +2,7 @@ import { getSiteSettings } from '@/sanity/lib/getSiteSettings'
 import { getFooterSettings } from '@/sanity/lib/getFooterSettings'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import GoogleAnalytics from '@/components/GoogleAnalytics'
 
 export const metadata = {
   title: {
@@ -37,6 +38,7 @@ export default async function SiteLayout({
   return (
     <>
       {settings && <Navbar settings={settings} />}
+      <GoogleAnalytics />
       {children}
       {footerSettings && <Footer data={footerSettings} />}
     </>

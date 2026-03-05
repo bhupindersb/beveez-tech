@@ -28,7 +28,7 @@ export default function FadeInHeading({
     >
       <Tag
         id={id}
-        className="group scroll-mt-[140px] font-heading font-bold text-darkBlue mt-16 mb-6"
+        className="group scroll-mt-[140px] text-3xl font-heading font-bold text-darkBlue mt-16 mb-6"
       >
         <a
           href={`#${id}`}

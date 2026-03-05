@@ -44,7 +44,7 @@ export default function TableOfContents() {
   if (!headings.length) return null
 
   return (
-    <aside className="hidden xl:block fixed right-10 top-[180px] w-[260px] text-sm">
+    <aside className="hidden xl:block fixed right-10 top-[180px] w-[260px] text-sm bg-white rounded-lg shadow-lg p-6 border border-gray-200">
 
       <h4 className="font-semibold mb-4 text-darkBlue">
         On this page

@@ -93,7 +93,7 @@ export default function BlogExplorer({
                 </p>
 
                 <div className="mt-4 text-sm text-gray-300">
-                  {featured.readingTime} min read min read
+                  {featured.readingTime} min read
                 </div>
               </div>
             </div>
@@ -142,73 +142,75 @@ export default function BlogExplorer({
         </div>
       </div>
 
-      {/* ================= MASONRY GRID ================= */}
-      <div className="mx-auto max-w-[1280px] px-6 mt-16">
-        <Link
-            href={`/blog/${featured.slug.current}`}
-            className="group block"
-          >
+        {/* ================= MASONRY GRID ================= */}
+        <div className="mx-auto max-w-[1280px] px-6 mt-16">
+
         <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{
+            initial="hidden"
+            animate="visible"
+            variants={{
             visible: {
-              transition: { staggerChildren: 0.08 },
+                transition: { staggerChildren: 0.08 },
             },
-          }}
-          className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8"
+            }}
+            className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8"
         >
-          {visibleBlogs.map((post: any) => (
+            {visibleBlogs.map((post: any) => (
             <motion.article
-              key={post._id}
-              variants={{
+                key={post._id}
+                variants={{
                 hidden: { opacity: 0, y: 30 },
                 visible: { opacity: 1, y: 0 },
-              }}
-              transition={{ duration: 0.5 }}
-              className="break-inside-avoid bg-white rounded-3xl shadow-md hover:shadow-xl transition overflow-hidden group"
+                }}
+                transition={{ duration: 0.5 }}
+                className="break-inside-avoid bg-white rounded-3xl shadow-md hover:shadow-xl transition overflow-hidden group"
             >
-              {post.coverImage && (
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image
-                    src={urlFor(post.coverImage).width(600).height(450).url()}
-                    alt={post.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                <Link
+                href={`/blog/${post.slug.current}`}
+                className="block"
+                >
+                {post.coverImage && (
+                    <div className="relative aspect-[4/3] overflow-hidden">
+                    <Image
+                        src={urlFor(post.coverImage).width(600).height(450).url()}
+                        alt={post.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    </div>
+                )}
+
+                <div className="p-6">
+                    <h3 className="text-xl font-heading font-semibold text-darkBlue group-hover:text-darkOrange transition">
+                    {post.title}
+                    </h3>
+
+                    <p className="mt-3 text-gray-600 line-clamp-3">
+                    {post.excerpt}
+                    </p>
+
+                    <div className="mt-4 text-sm text-gray-500">
+                    {post.readingTime} min read
+                    </div>
                 </div>
-              )}
-
-              <div className="p-6">
-                <h3 className="text-xl font-heading font-semibold text-darkBlue group-hover:text-darkOrange transition">
-                  {post.title}
-                </h3>
-
-                <p className="mt-3 text-gray-600 line-clamp-3">
-                  {post.excerpt}
-                </p>
-
-                <div className="mt-4 text-sm text-gray-500">
-                    {post.readingTime} min read min read
-                </div>
-              </div>
+                </Link>
             </motion.article>
-          ))}
+            ))}
         </motion.div>
-        </Link>
 
         {visibleCount < filteredBlogs.length && (
-          <div className="mt-16 text-center">
+            <div className="mt-16 text-center">
             <button
-              onClick={() => setVisibleCount((prev) => prev + pageSize)}
-              className="bg-darkBlue text-white px-8 py-4 rounded-full hover:bg-darkOrange transition"
+                onClick={() => setVisibleCount((prev) => prev + pageSize)}
+                className="bg-darkBlue text-white px-8 py-4 rounded-full hover:bg-darkOrange transition"
             >
-              Load More
+                Load More
             </button>
-          </div>
+            </div>
         )}
-      </div>
+
+        </div>
     </section>
   )
 }

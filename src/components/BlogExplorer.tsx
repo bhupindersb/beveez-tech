@@ -144,6 +144,10 @@ export default function BlogExplorer({
 
       {/* ================= MASONRY GRID ================= */}
       <div className="mx-auto max-w-[1280px] px-6 mt-16">
+        <Link
+            href={`/blog/${featured.slug.current}`}
+            className="group block"
+          >
         <motion.div
           initial="hidden"
           animate="visible"
@@ -192,6 +196,7 @@ export default function BlogExplorer({
             </motion.article>
           ))}
         </motion.div>
+        </Link>
 
         {visibleCount < filteredBlogs.length && (
           <div className="mt-16 text-center">

@@ -16,7 +16,7 @@ export async function getHomepageData() {
     heroSecondaryCtaUrl
   },
 
-  "trust": *[_type == "trustSection"][0],
+  "trust": *[_type match "trust*"][0],
 
   "servicesSection": *[_type == "servicesSection"][0],
 
@@ -32,10 +32,10 @@ export async function getHomepageData() {
 
   "ctaSection": *[_type == "ctaSection"][0],
 
-  "blogs": *[_type == "post"] | order(publishedAt desc)[0...50]
+  "blogs": *[_type match "post*"] | order(publishedAt desc)[0...50]
 }
 `,
     {},
-    { next: { revalidate: 3600 } }
+    { next: { revalidate: 86400 } }
   )
 }

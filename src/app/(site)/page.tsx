@@ -5,14 +5,15 @@ import TrustSection from '@/components/TrustSection'
 import ServicesSection from '@/components/ServicesSection'
 import WhyChooseUs from '@/components/WhyChooseUs'
 import WhoWeWorkWith from '@/components/WhoWeWorkWith'
-import PricingSection from '@/components/PricingSection'
 import CtaSection from '@/components/CtaSection'
-import BlogSection from '@/components/BlogSection'
 
 import { Metadata } from 'next'
 
 import { getPageSeo } from '@/sanity/lib/getPageSeo'
 import { getHomepageData } from '@/sanity/lib/getHomepageData'
+import { Suspense } from 'react'
+import BlogSectionWrapper from '@/components/BlogSectionWrapper'
+import PricingSectionWrapper from '@/components/PricingSectionWrapper'
 
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -96,7 +97,7 @@ export default async function Home() {
       />
 
       {/* TRUST SECTION */}
-      <TrustSection data={trust} />
+      {trust && <TrustSection data={trust} />}
 
       {/* SERVICES SECTION */}
       <ServicesSection
@@ -111,16 +112,17 @@ export default async function Home() {
       <WhoWeWorkWith data={whoWeWorkWith} />
 
       {/* PRICING SECTION */}
-      <PricingSection
-        section={pricingSection}
-        plans={pricingPlans}
-      />
+      <Suspense fallback={<div className="py-20 text-center">Loading pricing...</div>}>
+        <PricingSectionWrapper />
+      </Suspense>
 
       {/* CTA SECTION */}
       <CtaSection data={ctaSection} />
 
       {/* BLOG SECTION */}
-      <BlogSection blogs={blogs} />
+      <Suspense fallback={<div className="py-20 text-center">Loading blogs...</div>}>
+        <BlogSectionWrapper />
+      </Suspense>
     </>
   )
 }

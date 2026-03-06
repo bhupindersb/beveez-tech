@@ -1,5 +1,5 @@
 import './globals.css'
-import { Poppins, Didact_Gothic } from 'next/font/google'
+import { Poppins, Comfortaa } from 'next/font/google'
 import OrganizationSchema from '@/components/schema/OrganizationSchema'
 import WebsiteSchema from '@/components/schema/WebsiteSchema'
 
@@ -10,10 +10,10 @@ const poppins = Poppins({
   display: 'swap',
 })
 
-const didact = Didact_Gothic({
+const comfortaa = Comfortaa({
   subsets: ['latin'],
-  weight: ['400'],
-  variable: '--font-didact',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-comfortaa',
   display: 'swap',
 })
 
@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${didact.variable}`}
+      className={`${poppins.variable} ${comfortaa.variable}`}
     >
       <head>
         {/* Schema Markup */}

@@ -30,9 +30,8 @@ export default function RootLayout({
       <head>
         {/* Adobe Fonts */}
         <link
-          rel="preload"
+          rel="stylesheet"
           href="https://use.typekit.net/dco4nvv.css"
-          as="style"
         />
 
         {/* Schema Markup */}

@@ -40,14 +40,19 @@ export default function RootLayout({
 
       <body className="antialiased bg-[#f2f1f6] font-body">
 
-        {/* Load Adobe Fonts non-blocking */}
+        {/* Adobe Fonts */}
         <Script
           src="https://use.typekit.net/dco4nvv.js"
           strategy="afterInteractive"
+          onLoad={() => {
+            try {
+              // @ts-ignore
+              window.Typekit.load({ async: true })
+            } catch (e) {}
+          }}
         />
-        <main>
-          {children}
-        </main>
+
+        {children}
       </body>
     </html>
   )

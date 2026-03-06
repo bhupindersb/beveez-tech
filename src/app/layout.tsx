@@ -1,6 +1,5 @@
 import './globals.css'
-import { Poppins } from 'next/font/google'
-import Script from 'next/script'
+import { Poppins, Didact_Gothic } from 'next/font/google'
 import OrganizationSchema from '@/components/schema/OrganizationSchema'
 import WebsiteSchema from '@/components/schema/WebsiteSchema'
 
@@ -8,6 +7,13 @@ const poppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-poppins',
+  display: 'swap',
+})
+
+const didact = Didact_Gothic({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-didact',
   display: 'swap',
 })
 
@@ -27,31 +33,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={poppins.variable}>
+    <html
+      lang="en"
+      className={`${poppins.variable} ${didact.variable}`}
+    >
       <head>
-        {/* Preconnect Adobe font servers */}
-        <link rel="preconnect" href="https://use.typekit.net" />
-        <link rel="preconnect" href="https://p.typekit.net" crossOrigin="" />
-
         {/* Schema Markup */}
         <OrganizationSchema />
         <WebsiteSchema />
       </head>
 
       <body className="antialiased bg-[#f2f1f6] font-body">
-
-        {/* Adobe Fonts */}
-        <Script
-          src="https://use.typekit.net/dco4nvv.js"
-          strategy="afterInteractive"
-          onLoad={() => {
-            try {
-              // @ts-ignore
-              window.Typekit.load({ async: true })
-            } catch (e) {}
-          }}
-        />
-
         {children}
       </body>
     </html>

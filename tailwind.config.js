@@ -15,7 +15,7 @@ module.exports = {
         blueEnd: '#65c6db',
       },
       fontFamily: {
-        heading: ['"all-round-gothic"', 'sans-serif'],
+        heading: ['var(--font-didact)', 'sans-serif'],
         body: ['var(--font-poppins)', 'sans-serif'],
       },
     },

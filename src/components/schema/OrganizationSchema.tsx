@@ -6,15 +6,16 @@ export default function OrganizationSchema() {
     url: "https://beveez.tech",
     logo: "https://beveez.tech/logo.png",
     sameAs: [
-      "https://linkedin.com/company/beveez-tech",
-      "https://twitter.com/beveeztech"
+      "https://www.linkedin.com/company/beveez-tech"
     ]
   }
 
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(schema)
+      }}
     />
   )
 }

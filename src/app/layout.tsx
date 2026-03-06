@@ -27,20 +27,25 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={poppins.variable}>
-      <body className="antialiased bg-[#f2f1f6] font-body">
+      <head>
         {/* Adobe Fonts */}
         <link
           rel="stylesheet"
           href="https://use.typekit.net/dco4nvv.css"
         />
 
+        {/* Schema Markup */}
+        <OrganizationSchema />
+        <WebsiteSchema />
+      </head>
+
+      <body className="antialiased bg-[#f2f1f6] font-body">
         {/* Razorpay Script */}
         <Script
           src="https://checkout.razorpay.com/v1/checkout.js"
           strategy="afterInteractive"
         />
-        <OrganizationSchema />
-        <WebsiteSchema />
+
         {children}
       </body>
     </html>

@@ -10,6 +10,8 @@ import ReadingProgress from '@/components/ReadingProgress'
 import FadeInHeading from '@/components/FadeInHeading'
 import CodeBlock from '@/components/CodeBlock'
 import TableOfContents from '@/components/TableOfContents'
+import ArticleSchema from '@/components/schema/ArticleSchema'
+import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema'
 
 // ==============================
 // Reading Time Helper
@@ -162,6 +164,7 @@ export default async function BlogPost(
 
   return (
     <>
+      <ArticleSchema post={post} />
       <ReadingProgress />
 
       {/* HERO */}
@@ -173,6 +176,8 @@ export default async function BlogPost(
             <Link href="/blog">Blog</Link> /{' '}
             <span className="text-darkBlue">{post.title}</span>
           </nav>
+
+          <BreadcrumbSchema title={post.title} slug={post.slug.current} />
 
           <h1 className="text-5xl md:text-6xl font-heading font-bold leading-tight text-darkBlue max-w-4xl">
             {post.title}

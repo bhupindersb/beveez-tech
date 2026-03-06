@@ -1,6 +1,8 @@
 import './globals.css'
 import { Poppins } from 'next/font/google'
 import Script from 'next/script'
+import OrganizationSchema from '@/components/schema/OrganizationSchema'
+import WebsiteSchema from '@/components/schema/WebsiteSchema'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -37,7 +39,8 @@ export default function RootLayout({
           src="https://checkout.razorpay.com/v1/checkout.js"
           strategy="afterInteractive"
         />
-
+        <OrganizationSchema />
+        <WebsiteSchema />
         {children}
       </body>
     </html>

@@ -39,7 +39,9 @@ export default async function SiteLayout({
     <>
       {settings && <Navbar settings={settings} />}
       <GoogleAnalytics />
-      {children}
+       <main>
+        {children}
+      </main>
       {footerSettings && <Footer data={footerSettings} />}
     </>
   )

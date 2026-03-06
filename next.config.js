@@ -8,6 +8,7 @@ const nextConfig = {
 
   images: {
     domains: ['cdn.sanity.io'],
+    formats: ['image/avif', 'image/webp'],
   },
 };
 

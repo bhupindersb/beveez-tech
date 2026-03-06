@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { urlFor } from '@/sanity/lib/image'
 
+
 interface HeroProps {
   background?: any
   highlightImage?: any
@@ -35,10 +36,12 @@ export default function Hero({
       {/* Background Image */}
       {background && (
         <Image
-          src={urlFor(background).width(2400).height(1400).url()}
+          src={urlFor(background).width(2400).height(1400).format('webp').url()}
           alt=""
           fill
           priority
+          fetchPriority="high"
+          sizes="100vw"
           className="-z-10 absolute w-full h-auto mix-blend-multiply"
         />
       )}

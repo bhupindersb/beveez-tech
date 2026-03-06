@@ -30,8 +30,9 @@ export default function RootLayout({
       <head>
         {/* Adobe Fonts */}
         <link
-          rel="stylesheet"
+          rel="preload"
           href="https://use.typekit.net/dco4nvv.css"
+          as="style"
         />
 
         {/* Schema Markup */}
@@ -40,11 +41,6 @@ export default function RootLayout({
       </head>
 
       <body className="antialiased bg-[#f2f1f6] font-body">
-        {/* Razorpay Script */}
-        <Script
-          src="https://checkout.razorpay.com/v1/checkout.js"
-          strategy="afterInteractive"
-        />
 
         {children}
       </body>

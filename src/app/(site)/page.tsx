@@ -1,32 +1,18 @@
-export const revalidate = 0
+export const revalidate = 86400
 
-import { sanityClient } from '@/sanity/lib/client'
 import Hero from '@/components/Hero'
 import TrustSection from '@/components/TrustSection'
 import ServicesSection from '@/components/ServicesSection'
-
-import { getTrustSection } from '@/sanity/lib/getTrustSection'
-import { getServices } from '@/sanity/lib/getServices'
-import { getServicesSection } from '@/sanity/lib/getServicesSection'
-
-import { getWhyChooseUs } from '@/sanity/lib/getWhyChooseUs'
 import WhyChooseUs from '@/components/WhyChooseUs'
-
-import { getWhoWeWorkWith } from '@/sanity/lib/getWhoWeWorkWith'
 import WhoWeWorkWith from '@/components/WhoWeWorkWith'
-
-import { getPricingSection } from '@/sanity/lib/getPricingSection'
-import { getPricingPlans } from '@/sanity/lib/getPricingPlans'
 import PricingSection from '@/components/PricingSection'
-
 import CtaSection from '@/components/CtaSection'
-import { getCtaSection } from '@/sanity/lib/getCtaSection'
-
-import { getBlogs } from '@/sanity/lib/getBlogs'
 import BlogSection from '@/components/BlogSection'
 
 import { Metadata } from 'next'
+
 import { getPageSeo } from '@/sanity/lib/getPageSeo'
+import { getHomepageData } from '@/sanity/lib/getHomepageData'
 
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -34,21 +20,31 @@ export async function generateMetadata(): Promise<Metadata> {
   const seo = page?.seo
 
   return {
-    title: seo?.seoTitle || 'Beveez Tech — Web Design, Development & SEO for Startups',
+    title:
+      seo?.seoTitle ||
+      'Beveez Tech — Web Design, Development & SEO for Startups',
     description:
       seo?.seoDescription ||
       'Beveez Tech helps startups, founders, and small businesses build fast, scalable websites.',
     metadataBase: new URL('https://beveez.tech'),
+
     openGraph: {
       title: seo?.seoTitle,
       description: seo?.seoDescription,
       images: seo?.seoImage?.asset?.url
-        ? [{ url: seo.seoImage.asset.url }]
+        ? [
+            {
+              url: seo.seoImage.asset.url,
+              width: 1200,
+              height: 630,
+            },
+          ]
         : [],
       url: 'https://www.beveez.tech',
       siteName: 'Beveez Tech',
       type: 'website',
     },
+
     twitter: {
       card: 'summary_large_image',
       title: seo?.seoTitle,
@@ -57,6 +53,7 @@ export async function generateMetadata(): Promise<Metadata> {
         ? [seo.seoImage.asset.url]
         : [],
     },
+
     robots: {
       index: true,
       follow: true,
@@ -65,46 +62,19 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 
-
-async function getHomePage() {
-  return sanityClient.fetch(`
-    *[_type == "page" && slug.current == "home"][0]{
-      heroBackground,
-      heroHighlightImage,
-      heroHeadline,
-      heroHighlight,
-      heroSubheadline,
-      heroPrimaryCtaText,
-      heroPrimaryCtaUrl,
-      heroSecondaryCtaText,
-      heroSecondaryCtaUrl,
-      seo {
-        seoTitle,
-        seoDescription,
-        seoImage {
-          asset->{
-            url
-          }
-        }
-      }
-    }
-  `)
-}
-
-
 export default async function Home() {
-  const page = await getHomePage()
-  const trust = await getTrustSection()
-  const services = await getServices() 
-  const servicesSection = await getServicesSection()
-  const whyChooseUs = await getWhyChooseUs()
-  const whoWeWorkWith = await getWhoWeWorkWith()
-  const pricingSection = await getPricingSection()
-  const pricingPlans = await getPricingPlans()
-  const ctaSection = await getCtaSection()
-  const blogs = await getBlogs(50)
+  const data = await getHomepageData()
 
-
+  const page = data?.page
+  const trust = data?.trust
+  const services = data?.services
+  const servicesSection = data?.servicesSection
+  const whyChooseUs = data?.whyChooseUs
+  const whoWeWorkWith = data?.whoWeWorkWith
+  const pricingSection = data?.pricingSection
+  const pricingPlans = data?.pricingPlans
+  const ctaSection = data?.ctaSection
+  const blogs = data?.blogs
 
   if (!page) {
     return <div>Homepage content not found</div>

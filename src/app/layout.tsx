@@ -1,5 +1,6 @@
 import './globals.css'
 import { Poppins } from 'next/font/google'
+import Script from 'next/script'
 import OrganizationSchema from '@/components/schema/OrganizationSchema'
 import WebsiteSchema from '@/components/schema/WebsiteSchema'
 
@@ -28,32 +29,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.variable}>
       <head>
-        {/* Preconnect to Adobe Font servers */}
+        {/* Preconnect Adobe font servers */}
         <link rel="preconnect" href="https://use.typekit.net" />
         <link rel="preconnect" href="https://p.typekit.net" crossOrigin="" />
-
-        {/* Preload Adobe font CSS */}
-        <link
-          rel="preload"
-          href="https://use.typekit.net/dco4nvv.css"
-          as="style"
-        />
-
-        {/* Load Adobe Fonts non-blocking */}
-        <link
-          rel="stylesheet"
-          href="https://use.typekit.net/dco4nvv.css"
-          media="print"
-          onLoad={(e) => {
-            const target = e.currentTarget
-            target.media = 'all'
-          }}
-        />
-
-        {/* Fallback for no JS */}
-        <noscript>
-          <link rel="stylesheet" href="https://use.typekit.net/dco4nvv.css" />
-        </noscript>
 
         {/* Schema Markup */}
         <OrganizationSchema />
@@ -61,7 +39,15 @@ export default function RootLayout({
       </head>
 
       <body className="antialiased bg-[#f2f1f6] font-body">
-        {children}
+
+        {/* Load Adobe Fonts non-blocking */}
+        <Script
+          src="https://use.typekit.net/dco4nvv.js"
+          strategy="afterInteractive"
+        />
+        <main>
+          {children}
+        </main>
       </body>
     </html>
   )

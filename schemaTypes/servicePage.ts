@@ -78,11 +78,11 @@ export const servicePage = defineType({
                 },
                 {
                 name: 'icon',
-                title: 'Icon (SVG or PNG)',
-                type: 'image',
+                title: 'Icon (Lottie JSON)',
+                type: 'file',
                 options: {
-                    hotspot: false,
-                },
+                  accept: '.json'
+                }
                 },
             ],
             },

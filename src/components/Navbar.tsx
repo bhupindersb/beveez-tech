@@ -34,8 +34,13 @@ export default function Navbar({ settings }: any) {
 
   // Active link matcher
   const isActive = (url: string) => {
-    const clean = (v: string) => v.replace(/\/$/, '')
-    return clean(pathname) === clean(url) || clean(pathname).startsWith(clean(url) + '/')
+    const normalize = (v: string) =>
+      '/' + v.replace(/^\/|\/$/g, '')
+
+    const current = normalize(pathname)
+    const target = normalize(url)
+
+    return current === target || current.startsWith(target + '/')
   }
 
   return (

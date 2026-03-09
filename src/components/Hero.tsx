@@ -50,8 +50,8 @@ export default function Hero({
 
       <div className="relative max-w-[1280px] w-full md:px-6 pt-44">
         <h1
-          className="font-heading font-bold text-darkBlue leading-tight
-          text-[30px] sm:text-[42px] md:text-[64px] lg:text-[72px] relative"
+          className="font-heading font-semibold text-darkBlue leading-tight
+          text-[30px] sm:text-[38px] md:text-[48px] lg:text-[60px] relative"
         >
           {title}
 

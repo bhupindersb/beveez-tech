@@ -3,37 +3,56 @@ import { sanityClient } from '@/sanity/lib/client'
 export async function getServicesPage() {
   return sanityClient.fetch(`
     *[
-      _type == "page" &&
-      template == "services"
+      _type == "servicePage"
     ][0]{
       hero{
         headline,
         subText,
         primaryCtaText,
         primaryCtaUrl,
-        secondaryCtaText,
-        secondaryCtaUrl,
-        backgroundImage{ asset->{ url } }
-      },
-
-      heroIcons[]{
-        label,
-        description,
-        icon{ asset->{ url } }
-      },
-
-      serviceDetails[]{
-        heading,
-        subText,
-        description,
-        includes,
-        ctaText,
-        ctaUrl,
-        accent,
-        visual{
-          type,
-          image{ asset->{ url } }
+        backgroundImage{
+          asset->{
+            url
+          }
         }
+      },
+
+      heroMetrics[]{
+        value,
+        label,
+        icon{
+          asset->{
+            url
+          }
+        }
+      },
+
+      problem{
+        heading,
+        content,
+        impactPoints
+      },
+
+      whatWeDo,
+
+      process,
+
+      deliverables,
+
+      comparison{
+        heading,
+        beforePoints,
+        afterPoints
+      },
+
+      faq[]{
+        question,
+        answer
+      },
+
+      testimonial{
+        quote,
+        author
       },
 
       ctaOverride{
@@ -43,9 +62,12 @@ export async function getServicesPage() {
         primaryCtaUrl,
         secondaryCtaText,
         secondaryCtaUrl,
-        backgroundImage{ asset->{ url } }
+        backgroundImage{
+          asset->{
+            url
+          }
+        }
       }
     }
   `)
 }
-

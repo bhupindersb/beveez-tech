@@ -28,7 +28,7 @@ export default async function LeadsPage() {
       name: lead.name,
       email: lead.email,
       company: lead.company,
-      plan: lead.plan,
+      plan: lead.plan ?? 'free-audit',
       status: lead.status,
       formType: lead.formType,
       details: lead.details,

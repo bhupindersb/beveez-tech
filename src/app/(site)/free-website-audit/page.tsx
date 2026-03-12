@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import ScoreGauge from '@/components/ScoreGauge'
 
 export default function FreeAuditPage() {
 
@@ -162,12 +163,15 @@ export default function FreeAuditPage() {
 
               {/* SCORE GRID */}
 
-              <div className="grid md:grid-cols-4 gap-6 text-center">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-10 justify-items-center mt-8">
 
-                <Score label="Performance" value={results.performance} />
-                <Score label="SEO" value={results.seo} />
-                <Score label="Accessibility" value={results.accessibility} />
-                <Score label="Best Practices" value={results.bestPractices} />
+                <ScoreGauge score={results.performance} label="Performance" />
+
+                <ScoreGauge score={results.seo} label="SEO" />
+
+                <ScoreGauge score={results.accessibility} label="Accessibility" />
+
+                <ScoreGauge score={results.bestPractices} label="Best Practices" />
 
               </div>
 
@@ -217,6 +221,33 @@ export default function FreeAuditPage() {
 
               )}
 
+              {results?.technologies && (
+
+                <div className="bg-white rounded-2xl shadow-md p-6 mt-10">
+
+                  <h3 className="text-lg font-semibold text-darkBlue mb-4">
+                    Technology Detected
+                  </h3>
+
+                  <div className="flex flex-wrap gap-3">
+
+                    {results.technologies.map((tech:any, i:number) => (
+
+                      <span
+                        key={i}
+                        className="px-3 py-1 bg-[#f2f1f6] rounded-full text-sm"
+                      >
+                        {tech}
+                      </span>
+
+                    ))}
+
+                  </div>
+
+                </div>
+
+              )}
+
               {/* SCREENSHOT */}
 
               {results.screenshot && (
@@ -232,6 +263,22 @@ export default function FreeAuditPage() {
                     alt="Website screenshot"
                     className="rounded-xl border"
                   />
+
+                </div>
+
+              )}
+
+              {results?.pageSize && (
+
+                <div className="bg-white rounded-2xl shadow-md p-6 mt-6 text-center">
+
+                  <h3 className="text-lg font-semibold text-darkBlue">
+                    Estimated Page Size
+                  </h3>
+
+                  <p className="text-3xl font-bold text-orange mt-2">
+                    {results.pageSize} KB
+                  </p>
 
                 </div>
 

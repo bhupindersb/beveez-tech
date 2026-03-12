@@ -1,5 +1,19 @@
 import { NextResponse } from 'next/server'
 
+type AuditResult = {
+  performance: number
+  seo: number
+  accessibility: number
+  bestPractices: number
+  lcp: string
+  cls: string
+  ttfb: string
+  screenshot: string | null
+  issues: string[]
+  technologies?: string[]
+  pageSize?: string
+}
+
 export async function POST(req: Request) {
   try {
 
@@ -42,10 +56,10 @@ export async function POST(req: Request) {
     const categories = lighthouse.categories || {}
     const audits = lighthouse.audits || {}
 
-    const performance = Math.round((categories?.performance?.score || 0) * 100)
-    const seo = Math.round((categories?.seo?.score || 0) * 100)
-    const accessibility = Math.round((categories?.accessibility?.score || 0) * 100)
-    const bestPractices = Math.round((categories?.['best-practices']?.score || 0) * 100)
+    const performance = Math.round((categories?.performance?.score ?? 0) * 100)
+    const seo = Math.round((categories?.seo?.score ?? 0) * 100)
+    const accessibility = Math.round((categories?.accessibility?.score ?? 0) * 100)
+    const bestPractices = Math.round((categories?.['best-practices']?.score ?? 0) * 100)
 
     const lcp = audits?.['largest-contentful-paint']?.displayValue || 'N/A'
     const cls = audits?.['cumulative-layout-shift']?.displayValue || 'N/A'
@@ -55,7 +69,7 @@ export async function POST(req: Request) {
     // DIAGNOSTIC ENGINE
     // -------------------------
 
-    const issues = []
+    const issues: string[] = []
 
     if (performance < 50) {
       issues.push('Your website performance score is very low, indicating slow loading times.')
@@ -81,7 +95,7 @@ export async function POST(req: Request) {
       issues.push('No major issues detected, but further optimization could still improve performance.')
     }
 
-    const result = {
+    const result: AuditResult = {
 
       performance,
       seo,
@@ -98,6 +112,54 @@ export async function POST(req: Request) {
       issues
 
     }
+
+    // -------------------------
+    // TECHNOLOGY DETECTION
+    // -------------------------
+
+    const technologies: string[] = []
+
+    const htmlResponse = await fetch(url)
+    const html = await htmlResponse.text()
+
+    if (html.includes('wp-content') || html.includes('wordpress')) {
+      technologies.push('WordPress')
+    }
+
+    if (html.includes('cdn.shopify.com')) {
+      technologies.push('Shopify')
+    }
+
+    if (html.includes('data-reactroot') || html.includes('_next')) {
+      technologies.push('React / Next.js')
+    }
+
+    if (html.includes('cloudflare')) {
+      technologies.push('Cloudflare')
+    }
+
+    if (html.includes('googletagmanager') || html.includes('google-analytics')) {
+      technologies.push('Google Analytics')
+    }
+
+    if (html.includes('bootstrap')) {
+      technologies.push('Bootstrap')
+    }
+
+    if (technologies.length === 0) {
+      technologies.push('Unknown / Custom Stack')
+    }
+
+    result.technologies = technologies
+
+    // -------------------------
+    // PAGE SIZE ESTIMATE
+    // -------------------------
+
+    const pageSizeKB = html.length / 1024
+    const pageSizeMB = pageSizeKB / 1024
+
+    result.pageSize = pageSizeMB.toFixed(2) + ' MB'
 
     return NextResponse.json(result)
 

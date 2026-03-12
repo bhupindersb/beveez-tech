@@ -12,21 +12,22 @@ export async function POST(req: Request) {
       )
     }
 
-    // Automatically add https:// if user forgets
     if (!url.startsWith('http')) {
       url = `https://${url}`
     }
 
+    const apiKey = process.env.PAGESPEED_API_KEY
+
     const endpoint =
-      `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(
-        url
-      )}&strategy=mobile`
+      `https://www.googleapis.com/pagespeedonline/v5/runPagespeed` +
+      `?url=${encodeURIComponent(url)}` +
+      `&strategy=mobile` +
+      `&key=${apiKey}`
 
     const res = await fetch(endpoint)
 
     const data = await res.json()
 
-    // Prevent crashes if Google API fails
     if (!data?.lighthouseResult) {
 
       console.error('PageSpeed API error:', data)
@@ -38,7 +39,6 @@ export async function POST(req: Request) {
     }
 
     const lighthouse = data.lighthouseResult
-
     const categories = lighthouse.categories
     const audits = lighthouse.audits
 

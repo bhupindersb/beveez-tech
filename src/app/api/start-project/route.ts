@@ -35,16 +35,16 @@ export async function POST(req: Request) {
     // Save to DB
     const lead = await prisma.lead.create({
       data: {
-        name: data.name || '',
-        email: data.email || '',
+        name: data.name,
+        email: data.email,
         company: data.company || '',
         goals: data.goals || '',
         details: data.details || '',
-        plan: data.plan || '',
         formType: formType,
         ipAddress: ip,
         userAgent,
-      },
+        ...(data.plan ? { plan: data.plan } : {})
+      }
     })
 
 

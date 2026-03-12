@@ -31,7 +31,7 @@ model Lead {
   goals       String?
   details     String?
 
-  plan        PlanType
+  plan        PlanType?
   formType   String   @default("start-project")
 
   ipAddress   String?

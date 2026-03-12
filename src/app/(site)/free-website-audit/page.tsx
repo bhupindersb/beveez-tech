@@ -8,13 +8,16 @@ export default function FreeAuditPage() {
   const [score, setScore] = useState<number | null>(null)
   const [loading, setLoading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [message, setMessage] = useState<string | null>(null)
 
   async function runAudit(e: any) {
+
     e.preventDefault()
 
     if (!url) return
 
     setLoading(true)
+    setScore(null)
 
     try {
 
@@ -26,11 +29,17 @@ export default function FreeAuditPage() {
 
       const data = await res.json()
 
-      setScore(data.score)
+      if (data.score) {
+        setScore(data.score)
+      } else {
+        setMessage('Unable to analyze this website.')
+      }
 
     } catch (err) {
+
       console.error(err)
-      alert('Unable to analyze the website right now.')
+      setMessage('Audit failed. Please try again.')
+
     }
 
     setLoading(false)
@@ -44,15 +53,22 @@ export default function FreeAuditPage() {
     const form = e.target
 
     setSubmitting(true)
+    setMessage(null)
 
     const payload = {
+
       formType: 'free-audit',
+
       name: form.name.value,
       email: form.email.value,
+
       company: '',
       goals: '',
+      details: form.website.value,
       plan: '',
-      details: form.website.value
+
+      website_hidden: '' // honeypot field expected by your API
+
     }
 
     try {
@@ -67,23 +83,21 @@ export default function FreeAuditPage() {
 
       if (result.success) {
 
-        alert('Audit request received. We will send your report within 24 hours.')
+        setMessage('✅ Audit request received. We will send your report within 24 hours.')
 
         form.reset()
-
         setScore(null)
 
       } else {
 
-        alert('Something went wrong. Please try again.')
+        setMessage('❌ Something went wrong. Please try again.')
 
       }
 
     } catch (err) {
 
       console.error(err)
-
-      alert('Something went wrong. Please try again.')
+      setMessage('❌ Something went wrong. Please try again.')
 
     }
 
@@ -110,8 +124,8 @@ export default function FreeAuditPage() {
 
           <p className="mt-6 text-lg text-darkBlue/80 max-w-[650px] mx-auto">
 
-            Discover what is slowing down your website and how to improve
-            your Core Web Vitals, SEO performance and loading speed.
+            Instantly check your website speed and get a detailed audit
+            showing how to improve your Core Web Vitals and SEO.
 
           </p>
 
@@ -125,15 +139,9 @@ export default function FreeAuditPage() {
 
           <h2 className="text-2xl font-semibold text-darkBlue text-center">
 
-            Run Instant Speed Test
+            Instant Website Speed Test
 
           </h2>
-
-          <p className="text-center text-darkBlue/70 mt-2">
-
-            Enter your website URL to see its performance score.
-
-          </p>
 
 
           <form
@@ -164,7 +172,7 @@ export default function FreeAuditPage() {
 
             <p className="text-center mt-6">
 
-              Analyzing website performance...
+              Running performance analysis...
 
             </p>
 
@@ -189,7 +197,7 @@ export default function FreeAuditPage() {
 
               <p className="mt-4 text-darkBlue/70">
 
-                Want a full performance audit and improvement plan?
+                Request a full audit to improve this score.
 
               </p>
 
@@ -245,13 +253,20 @@ export default function FreeAuditPage() {
               className="w-full border border-gray-300 rounded-xl px-4 py-3"
             />
 
+            {/* honeypot spam field */}
+
+            <input
+              type="text"
+              name="website_hidden"
+              className="hidden"
+            />
+
 
             <button
               disabled={submitting}
               className="w-full rounded-full
               bg-gradient-to-r from-[#cf5a20] to-[#f68f1e]
-              py-4 text-white font-semibold
-              hover:from-[#f68f1e] hover:to-[#cf5a20]"
+              py-4 text-white font-semibold"
             >
 
               {submitting ? 'Submitting...' : 'Request Free Audit'}
@@ -259,6 +274,17 @@ export default function FreeAuditPage() {
             </button>
 
           </form>
+
+
+          {message && (
+
+            <p className="text-center mt-6 text-darkBlue">
+
+              {message}
+
+            </p>
+
+          )}
 
         </div>
 
@@ -318,77 +344,9 @@ export default function FreeAuditPage() {
 
         </div>
 
-
-
-        {/* HOW IT WORKS */}
-
-        <div className="mt-24 text-center">
-
-          <h2 className="text-3xl font-heading font-bold text-darkBlue">
-
-            How It Works
-
-          </h2>
-
-          <div className="mt-10 grid md:grid-cols-3 gap-10">
-
-            <div>
-
-              <div className="text-4xl font-bold text-orange">
-
-                1
-
-              </div>
-
-              <p className="mt-3 text-darkBlue/80">
-
-                Submit your website using the form above.
-
-              </p>
-
-            </div>
-
-
-            <div>
-
-              <div className="text-4xl font-bold text-orange">
-
-                2
-
-              </div>
-
-              <p className="mt-3 text-darkBlue/80">
-
-                We run a detailed performance and SEO analysis.
-
-              </p>
-
-            </div>
-
-
-            <div>
-
-              <div className="text-4xl font-bold text-orange">
-
-                3
-
-              </div>
-
-              <p className="mt-3 text-darkBlue/80">
-
-                You receive your personalized audit report within 24 hours.
-
-              </p>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
       </div>
 
     </main>
+
   )
 }

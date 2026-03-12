@@ -6,14 +6,23 @@ export async function POST(req: Request) {
 
   const key = process.env.PAGESPEED_API_KEY
 
-  const res = await fetch(
-    `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&key=${key}`
-  )
+  try {
 
-  const data = await res.json()
+    const res = await fetch(
+      `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&key=${key}`
+    )
 
-  const score =
-    data.lighthouseResult.categories.performance.score * 100
+    const data = await res.json()
 
-  return NextResponse.json({ score })
+    const score =
+      Math.round(data.lighthouseResult.categories.performance.score * 100)
+
+    return NextResponse.json({ score })
+
+  } catch (err) {
+
+    return NextResponse.json({ error: true })
+
+  }
+
 }

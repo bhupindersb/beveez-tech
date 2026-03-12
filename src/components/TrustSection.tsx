@@ -48,7 +48,7 @@ export default function TrustSection({ data }: any) {
                 </div>
               )}
 
-              <p className="text-[22px] font-heading font-demi text-darkBlue">
+              <p className="text-[20px] font-heading font-demi text-darkBlue">
                 {item.title}
               </p>
 

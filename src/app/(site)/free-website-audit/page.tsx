@@ -8,16 +8,14 @@ export default function FreeAuditPage() {
   const [score, setScore] = useState<number | null>(null)
   const [loading, setLoading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
-  const [message, setMessage] = useState<string | null>(null)
 
-  async function runAudit(e: any) {
+  async function runAudit(e:any) {
 
     e.preventDefault()
 
     if (!url) return
 
     setLoading(true)
-    setScore(null)
 
     try {
 
@@ -29,31 +27,27 @@ export default function FreeAuditPage() {
 
       const data = await res.json()
 
-      if (data.score) {
-        setScore(data.score)
-      } else {
-        setMessage('Unable to analyze this website.')
-      }
+      setScore(data.score)
 
     } catch (err) {
 
       console.error(err)
-      setMessage('Audit failed. Please try again.')
+      alert('Unable to analyze the website.')
 
     }
 
     setLoading(false)
+
   }
 
 
-  async function submitAudit(e: any) {
+  async function submitAudit(e:any) {
 
     e.preventDefault()
 
     const form = e.target
 
     setSubmitting(true)
-    setMessage(null)
 
     const payload = {
 
@@ -61,13 +55,10 @@ export default function FreeAuditPage() {
 
       name: form.name.value,
       email: form.email.value,
-
       company: '',
       goals: '',
-      details: form.website.value,
       plan: '',
-
-      website_hidden: '' // honeypot field expected by your API
+      details: form.website.value
 
     }
 
@@ -81,27 +72,31 @@ export default function FreeAuditPage() {
 
       const result = await res.json()
 
-      if (result.success) {
+      console.log(result)
 
-        setMessage('✅ Audit request received. We will send your report within 24 hours.')
+      if (res.ok) {
+
+        alert('Audit request received. We will send your report within 24 hours.')
 
         form.reset()
         setScore(null)
 
       } else {
 
-        setMessage('❌ Something went wrong. Please try again.')
+        alert(result.error || 'Server error occurred.')
 
       }
 
-    } catch (err) {
+    } catch (error) {
 
-      console.error(err)
-      setMessage('❌ Something went wrong. Please try again.')
+      console.error(error)
+
+      alert('Network error. Please try again.')
 
     }
 
     setSubmitting(false)
+
   }
 
 
@@ -111,38 +106,24 @@ export default function FreeAuditPage() {
 
       <div className="max-w-[900px] mx-auto">
 
+        <h1 className="text-5xl font-heading font-bold text-center text-darkBlue">
+          Free Website Performance Audit
+        </h1>
 
-        {/* HERO */}
-
-        <div className="text-center">
-
-          <h1 className="text-4xl md:text-6xl font-heading font-bold text-darkBlue">
-
-            Free Website Performance Audit
-
-          </h1>
-
-          <p className="mt-6 text-lg text-darkBlue/80 max-w-[650px] mx-auto">
-
-            Instantly check your website speed and get a detailed audit
-            showing how to improve your Core Web Vitals and SEO.
-
-          </p>
-
-        </div>
+        <p className="text-center mt-6 text-lg text-darkBlue/80">
+          Discover what is slowing down your website and how to improve
+          Core Web Vitals, SEO and loading speed.
+        </p>
 
 
 
-        {/* SPEED TEST TOOL */}
+        {/* SPEED TEST */}
 
         <div className="bg-white mt-16 rounded-3xl p-10 shadow-lg">
 
           <h2 className="text-2xl font-semibold text-darkBlue text-center">
-
             Instant Website Speed Test
-
           </h2>
-
 
           <form
             onSubmit={runAudit}
@@ -154,8 +135,8 @@ export default function FreeAuditPage() {
               required
               placeholder="https://yourwebsite.com"
               value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              className="flex-1 border border-gray-300 rounded-xl px-4 py-3"
+              onChange={(e)=>setUrl(e.target.value)}
+              className="flex-1 border rounded-xl px-4 py-3"
             />
 
             <button
@@ -169,13 +150,7 @@ export default function FreeAuditPage() {
 
 
           {loading && (
-
-            <p className="text-center mt-6">
-
-              Running performance analysis...
-
-            </p>
-
+            <p className="text-center mt-6">Analyzing website...</p>
           )}
 
 
@@ -183,22 +158,14 @@ export default function FreeAuditPage() {
 
             <div className="mt-10 text-center">
 
-              <p className="text-lg text-darkBlue">
+              <p className="text-lg">Performance Score</p>
 
-                Performance Score
-
-              </p>
-
-              <div className="text-6xl font-bold text-orange mt-2">
-
+              <div className="text-6xl font-bold text-orange">
                 {score}
-
               </div>
 
               <p className="mt-4 text-darkBlue/70">
-
-                Request a full audit to improve this score.
-
+                Get a full performance audit and improvement plan below.
               </p>
 
             </div>
@@ -209,22 +176,17 @@ export default function FreeAuditPage() {
 
 
 
-        {/* AUDIT FORM */}
+        {/* FORM */}
 
         <div className="bg-white mt-20 rounded-3xl p-10 shadow-lg">
 
           <h2 className="text-2xl font-semibold text-center text-darkBlue">
-
-            Request Your Free Audit
-
+            Request Full Audit
           </h2>
 
           <p className="text-center text-darkBlue/70 mt-2">
-
             Limited to 5 audits per week.
-
           </p>
-
 
           <form
             onSubmit={submitAudit}
@@ -235,7 +197,7 @@ export default function FreeAuditPage() {
               name="name"
               required
               placeholder="Your Name"
-              className="w-full border border-gray-300 rounded-xl px-4 py-3"
+              className="w-full border rounded-xl px-4 py-3"
             />
 
             <input
@@ -243,22 +205,14 @@ export default function FreeAuditPage() {
               type="email"
               required
               placeholder="Email Address"
-              className="w-full border border-gray-300 rounded-xl px-4 py-3"
+              className="w-full border rounded-xl px-4 py-3"
             />
 
             <input
               name="website"
               required
               placeholder="Website URL"
-              className="w-full border border-gray-300 rounded-xl px-4 py-3"
-            />
-
-            {/* honeypot spam field */}
-
-            <input
-              type="text"
-              name="website_hidden"
-              className="hidden"
+              className="w-full border rounded-xl px-4 py-3"
             />
 
 
@@ -275,71 +229,35 @@ export default function FreeAuditPage() {
 
           </form>
 
-
-          {message && (
-
-            <p className="text-center mt-6 text-darkBlue">
-
-              {message}
-
-            </p>
-
-          )}
-
         </div>
 
 
 
-        {/* TRUST SIGNALS */}
+        {/* TRUST */}
 
         <div className="mt-20 grid md:grid-cols-3 gap-8 text-center">
 
           <div>
-
-            <p className="text-3xl font-bold text-darkBlue">
-
-              20+
-
-            </p>
-
+            <p className="text-3xl font-bold text-darkBlue">20+</p>
             <p className="text-darkBlue/70">
-
-              Years Web Development Experience
-
+              Years Experience
             </p>
-
           </div>
 
           <div>
-
-            <p className="text-3xl font-bold text-darkBlue">
-
-              90+
-
-            </p>
-
+            <p className="text-3xl font-bold text-darkBlue">90+</p>
             <p className="text-darkBlue/70">
-
-              PageSpeed Optimization Results
-
+              PageSpeed Optimizations
             </p>
-
           </div>
 
           <div>
-
             <p className="text-3xl font-bold text-darkBlue">
-
               Core Web Vitals
-
             </p>
-
             <p className="text-darkBlue/70">
-
               Performance Specialist
-
             </p>
-
           </div>
 
         </div>
@@ -349,4 +267,5 @@ export default function FreeAuditPage() {
     </main>
 
   )
+
 }

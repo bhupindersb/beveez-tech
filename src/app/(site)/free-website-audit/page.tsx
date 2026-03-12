@@ -3,130 +3,220 @@
 import { useState } from 'react'
 
 export default function FreeAuditPage() {
+
   const [url, setUrl] = useState('')
   const [score, setScore] = useState<number | null>(null)
   const [loading, setLoading] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
   async function runAudit(e: any) {
     e.preventDefault()
 
+    if (!url) return
+
     setLoading(true)
 
     try {
+
       const res = await fetch('/api/pagespeed', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({ url })
       })
 
       const data = await res.json()
 
       setScore(data.score)
+
     } catch (err) {
       console.error(err)
+      alert('Unable to analyze the website right now.')
     }
 
     setLoading(false)
   }
 
+
   async function submitAudit(e: any) {
+
     e.preventDefault()
 
     const form = e.target
 
-    const data = {
+    setSubmitting(true)
+
+    const payload = {
       formType: 'free-audit',
       name: form.name.value,
       email: form.email.value,
       company: '',
       goals: '',
-      details: form.website.value,
+      plan: '',
+      details: form.website.value
     }
 
-    await fetch('/api/start-project', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
+    try {
 
-    alert('Audit request received. We will contact you within 24 hours.')
+      const res = await fetch('/api/start-project', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+
+      const result = await res.json()
+
+      if (result.success) {
+
+        alert('Audit request received. We will send your report within 24 hours.')
+
+        form.reset()
+
+        setScore(null)
+
+      } else {
+
+        alert('Something went wrong. Please try again.')
+
+      }
+
+    } catch (err) {
+
+      console.error(err)
+
+      alert('Something went wrong. Please try again.')
+
+    }
+
+    setSubmitting(false)
   }
 
+
   return (
+
     <main className="bg-[#f2f1f6] py-24 px-6">
 
       <div className="max-w-[900px] mx-auto">
 
-        <h1 className="text-5xl font-heading font-bold text-center text-darkBlue">
-          Free Website Performance Audit
-        </h1>
 
-        <p className="text-center mt-6 text-lg text-darkBlue/80">
-          Discover what is slowing down your website and how to improve
-          your Core Web Vitals and SEO.
-        </p>
+        {/* HERO */}
 
-        {/* QUICK SPEED TEST */}
+        <div className="text-center">
+
+          <h1 className="text-4xl md:text-6xl font-heading font-bold text-darkBlue">
+
+            Free Website Performance Audit
+
+          </h1>
+
+          <p className="mt-6 text-lg text-darkBlue/80 max-w-[650px] mx-auto">
+
+            Discover what is slowing down your website and how to improve
+            your Core Web Vitals, SEO performance and loading speed.
+
+          </p>
+
+        </div>
+
+
+
+        {/* SPEED TEST TOOL */}
 
         <div className="bg-white mt-16 rounded-3xl p-10 shadow-lg">
 
           <h2 className="text-2xl font-semibold text-darkBlue text-center">
+
             Run Instant Speed Test
+
           </h2>
+
+          <p className="text-center text-darkBlue/70 mt-2">
+
+            Enter your website URL to see its performance score.
+
+          </p>
+
 
           <form
             onSubmit={runAudit}
-            className="mt-8 flex gap-4"
+            className="mt-8 flex flex-col md:flex-row gap-4"
           >
 
             <input
               type="url"
               required
-              placeholder="Enter your website URL"
+              placeholder="https://yourwebsite.com"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              className="flex-1 border rounded-xl px-4 py-3"
+              className="flex-1 border border-gray-300 rounded-xl px-4 py-3"
             />
 
             <button
-              className="bg-orange text-white px-6 rounded-xl"
+              className="bg-gradient-to-r from-[#cf5a20] to-[#f68f1e]
+              text-white px-6 py-3 rounded-xl"
             >
-              Test
+              Test Speed
             </button>
 
           </form>
 
+
           {loading && (
-            <p className="text-center mt-6">Analyzing website...</p>
+
+            <p className="text-center mt-6">
+
+              Analyzing website performance...
+
+            </p>
+
           )}
 
-          {score !== null && (
-            <div className="mt-8 text-center">
 
-              <p className="text-lg">
+          {score !== null && (
+
+            <div className="mt-10 text-center">
+
+              <p className="text-lg text-darkBlue">
+
                 Performance Score
+
               </p>
 
-              <div className="text-5xl font-bold text-orange">
+              <div className="text-6xl font-bold text-orange mt-2">
+
                 {score}
+
               </div>
 
-              <p className="mt-3 text-darkBlue/70">
-                Want a full audit and improvement plan?
+              <p className="mt-4 text-darkBlue/70">
+
+                Want a full performance audit and improvement plan?
+
               </p>
 
             </div>
+
           )}
 
         </div>
 
+
+
         {/* AUDIT FORM */}
 
-        <div className="bg-white mt-16 rounded-3xl p-10 shadow-lg">
+        <div className="bg-white mt-20 rounded-3xl p-10 shadow-lg">
 
           <h2 className="text-2xl font-semibold text-center text-darkBlue">
-            Request Full Audit
+
+            Request Your Free Audit
+
           </h2>
+
+          <p className="text-center text-darkBlue/70 mt-2">
+
+            Limited to 5 audits per week.
+
+          </p>
+
 
           <form
             onSubmit={submitAudit}
@@ -137,35 +227,165 @@ export default function FreeAuditPage() {
               name="name"
               required
               placeholder="Your Name"
-              className="w-full border rounded-xl px-4 py-3"
+              className="w-full border border-gray-300 rounded-xl px-4 py-3"
             />
 
             <input
               name="email"
               type="email"
               required
-              placeholder="Email"
-              className="w-full border rounded-xl px-4 py-3"
+              placeholder="Email Address"
+              className="w-full border border-gray-300 rounded-xl px-4 py-3"
             />
 
             <input
               name="website"
               required
               placeholder="Website URL"
-              className="w-full border rounded-xl px-4 py-3"
+              className="w-full border border-gray-300 rounded-xl px-4 py-3"
             />
 
+
             <button
-              className="w-full bg-gradient-to-r
-              from-[#cf5a20] to-[#f68f1e]
-              py-4 text-white rounded-full"
+              disabled={submitting}
+              className="w-full rounded-full
+              bg-gradient-to-r from-[#cf5a20] to-[#f68f1e]
+              py-4 text-white font-semibold
+              hover:from-[#f68f1e] hover:to-[#cf5a20]"
             >
-              Request Free Audit
+
+              {submitting ? 'Submitting...' : 'Request Free Audit'}
+
             </button>
 
           </form>
 
         </div>
+
+
+
+        {/* TRUST SIGNALS */}
+
+        <div className="mt-20 grid md:grid-cols-3 gap-8 text-center">
+
+          <div>
+
+            <p className="text-3xl font-bold text-darkBlue">
+
+              20+
+
+            </p>
+
+            <p className="text-darkBlue/70">
+
+              Years Web Development Experience
+
+            </p>
+
+          </div>
+
+          <div>
+
+            <p className="text-3xl font-bold text-darkBlue">
+
+              90+
+
+            </p>
+
+            <p className="text-darkBlue/70">
+
+              PageSpeed Optimization Results
+
+            </p>
+
+          </div>
+
+          <div>
+
+            <p className="text-3xl font-bold text-darkBlue">
+
+              Core Web Vitals
+
+            </p>
+
+            <p className="text-darkBlue/70">
+
+              Performance Specialist
+
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        {/* HOW IT WORKS */}
+
+        <div className="mt-24 text-center">
+
+          <h2 className="text-3xl font-heading font-bold text-darkBlue">
+
+            How It Works
+
+          </h2>
+
+          <div className="mt-10 grid md:grid-cols-3 gap-10">
+
+            <div>
+
+              <div className="text-4xl font-bold text-orange">
+
+                1
+
+              </div>
+
+              <p className="mt-3 text-darkBlue/80">
+
+                Submit your website using the form above.
+
+              </p>
+
+            </div>
+
+
+            <div>
+
+              <div className="text-4xl font-bold text-orange">
+
+                2
+
+              </div>
+
+              <p className="mt-3 text-darkBlue/80">
+
+                We run a detailed performance and SEO analysis.
+
+              </p>
+
+            </div>
+
+
+            <div>
+
+              <div className="text-4xl font-bold text-orange">
+
+                3
+
+              </div>
+
+              <p className="mt-3 text-darkBlue/80">
+
+                You receive your personalized audit report within 24 hours.
+
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
 
       </div>
 

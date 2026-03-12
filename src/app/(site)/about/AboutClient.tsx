@@ -100,10 +100,6 @@ export default function AboutClient({ data, siteSettings }: AboutClientProps) {
 
   const reduceMotion = useReducedMotion()
 
-  /* 🔍 DEBUG: Why Choose Us data from Sanity */
-  console.log('WHY CHOOSE US:', data.whyChooseUsAbout)
-  console.log('CTA OVERRIDE FULL:', data.ctaOverride)
-
   if (!data?.aboutHero) {
     return (
       <div className="py-32 text-center text-gray-500">

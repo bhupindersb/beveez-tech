@@ -35,13 +35,13 @@ export async function POST(req: Request) {
     // Save to DB
     const lead = await prisma.lead.create({
       data: {
-        name: data.name,
-        email: data.email,
-        company: data.company || null,
-        goals: data.goals || null,
-        details: data.details || null,
-        plan: data.plan || null,
-        formType: data.formType || 'start-project',
+        name: data.name || '',
+        email: data.email || '',
+        company: data.company || '',
+        goals: data.goals || '',
+        details: data.details || '',
+        plan: data.plan || '',
+        formType: formType,
         ipAddress: ip,
         userAgent,
       },
@@ -344,11 +344,12 @@ Beveez Tech
 
     return NextResponse.json({ success: true })
 
-  } catch (error) {
-    console.error(error)
-    return NextResponse.json(
-      { error: 'Something went wrong' },
-      { status: 500 }
-    )
-  }
+  } catch (error:any) {
+      console.error('START PROJECT API ERROR:', error)
+
+      return NextResponse.json(
+        { error: error.message || 'Something went wrong' },
+        { status: 500 }
+      )
+    }
 }

@@ -25,7 +25,6 @@ export default function ServicesClient({
 }) {
   // ✅ Normalize once — no more undefined checks everywhere
   const services = data.serviceDetails ?? []
-  console.log('SERVICES:', data.serviceDetails)
 
   return (
     <>

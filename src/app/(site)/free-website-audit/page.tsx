@@ -190,6 +190,32 @@ export default function FreeAuditPage() {
 
               </div>
 
+              {results.issues && (
+
+                <div className="bg-[#fff5f2] border border-orange/20 rounded-2xl p-6 mt-10">
+
+                  <h3 className="text-lg font-semibold text-darkBlue mb-4">
+                    What Is Slowing Down Your Website
+                  </h3>
+
+                  <ul className="space-y-2">
+
+                    {results.issues.map((issue:any, i:number) => (
+
+                      <li key={i} className="flex gap-2">
+
+                        <span className="text-orange">•</span>
+                        <span>{issue}</span>
+
+                      </li>
+
+                    ))}
+
+                  </ul>
+
+                </div>
+
+              )}
 
               {/* SCREENSHOT */}
 

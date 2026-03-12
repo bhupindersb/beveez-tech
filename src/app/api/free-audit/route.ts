@@ -39,24 +39,64 @@ export async function POST(req: Request) {
     }
 
     const lighthouse = data.lighthouseResult
-    const categories = lighthouse.categories
-    const audits = lighthouse.audits
+    const categories = lighthouse.categories || {}
+    const audits = lighthouse.audits || {}
+
+    const performance = Math.round((categories?.performance?.score || 0) * 100)
+    const seo = Math.round((categories?.seo?.score || 0) * 100)
+    const accessibility = Math.round((categories?.accessibility?.score || 0) * 100)
+    const bestPractices = Math.round((categories?.['best-practices']?.score || 0) * 100)
+
+    const lcp = audits?.['largest-contentful-paint']?.displayValue || 'N/A'
+    const cls = audits?.['cumulative-layout-shift']?.displayValue || 'N/A'
+    const ttfb = audits?.['server-response-time']?.displayValue || 'N/A'
+
+    // -------------------------
+    // DIAGNOSTIC ENGINE
+    // -------------------------
+
+    const issues = []
+
+    if (performance < 50) {
+      issues.push('Your website performance score is very low, indicating slow loading times.')
+    }
+
+    if (audits?.['uses-optimized-images']?.score === 0) {
+      issues.push('Images on the website are not optimized and may be slowing down the page.')
+    }
+
+    if (audits?.['render-blocking-resources']?.score === 0) {
+      issues.push('Render blocking JavaScript or CSS is delaying page rendering.')
+    }
+
+    if (audits?.['server-response-time']?.score === 0) {
+      issues.push('The server response time appears slow and may need backend optimization.')
+    }
+
+    if (audits?.['unused-javascript']?.score === 0) {
+      issues.push('Unused JavaScript was detected, which increases page weight.')
+    }
+
+    if (issues.length === 0) {
+      issues.push('No major issues detected, but further optimization could still improve performance.')
+    }
 
     const result = {
 
-      performance: Math.round(categories.performance.score * 100),
-      seo: Math.round(categories.seo.score * 100),
-      accessibility: Math.round(categories.accessibility.score * 100),
-      bestPractices: Math.round(
-        categories['best-practices'].score * 100
-      ),
+      performance,
+      seo,
+      accessibility,
+      bestPractices,
 
-      lcp: audits['largest-contentful-paint']?.displayValue || 'N/A',
-      cls: audits['cumulative-layout-shift']?.displayValue || 'N/A',
-      ttfb: audits['server-response-time']?.displayValue || 'N/A',
+      lcp,
+      cls,
+      ttfb,
 
       screenshot:
-        audits['final-screenshot']?.details?.data || null,
+        audits?.['final-screenshot']?.details?.data || null,
+
+      issues
+
     }
 
     return NextResponse.json(result)

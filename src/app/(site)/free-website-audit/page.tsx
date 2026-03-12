@@ -5,9 +5,10 @@ import { useState } from 'react'
 export default function FreeAuditPage() {
 
   const [url, setUrl] = useState('')
-  const [score, setScore] = useState<number | null>(null)
+  const [results, setResults] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+
 
   async function runAudit(e:any) {
 
@@ -16,10 +17,11 @@ export default function FreeAuditPage() {
     if (!url) return
 
     setLoading(true)
+    setResults(null)
 
     try {
 
-      const res = await fetch('/api/pagespeed', {
+      const res = await fetch('/api/free-audit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url })
@@ -27,7 +29,7 @@ export default function FreeAuditPage() {
 
       const data = await res.json()
 
-      setScore(data.score)
+      setResults(data)
 
     } catch (err) {
 
@@ -39,6 +41,7 @@ export default function FreeAuditPage() {
     setLoading(false)
 
   }
+
 
 
   async function submitAudit(e:any) {
@@ -72,14 +75,12 @@ export default function FreeAuditPage() {
 
       const result = await res.json()
 
-      console.log(result)
-
       if (res.ok) {
 
         alert('Audit request received. We will send your report within 24 hours.')
 
         form.reset()
-        setScore(null)
+        setResults(null)
 
       } else {
 
@@ -100,11 +101,12 @@ export default function FreeAuditPage() {
   }
 
 
+
   return (
 
     <main className="bg-[#f2f1f6] py-24 px-6">
 
-      <div className="max-w-[900px] mx-auto">
+      <div className="max-w-[1000px] mx-auto">
 
         <h1 className="text-5xl font-heading font-bold text-center text-darkBlue">
           Free Website Performance Audit
@@ -154,19 +156,60 @@ export default function FreeAuditPage() {
           )}
 
 
-          {score !== null && (
+          {results && (
 
-            <div className="mt-10 text-center">
+            <div className="mt-12">
 
-              <p className="text-lg">Performance Score</p>
+              {/* SCORE GRID */}
 
-              <div className="text-6xl font-bold text-orange">
-                {score}
+              <div className="grid md:grid-cols-4 gap-6 text-center">
+
+                <Score label="Performance" value={results.performance} />
+                <Score label="SEO" value={results.seo} />
+                <Score label="Accessibility" value={results.accessibility} />
+                <Score label="Best Practices" value={results.bestPractices} />
+
               </div>
 
-              <p className="mt-4 text-darkBlue/70">
-                Get a full performance audit and improvement plan below.
-              </p>
+
+              {/* CORE WEB VITALS */}
+
+              <div className="bg-[#f8f8fb] rounded-2xl p-6 mt-10">
+
+                <h3 className="text-lg font-semibold mb-4">
+                  Core Web Vitals
+                </h3>
+
+                <div className="grid md:grid-cols-3 gap-6 text-center">
+
+                  <Metric label="LCP" value={results.lcp} />
+                  <Metric label="CLS" value={results.cls} />
+                  <Metric label="TTFB" value={results.ttfb} />
+
+                </div>
+
+              </div>
+
+
+              {/* SCREENSHOT */}
+
+              {results.screenshot && (
+
+                <div className="mt-10">
+
+                  <h3 className="text-lg font-semibold mb-4">
+                    Page Screenshot
+                  </h3>
+
+                  <img
+                    src={results.screenshot}
+                    alt="Website screenshot"
+                    className="rounded-xl border"
+                  />
+
+                </div>
+
+              )}
 
             </div>
 
@@ -265,6 +308,45 @@ export default function FreeAuditPage() {
       </div>
 
     </main>
+
+  )
+
+}
+
+
+
+function Score({label,value}:any){
+
+  return(
+
+    <div className="bg-[#f8f8fb] rounded-xl p-6">
+
+      <p className="text-sm text-darkBlue/60">{label}</p>
+
+      <p className="text-4xl font-bold text-darkBlue mt-2">
+        {value}
+      </p>
+
+    </div>
+
+  )
+
+}
+
+
+function Metric({label,value}:any){
+
+  return(
+
+    <div>
+
+      <p className="text-sm text-darkBlue/60">{label}</p>
+
+      <p className="text-lg font-semibold text-darkBlue">
+        {value}
+      </p>
+
+    </div>
 
   )
 

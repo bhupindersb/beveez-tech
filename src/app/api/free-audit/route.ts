@@ -159,7 +159,7 @@ export async function POST(req: Request) {
     const pageSizeKB = html.length / 1024
     const pageSizeMB = pageSizeKB / 1024
 
-    result.pageSize = pageSizeMB.toFixed(2) + ' MB'
+    result.pageSize = pageSizeMB.toFixed(2)
 
     return NextResponse.json(result)
 

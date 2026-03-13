@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import ScoreGauge from '@/components/ScoreGauge'
+import PerformanceGrade from '@/components/PerformanceGrade'
 
 export default function FreeAuditPage() {
 
@@ -105,7 +106,7 @@ export default function FreeAuditPage() {
 
   return (
 
-    <main className="bg-[#f2f1f6] py-24 px-6">
+    <main className="bg-[#f2f1f6] py-[120px] px-6">
 
       <div className="max-w-[1000px] mx-auto">
 
@@ -163,18 +164,43 @@ export default function FreeAuditPage() {
 
               {/* SCORE GRID */}
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-10 justify-items-center mt-8">
+              <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-10 justify-items-center">
 
-                <ScoreGauge score={results.performance} label="Performance" />
+                <ScoreGauge
+                  score={results.performance}
+                  label="Performance"
+                />
 
-                <ScoreGauge score={results.seo} label="SEO" />
+                <ScoreGauge
+                  score={results.seo}
+                  label="SEO"
+                />
 
-                <ScoreGauge score={results.accessibility} label="Accessibility" />
+                <ScoreGauge
+                  score={results.accessibility}
+                  label="Accessibility"
+                />
 
-                <ScoreGauge score={results.bestPractices} label="Best Practices" />
+                <ScoreGauge
+                  score={results.bestPractices}
+                  label="Best Practices"
+                />
 
               </div>
 
+              {results && (
+                <PerformanceGrade score={results.performance} />
+              )}
+
+              <div className="mt-6 text-center text-sm text-darkBlue/60">
+
+                <span className="text-green-500 font-semibold">90-100 Good</span>
+                {' · '}
+                <span className="text-yellow-500 font-semibold">50-89 Needs Improvement</span>
+                {' · '}
+                <span className="text-red-500 font-semibold">0-49 Poor</span>
+
+              </div>
 
               {/* CORE WEB VITALS */}
 
@@ -283,6 +309,92 @@ export default function FreeAuditPage() {
                 </div>
 
               )}
+
+              {results?.revenueImpact && (
+
+                <div className="bg-[#fff7f2] border border-orange/20 rounded-2xl p-8 mt-12">
+
+                  <h3 className="text-xl font-semibold text-darkBlue mb-4 text-center">
+                    Estimated Revenue Impact From Website Speed
+                  </h3>
+
+                  <p className="text-center text-darkBlue/70 mb-6">
+                    Largest Contentful Paint: 
+                    <span className="font-semibold text-orange">
+                      {' '} {results.revenueImpact.loadTime}
+                    </span>
+                  </p>
+
+                  <div className="grid md:grid-cols-3 gap-6 text-sm">
+
+                    <div className="bg-white p-5 rounded-xl shadow-sm">
+                      <p className="font-semibold text-darkBlue mb-2">
+                        Bounce Rate Impact
+                      </p>
+                      <p className="text-darkBlue/70">
+                        {results.revenueImpact.bounceIncrease}
+                      </p>
+                    </div>
+
+                    <div className="bg-white p-5 rounded-xl shadow-sm">
+                      <p className="font-semibold text-darkBlue mb-2">
+                        Conversion Impact
+                      </p>
+                      <p className="text-darkBlue/70">
+                        {results.revenueImpact.conversionLoss}
+                      </p>
+                    </div>
+
+                    <div className="bg-white p-5 rounded-xl shadow-sm">
+                      <p className="font-semibold text-darkBlue mb-2">
+                        SEO Impact
+                      </p>
+                      <p className="text-darkBlue/70">
+                        {results.revenueImpact.seoImpact}
+                      </p>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              )}
+
+              {results && (
+
+                <button
+                  onClick={async () => {
+
+                    const res = await fetch('/api/audit-report', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        url,
+                        performance: results.performance,
+                        seo: results.seo,
+                        accessibility: results.accessibility,
+                        bestPractices: results.bestPractices,
+                        issues: results.issues,
+                        recommendations: results.recommendations
+                      })
+                    })
+
+                    const blob = await res.blob()
+
+                    const link = document.createElement('a')
+                    link.href = URL.createObjectURL(blob)
+                    link.download = 'website-audit-report.pdf'
+                    link.click()
+
+                  }}
+                  className="mt-8 px-6 py-3 rounded-xl bg-darkBlue text-white"
+                >
+                  Download Full Audit Report
+                </button>
+
+                )}
 
             </div>
 

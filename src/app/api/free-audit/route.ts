@@ -12,6 +12,12 @@ type AuditResult = {
   issues: string[]
   technologies?: string[]
   pageSize?: string
+  revenueImpact?: {
+    loadTime: string
+    bounceIncrease: string
+    conversionLoss: string
+    seoImpact: string
+  }
 }
 
 export async function POST(req: Request) {
@@ -160,6 +166,49 @@ export async function POST(req: Request) {
     const pageSizeMB = pageSizeKB / 1024
 
     result.pageSize = pageSizeMB.toFixed(2)
+
+    // -------------------------
+    // REVENUE IMPACT ESTIMATE
+    // -------------------------
+
+    let revenueImpact = {
+      loadTime: lcp,
+      bounceIncrease: '',
+      conversionLoss: '',
+      seoImpact: ''
+    }
+
+    const lcpSeconds = parseFloat(lcp)
+
+    if (!isNaN(lcpSeconds)) {
+
+      if (lcpSeconds > 4) {
+
+        revenueImpact.bounceIncrease = 'Visitors are 40% more likely to leave before the page loads.'
+        revenueImpact.conversionLoss = 'Slow websites can reduce conversions by up to 25%.'
+        revenueImpact.seoImpact = 'Google may rank this page lower due to poor Core Web Vitals.'
+
+      }
+
+      else if (lcpSeconds > 2.5) {
+
+        revenueImpact.bounceIncrease = 'Moderate loading delay may increase bounce rate.'
+        revenueImpact.conversionLoss = 'Some visitors may abandon the page before it fully loads.'
+        revenueImpact.seoImpact = 'Improving Core Web Vitals could boost search rankings.'
+
+      }
+
+      else {
+
+        revenueImpact.bounceIncrease = 'Load speed is good and unlikely to hurt engagement.'
+        revenueImpact.conversionLoss = 'Your website speed should not negatively affect conversions.'
+        revenueImpact.seoImpact = 'Core Web Vitals appear healthy.'
+
+      }
+
+    }
+
+    result.revenueImpact = revenueImpact
 
     return NextResponse.json(result)
 

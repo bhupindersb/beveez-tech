@@ -5,13 +5,25 @@ type AuditResult = {
   seo: number
   accessibility: number
   bestPractices: number
+  desktop?: {
+    performance: number
+    seo: number
+    accessibility: number
+    bestPractices: number
+  }
+
   lcp: string
   cls: string
   ttfb: string
+
   screenshot: string | null
+
   issues: string[]
+
   technologies?: string[]
   pageSize?: string
+  recommendations?: string[]
+
   revenueImpact?: {
     loadTime: string
     bounceIncrease: string
@@ -38,34 +50,59 @@ export async function POST(req: Request) {
 
     const apiKey = process.env.PAGESPEED_API_KEY
 
-    const endpoint =
+    const mobileEndpoint =
       `https://www.googleapis.com/pagespeedonline/v5/runPagespeed` +
       `?url=${encodeURIComponent(url)}` +
       `&strategy=mobile` +
+      `&category=performance` +
+      `&category=seo` +
+      `&category=accessibility` +
+      `&category=best-practices` +
       `&key=${apiKey}`
 
-    const res = await fetch(endpoint)
+    const desktopEndpoint =
+      `https://www.googleapis.com/pagespeedonline/v5/runPagespeed` +
+      `?url=${encodeURIComponent(url)}` +
+      `&strategy=desktop` +
+      `&category=performance` +
+      `&category=seo` +
+      `&category=accessibility` +
+      `&category=best-practices` +
+      `&key=${apiKey}`
 
-    const data = await res.json()
+    const [mobileRes, desktopRes] = await Promise.all([
+      fetch(mobileEndpoint),
+      fetch(desktopEndpoint)
+    ])
 
-    if (!data?.lighthouseResult) {
+    const mobileData = await mobileRes.json()
+    const desktopData = await desktopRes.json()
 
-      console.error('PageSpeed API error:', data)
-
+    if (!mobileData?.lighthouseResult) {
       return NextResponse.json(
         { error: 'Unable to analyze this website.' },
         { status: 400 }
       )
     }
 
-    const lighthouse = data.lighthouseResult
-    const categories = lighthouse.categories || {}
-    const audits = lighthouse.audits || {}
+    const mobileLighthouse = mobileData.lighthouseResult
+    const mobileCategories = mobileLighthouse.categories || {}
+    const audits = mobileLighthouse.audits || {}
 
-    const performance = Math.round((categories?.performance?.score ?? 0) * 100)
-    const seo = Math.round((categories?.seo?.score ?? 0) * 100)
-    const accessibility = Math.round((categories?.accessibility?.score ?? 0) * 100)
-    const bestPractices = Math.round((categories?.['best-practices']?.score ?? 0) * 100)
+    const performance = Math.round((mobileCategories?.performance?.score ?? 0) * 100)
+    const seo = Math.round((mobileCategories?.seo?.score ?? 0) * 100)
+    const accessibility = Math.round((mobileCategories?.accessibility?.score ?? 0) * 100)
+    const bestPractices = Math.round((mobileCategories?.['best-practices']?.score ?? 0) * 100)
+
+    const desktopLighthouse = desktopData.lighthouseResult
+    const desktopCategories = desktopLighthouse.categories || {}
+
+    const desktopScores = {
+      performance: Math.round((desktopCategories?.performance?.score ?? 0) * 100),
+      seo: Math.round((desktopCategories?.seo?.score ?? 0) * 100),
+      accessibility: Math.round((desktopCategories?.accessibility?.score ?? 0) * 100),
+      bestPractices: Math.round((desktopCategories?.['best-practices']?.score ?? 0) * 100)
+    }
 
     const lcp = audits?.['largest-contentful-paint']?.displayValue || 'N/A'
     const cls = audits?.['cumulative-layout-shift']?.displayValue || 'N/A'
@@ -107,6 +144,8 @@ export async function POST(req: Request) {
       seo,
       accessibility,
       bestPractices,
+
+      desktop: desktopScores,
 
       lcp,
       cls,

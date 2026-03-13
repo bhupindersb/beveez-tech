@@ -16,7 +16,7 @@ export default function PerformanceGrade({ score }: Props) {
     label = 'Excellent Performance'
   } else if (score >= 80) {
     grade = 'B'
-    color = 'bg-green-400'
+    color = 'bg-green-300'
     label = 'Good Performance'
   } else if (score >= 70) {
     grade = 'C'

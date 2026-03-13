@@ -11,29 +11,34 @@ export default function FreeAuditPage() {
   const [loading, setLoading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
 
-
-  async function runAudit(e:any) {
+  async function runAudit(e:any){
 
     e.preventDefault()
 
-    if (!url) return
+    if(!url) return
 
     setLoading(true)
     setResults(null)
 
-    try {
+    try{
 
-      const res = await fetch('/api/free-audit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url })
+      const res = await fetch('/api/free-audit',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({url})
       })
 
       const data = await res.json()
 
+      if(!res.ok){
+        alert(data.error || 'Audit failed')
+        setLoading(false)
+        return
+      }
+
       setResults(data)
 
-    } catch (err) {
+    }catch(err){
 
       console.error(err)
       alert('Unable to analyze the website.')
@@ -45,8 +50,7 @@ export default function FreeAuditPage() {
   }
 
 
-
-  async function submitAudit(e:any) {
+  async function submitAudit(e:any){
 
     e.preventDefault()
 
@@ -56,44 +60,43 @@ export default function FreeAuditPage() {
 
     const payload = {
 
-      formType: 'free-audit',
+      formType:'free-audit',
 
-      name: form.name.value,
-      email: form.email.value,
-      company: '',
-      goals: '',
-      plan: '',
-      details: form.website.value
+      name:form.name.value,
+      email:form.email.value,
+      company:'',
+      goals:'',
+      plan:'',
+      details:form.website.value
 
     }
 
-    try {
+    try{
 
-      const res = await fetch('/api/start-project', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+      const res = await fetch('/api/start-project',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(payload)
       })
 
       const result = await res.json()
 
-      if (res.ok) {
+      if(res.ok){
 
         alert('Audit request received. We will send your report within 24 hours.')
 
         form.reset()
         setResults(null)
 
-      } else {
+      }else{
 
         alert(result.error || 'Server error occurred.')
 
       }
 
-    } catch (error) {
+    }catch(error){
 
       console.error(error)
-
       alert('Network error. Please try again.')
 
     }
@@ -103,8 +106,34 @@ export default function FreeAuditPage() {
   }
 
 
+  async function downloadPDF(){
 
-  return (
+    if(!results) return
+
+    const res = await fetch('/api/audit-report',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        url,
+        performance:results.performance,
+        seo:results.seo,
+        accessibility:results.accessibility,
+        bestPractices:results.bestPractices,
+        issues:results.issues
+      })
+    })
+
+    const blob = await res.blob()
+
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = 'website-audit-report.pdf'
+    link.click()
+
+  }
+
+
+  return(
 
     <main className="bg-[#f2f1f6] py-[120px] px-6">
 
@@ -118,8 +147,6 @@ export default function FreeAuditPage() {
           Discover what is slowing down your website and how to improve
           Core Web Vitals, SEO and loading speed.
         </p>
-
-
 
         {/* SPEED TEST */}
 
@@ -152,11 +179,9 @@ export default function FreeAuditPage() {
 
           </form>
 
-
           {loading && (
-            <p className="text-center mt-6">Analyzing website...</p>
+            <p className="text-center mt-8">Analyzing website...</p>
           )}
-
 
           {results && (
 
@@ -164,43 +189,16 @@ export default function FreeAuditPage() {
 
               {/* SCORE GRID */}
 
-              <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-10 justify-items-center">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-10 justify-items-center">
 
-                <ScoreGauge
-                  score={results.performance}
-                  label="Performance"
-                />
-
-                <ScoreGauge
-                  score={results.seo}
-                  label="SEO"
-                />
-
-                <ScoreGauge
-                  score={results.accessibility}
-                  label="Accessibility"
-                />
-
-                <ScoreGauge
-                  score={results.bestPractices}
-                  label="Best Practices"
-                />
+                <ScoreGauge score={results.performance} label="Performance"/>
+                <ScoreGauge score={results.seo} label="SEO"/>
+                <ScoreGauge score={results.accessibility} label="Accessibility"/>
+                <ScoreGauge score={results.bestPractices} label="Best Practices"/>
 
               </div>
 
-              {results && (
-                <PerformanceGrade score={results.performance} />
-              )}
-
-              <div className="mt-6 text-center text-sm text-darkBlue/60">
-
-                <span className="text-green-500 font-semibold">90-100 Good</span>
-                {' · '}
-                <span className="text-yellow-500 font-semibold">50-89 Needs Improvement</span>
-                {' · '}
-                <span className="text-red-500 font-semibold">0-49 Poor</span>
-
-              </div>
+              <PerformanceGrade score={results.performance}/>
 
               {/* CORE WEB VITALS */}
 
@@ -212,15 +210,17 @@ export default function FreeAuditPage() {
 
                 <div className="grid md:grid-cols-3 gap-6 text-center">
 
-                  <Metric label="LCP" value={results.lcp} />
-                  <Metric label="CLS" value={results.cls} />
-                  <Metric label="TTFB" value={results.ttfb} />
+                  <Metric label="LCP" value={results.lcp}/>
+                  <Metric label="CLS" value={results.cls}/>
+                  <Metric label="TTFB" value={results.ttfb}/>
 
                 </div>
 
               </div>
 
-              {results.issues && (
+              {/* ISSUES */}
+
+              {results?.issues && (
 
                 <div className="bg-[#fff5f2] border border-orange/20 rounded-2xl p-6 mt-10">
 
@@ -230,15 +230,11 @@ export default function FreeAuditPage() {
 
                   <ul className="space-y-2">
 
-                    {results.issues.map((issue:any, i:number) => (
-
+                    {results.issues.map((issue:any,i:number)=>(
                       <li key={i} className="flex gap-2">
-
                         <span className="text-orange">•</span>
                         <span>{issue}</span>
-
                       </li>
-
                     ))}
 
                   </ul>
@@ -246,6 +242,8 @@ export default function FreeAuditPage() {
                 </div>
 
               )}
+
+              {/* TECHNOLOGY */}
 
               {results?.technologies && (
 
@@ -257,15 +255,10 @@ export default function FreeAuditPage() {
 
                   <div className="flex flex-wrap gap-3">
 
-                    {results.technologies.map((tech:any, i:number) => (
-
-                      <span
-                        key={i}
-                        className="px-3 py-1 bg-[#f2f1f6] rounded-full text-sm"
-                      >
+                    {results.technologies.map((tech:any,i:number)=>(
+                      <span key={i} className="px-3 py-1 bg-[#f2f1f6] rounded-full text-sm">
                         {tech}
                       </span>
-
                     ))}
 
                   </div>
@@ -274,25 +267,7 @@ export default function FreeAuditPage() {
 
               )}
 
-              {/* SCREENSHOT */}
-
-              {results.screenshot && (
-
-                <div className="mt-10">
-
-                  <h3 className="text-lg font-semibold mb-4">
-                    Page Screenshot
-                  </h3>
-
-                  <img
-                    src={results.screenshot}
-                    alt="Website screenshot"
-                    className="rounded-xl border"
-                  />
-
-                </div>
-
-              )}
+              {/* PAGE SIZE */}
 
               {results?.pageSize && (
 
@@ -303,12 +278,14 @@ export default function FreeAuditPage() {
                   </h3>
 
                   <p className="text-3xl font-bold text-orange mt-2">
-                    {results.pageSize} KB
+                    {results.pageSize} MB
                   </p>
 
                 </div>
 
               )}
+
+              {/* REVENUE IMPACT */}
 
               {results?.revenueImpact && (
 
@@ -319,7 +296,7 @@ export default function FreeAuditPage() {
                   </h3>
 
                   <p className="text-center text-darkBlue/70 mb-6">
-                    Largest Contentful Paint: 
+                    Largest Contentful Paint:
                     <span className="font-semibold text-orange">
                       {' '} {results.revenueImpact.loadTime}
                     </span>
@@ -327,32 +304,20 @@ export default function FreeAuditPage() {
 
                   <div className="grid md:grid-cols-3 gap-6 text-sm">
 
-                    <div className="bg-white p-5 rounded-xl shadow-sm">
-                      <p className="font-semibold text-darkBlue mb-2">
-                        Bounce Rate Impact
-                      </p>
-                      <p className="text-darkBlue/70">
-                        {results.revenueImpact.bounceIncrease}
-                      </p>
-                    </div>
+                    <ImpactCard
+                      title="Bounce Rate Impact"
+                      text={results.revenueImpact.bounceIncrease}
+                    />
 
-                    <div className="bg-white p-5 rounded-xl shadow-sm">
-                      <p className="font-semibold text-darkBlue mb-2">
-                        Conversion Impact
-                      </p>
-                      <p className="text-darkBlue/70">
-                        {results.revenueImpact.conversionLoss}
-                      </p>
-                    </div>
+                    <ImpactCard
+                      title="Conversion Impact"
+                      text={results.revenueImpact.conversionLoss}
+                    />
 
-                    <div className="bg-white p-5 rounded-xl shadow-sm">
-                      <p className="font-semibold text-darkBlue mb-2">
-                        SEO Impact
-                      </p>
-                      <p className="text-darkBlue/70">
-                        {results.revenueImpact.seoImpact}
-                      </p>
-                    </div>
+                    <ImpactCard
+                      title="SEO Impact"
+                      text={results.revenueImpact.seoImpact}
+                    />
 
                   </div>
 
@@ -360,49 +325,24 @@ export default function FreeAuditPage() {
 
               )}
 
-              {results && (
+              {/* DOWNLOAD REPORT */}
+
+              <div className="text-center">
 
                 <button
-                  onClick={async () => {
-
-                    const res = await fetch('/api/audit-report', {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify({
-                        url,
-                        performance: results.performance,
-                        seo: results.seo,
-                        accessibility: results.accessibility,
-                        bestPractices: results.bestPractices,
-                        issues: results.issues,
-                        recommendations: results.recommendations
-                      })
-                    })
-
-                    const blob = await res.blob()
-
-                    const link = document.createElement('a')
-                    link.href = URL.createObjectURL(blob)
-                    link.download = 'website-audit-report.pdf'
-                    link.click()
-
-                  }}
-                  className="mt-8 px-6 py-3 rounded-xl bg-darkBlue text-white"
+                  onClick={downloadPDF}
+                  className="mt-10 px-6 py-3 rounded-xl bg-darkBlue text-white"
                 >
                   Download Full Audit Report
                 </button>
 
-                )}
+              </div>
 
             </div>
 
           )}
 
         </div>
-
-
 
         {/* FORM */}
 
@@ -411,10 +351,6 @@ export default function FreeAuditPage() {
           <h2 className="text-2xl font-semibold text-center text-darkBlue">
             Request Full Audit
           </h2>
-
-          <p className="text-center text-darkBlue/70 mt-2">
-            Limited to 5 audits per week.
-          </p>
 
           <form
             onSubmit={submitAudit}
@@ -443,50 +379,16 @@ export default function FreeAuditPage() {
               className="w-full border rounded-xl px-4 py-3"
             />
 
-
             <button
               disabled={submitting}
               className="w-full rounded-full
               bg-gradient-to-r from-[#cf5a20] to-[#f68f1e]
               py-4 text-white font-semibold"
             >
-
               {submitting ? 'Submitting...' : 'Request Free Audit'}
-
             </button>
 
           </form>
-
-        </div>
-
-
-
-        {/* TRUST */}
-
-        <div className="mt-20 grid md:grid-cols-3 gap-8 text-center">
-
-          <div>
-            <p className="text-3xl font-bold text-darkBlue">20+</p>
-            <p className="text-darkBlue/70">
-              Years Experience
-            </p>
-          </div>
-
-          <div>
-            <p className="text-3xl font-bold text-darkBlue">90+</p>
-            <p className="text-darkBlue/70">
-              PageSpeed Optimizations
-            </p>
-          </div>
-
-          <div>
-            <p className="text-3xl font-bold text-darkBlue">
-              Core Web Vitals
-            </p>
-            <p className="text-darkBlue/70">
-              Performance Specialist
-            </p>
-          </div>
 
         </div>
 
@@ -500,25 +402,6 @@ export default function FreeAuditPage() {
 
 
 
-function Score({label,value}:any){
-
-  return(
-
-    <div className="bg-[#f8f8fb] rounded-xl p-6">
-
-      <p className="text-sm text-darkBlue/60">{label}</p>
-
-      <p className="text-4xl font-bold text-darkBlue mt-2">
-        {value}
-      </p>
-
-    </div>
-
-  )
-
-}
-
-
 function Metric({label,value}:any){
 
   return(
@@ -529,6 +412,26 @@ function Metric({label,value}:any){
 
       <p className="text-lg font-semibold text-darkBlue">
         {value}
+      </p>
+
+    </div>
+
+  )
+
+}
+
+function ImpactCard({title,text}:any){
+
+  return(
+
+    <div className="bg-white p-5 rounded-xl shadow-sm">
+
+      <p className="font-semibold text-darkBlue mb-2">
+        {title}
+      </p>
+
+      <p className="text-darkBlue/70">
+        {text}
       </p>
 
     </div>

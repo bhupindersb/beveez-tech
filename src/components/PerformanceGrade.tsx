@@ -7,25 +7,28 @@ interface Props {
 export default function PerformanceGrade({ score }: Props) {
 
   let grade = 'F'
-  let color = 'bg-red-500'
   let label = 'Critical Performance Issues'
+  let colorClass = 'bg-red-500'
 
   if (score >= 90) {
     grade = 'A'
-    color = 'bg-green-500'
     label = 'Excellent Performance'
-  } else if (score >= 80) {
+    colorClass = 'bg-green-500'
+  } 
+  else if (score >= 80) {
     grade = 'B'
-    color = 'bg-green-300'
     label = 'Good Performance'
-  } else if (score >= 70) {
+    colorClass = 'bg-green-400'
+  } 
+  else if (score >= 70) {
     grade = 'C'
-    color = 'bg-yellow-400'
     label = 'Needs Optimization'
-  } else if (score >= 50) {
+    colorClass = 'bg-yellow-400'
+  } 
+  else if (score >= 50) {
     grade = 'D'
-    color = 'bg-orange-400'
     label = 'Poor Performance'
+    colorClass = 'bg-orange-400'
   }
 
   return (
@@ -36,14 +39,22 @@ export default function PerformanceGrade({ score }: Props) {
         Performance Grade
       </h3>
 
-      <div
-        className={`w-24 h-24 mx-auto rounded-full flex items-center justify-center text-white text-3xl font-bold ${color}`}
-      >
-        {grade}
+      <div className="flex justify-center">
+
+        <div
+          className={`w-28 h-28 rounded-full flex items-center justify-center text-white text-4xl font-bold ${colorClass}`}
+        >
+          {grade}
+        </div>
+
       </div>
 
       <p className="mt-4 text-darkBlue/70">
         {label}
+      </p>
+
+      <p className="text-sm text-darkBlue/50 mt-2">
+        Based on Lighthouse performance score
       </p>
 
     </div>

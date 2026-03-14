@@ -12,7 +12,7 @@ interface PricingPayButtonProps {
 export default function PricingPayButton({
   provider,
   paymentLink,
-  ctaText = 'Get Started',
+  ctaText = 'Get Started testing',
   onClick,
 }: PricingPayButtonProps) {
   const handleClick = () => {

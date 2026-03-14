@@ -1,4 +1,4 @@
-export const revalidate = 86400
+export const revalidate = 0
 
 import Hero from '@/components/Hero'
 import TrustSection from '@/components/TrustSection'

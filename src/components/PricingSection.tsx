@@ -60,9 +60,9 @@ export default function PricingSection({
             </div>
 
             {/* CTA */}
-            {plan.ctaText && plan.paymentLink && (
+            {plan.ctaText && (
               <Link
-                href={plan.paymentLink}
+                href={plan.paymentLink || '#'}
                 className="mt-6 w-full rounded-full bg-gradient-to-r from-[#cf5a20] to-[#f68f1e] px-12 py-8 text-white font-normal text-center transition-all hover:from-[#f68f1e] hover:to-[#cf5a20]"
               >
                 {plan.ctaText}

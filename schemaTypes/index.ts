@@ -28,6 +28,7 @@ import { pricingAddon } from './pricingAddon'
 import { pricingFaq } from './pricingFaq'
 import { servicePage } from './servicePage'
 import { category } from './category'
+import { caseStudy } from './caseStudy'
 
 
 export const schemaTypes = [
@@ -63,4 +64,5 @@ export const schemaTypes = [
   pricingAddon,
   pricingFaq,
   servicePage,
+  caseStudy,
 ]

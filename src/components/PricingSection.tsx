@@ -29,7 +29,7 @@ export default function PricingSection({
 
         {/* DESCRIPTION */}
         <p className="text-gray-600 text-center md:text-left">
-          {section.description}
+          {section.description} test
         </p>
       </div>
 

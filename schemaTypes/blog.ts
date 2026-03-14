@@ -62,7 +62,6 @@ export const blogSection = defineType({
       type: 'array',
       of: [
         { type: 'block' },
-        { type: 'code' }
       ],
     }),
   ],

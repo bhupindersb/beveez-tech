@@ -4,39 +4,31 @@ interface Props {
   score: number
 }
 
-/* Tailwind safelist:
-bg-green-500
-bg-green-400
-bg-yellow-400
-bg-orange-400
-bg-red-500
-*/
-
 export default function PerformanceGrade({ score }: Props) {
 
   let grade = 'F'
   let label = 'Critical Performance Issues'
-  let colorClass = 'bg-red-500'
+  let bgColor = '#ef4444' // red
 
   if (score >= 90) {
     grade = 'A'
     label = 'Excellent Performance'
-    colorClass = 'bg-green-500'
+    bgColor = '#22c55e' // green
   }
   else if (score >= 80) {
     grade = 'B'
     label = 'Good Performance'
-    colorClass = 'bg-green-400'
+    bgColor = '#4ade80' // light green
   }
   else if (score >= 70) {
     grade = 'C'
     label = 'Needs Optimization'
-    colorClass = 'bg-yellow-400'
+    bgColor = '#facc15' // yellow
   }
   else if (score >= 50) {
     grade = 'D'
     label = 'Poor Performance'
-    colorClass = 'bg-orange-400'
+    bgColor = '#fb923c' // orange
   }
 
   return (
@@ -50,7 +42,8 @@ export default function PerformanceGrade({ score }: Props) {
       <div className="flex justify-center">
 
         <div
-          className={`w-28 h-28 rounded-full flex items-center justify-center text-white text-4xl font-bold ${colorClass}`}
+          style={{ backgroundColor: bgColor }}
+          className="w-28 h-28 rounded-full flex items-center justify-center text-white text-4xl font-bold"
         >
           {grade}
         </div>

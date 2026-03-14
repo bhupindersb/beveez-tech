@@ -69,7 +69,6 @@ export default function Hero({
               height={180}
               priority={false}
               sizes="(max-width: 768px) 80vw, 900px"
-              placeholder="blur"
               className="absolute mx-auto -z-10 -bottom-4 md:-bottom-10 left-4 md:left-12 right-0"
             />
           )}

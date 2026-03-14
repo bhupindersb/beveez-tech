@@ -4,6 +4,14 @@ interface Props {
   score: number
 }
 
+/* Tailwind safelist:
+bg-green-500
+bg-green-400
+bg-yellow-400
+bg-orange-400
+bg-red-500
+*/
+
 export default function PerformanceGrade({ score }: Props) {
 
   let grade = 'F'
@@ -14,17 +22,17 @@ export default function PerformanceGrade({ score }: Props) {
     grade = 'A'
     label = 'Excellent Performance'
     colorClass = 'bg-green-500'
-  } 
+  }
   else if (score >= 80) {
     grade = 'B'
     label = 'Good Performance'
     colorClass = 'bg-green-400'
-  } 
+  }
   else if (score >= 70) {
     grade = 'C'
     label = 'Needs Optimization'
     colorClass = 'bg-yellow-400'
-  } 
+  }
   else if (score >= 50) {
     grade = 'D'
     label = 'Poor Performance'

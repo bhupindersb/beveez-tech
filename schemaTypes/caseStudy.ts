@@ -9,27 +9,25 @@ export const caseStudy = defineType({
 
     defineField({
       name: 'title',
-      title: 'Project Title',
+      title: 'Title',
       type: 'string',
-      validation: Rule => Rule.required()
+      validation: Rule => Rule.required(),
     }),
 
     defineField({
       name: 'slug',
+      title: 'Slug',
       type: 'slug',
-      options: { source: 'title' },
-      validation: Rule => Rule.required()
+      options: {
+        source: 'title',
+        maxLength: 96
+      },
+      validation: Rule => Rule.required(),
     }),
 
     defineField({
       name: 'client',
-      title: 'Client / Project Name',
-      type: 'string'
-    }),
-
-    defineField({
-      name: 'industry',
-      title: 'Industry',
+      title: 'Client',
       type: 'string'
     }),
 
@@ -40,21 +38,21 @@ export const caseStudy = defineType({
     }),
 
     defineField({
-      name: 'heroImage',
-      title: 'Hero Image',
-      type: 'image'
+      name: 'industry',
+      title: 'Industry',
+      type: 'string'
     }),
 
     defineField({
       name: 'challenge',
-      title: 'Challenge',
+      title: 'Challenges',
       type: 'array',
       of: [{ type: 'string' }]
     }),
 
     defineField({
       name: 'solution',
-      title: 'Solution',
+      title: 'Solutions',
       type: 'array',
       of: [{ type: 'string' }]
     }),

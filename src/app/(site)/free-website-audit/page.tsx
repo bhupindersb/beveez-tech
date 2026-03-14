@@ -11,6 +11,8 @@ export default function FreeAuditPage() {
   const [loading, setLoading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
 
+  const [device,setDevice] = useState<'mobile'|'desktop'>('mobile')
+
   async function runAudit(e:any){
 
     e.preventDefault()
@@ -133,9 +135,20 @@ export default function FreeAuditPage() {
   }
 
 
+  const score = (metric:string)=>{
+
+    if(!results) return 0
+
+    if(device === 'mobile') return results[metric]
+
+    return results.desktop?.[metric] ?? results[metric]
+
+  }
+
+
   return(
 
-    <main className="bg-[#f2f1f6] py-[120px] px-6">
+    <main className="bg-[#f2f1f6] pt-[160px] pb-[120px] px-6">
 
       <div className="max-w-[1000px] mx-auto">
 
@@ -187,18 +200,47 @@ export default function FreeAuditPage() {
 
             <div className="mt-12">
 
+              {/* DEVICE SWITCHER */}
+
+              <div className="flex justify-center gap-4 mb-10">
+
+                <button
+                  onClick={()=>setDevice('mobile')}
+                  className={`px-5 py-2 rounded-full border ${
+                    device === 'mobile'
+                    ? 'bg-darkBlue text-white'
+                    : 'bg-white text-darkBlue'
+                  }`}
+                >
+                  📱 Mobile
+                </button>
+
+                <button
+                  onClick={()=>setDevice('desktop')}
+                  className={`px-5 py-2 rounded-full border ${
+                    device === 'desktop'
+                    ? 'bg-darkBlue text-white'
+                    : 'bg-white text-darkBlue'
+                  }`}
+                >
+                  🖥 Desktop
+                </button>
+
+              </div>
+
+
               {/* SCORE GRID */}
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-10 justify-items-center">
 
-                <ScoreGauge score={results.performance} label="Performance"/>
-                <ScoreGauge score={results.seo} label="SEO"/>
-                <ScoreGauge score={results.accessibility} label="Accessibility"/>
-                <ScoreGauge score={results.bestPractices} label="Best Practices"/>
+                <ScoreGauge score={score('performance')} label="Performance"/>
+                <ScoreGauge score={score('seo')} label="SEO"/>
+                <ScoreGauge score={score('accessibility')} label="Accessibility"/>
+                <ScoreGauge score={score('bestPractices')} label="Best Practices"/>
 
               </div>
 
-              <PerformanceGrade score={results.performance}/>
+              <PerformanceGrade score={score('performance')}/>
 
               {/* CORE WEB VITALS */}
 
@@ -304,20 +346,9 @@ export default function FreeAuditPage() {
 
                   <div className="grid md:grid-cols-3 gap-6 text-sm">
 
-                    <ImpactCard
-                      title="Bounce Rate Impact"
-                      text={results.revenueImpact.bounceIncrease}
-                    />
-
-                    <ImpactCard
-                      title="Conversion Impact"
-                      text={results.revenueImpact.conversionLoss}
-                    />
-
-                    <ImpactCard
-                      title="SEO Impact"
-                      text={results.revenueImpact.seoImpact}
-                    />
+                    <ImpactCard title="Bounce Rate Impact" text={results.revenueImpact.bounceIncrease}/>
+                    <ImpactCard title="Conversion Impact" text={results.revenueImpact.conversionLoss}/>
+                    <ImpactCard title="SEO Impact" text={results.revenueImpact.seoImpact}/>
 
                   </div>
 
@@ -400,22 +431,13 @@ export default function FreeAuditPage() {
 
 }
 
-
-
 function Metric({label,value}:any){
 
   return(
-
     <div>
-
       <p className="text-sm text-darkBlue/60">{label}</p>
-
-      <p className="text-lg font-semibold text-darkBlue">
-        {value}
-      </p>
-
+      <p className="text-lg font-semibold text-darkBlue">{value}</p>
     </div>
-
   )
 
 }
@@ -423,19 +445,10 @@ function Metric({label,value}:any){
 function ImpactCard({title,text}:any){
 
   return(
-
     <div className="bg-white p-5 rounded-xl shadow-sm">
-
-      <p className="font-semibold text-darkBlue mb-2">
-        {title}
-      </p>
-
-      <p className="text-darkBlue/70">
-        {text}
-      </p>
-
+      <p className="font-semibold text-darkBlue mb-2">{title}</p>
+      <p className="text-darkBlue/70">{text}</p>
     </div>
-
   )
 
 }

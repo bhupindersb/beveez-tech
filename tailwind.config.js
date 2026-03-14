@@ -20,12 +20,18 @@ module.exports = {
       },
     },
   },
+
   safelist: [
     "bg-green-500",
     "bg-green-400",
     "bg-yellow-400",
     "bg-orange-400",
-    "bg-red-500"
+    "bg-red-500",
+    "text-green-500",
+    "text-yellow-500",
+    "text-orange-500",
+    "text-red-500"
   ],
+
   plugins: [],
 }

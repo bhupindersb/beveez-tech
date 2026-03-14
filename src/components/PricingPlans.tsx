@@ -16,7 +16,7 @@ interface Plan {
   highlighted?: boolean
 
   ctaText?: string
-  ctaUrl?: string
+  paymentLink?: string
 
   monthlyPrice?: string
 }

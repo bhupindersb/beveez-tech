@@ -27,7 +27,7 @@ export async function getPricingPage() {
         features,
         highlighted,
         ctaText,
-        ctaUrl,
+        paymentLink,
         order
       } | order(order asc),
 

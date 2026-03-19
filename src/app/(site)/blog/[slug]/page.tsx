@@ -259,7 +259,7 @@ export default async function BlogPost(
               Get a free website performance audit and actionable recommendations.
             </p>
             <Link
-              href="/start-project"
+              href="/free-website-audit"
               className="inline-block mt-8 bg-darkOrange text-white px-8 py-4 rounded-full font-semibold hover:opacity-90 transition"
             >
               Get Free Audit

@@ -29,6 +29,7 @@ export default function Footer({ data }: any) {
                 <div>
                     <h4 className="mb-4 font-semibold text-center md:text-left">Quick Links</h4>
                     <ul className="space-y-2 text-sm text-center md:text-left">
+                    <li><Link href="/industries" className="hover:text-darkOrange transition">Industries</Link></li>
                     {data.quickLinks?.map((item: any, i: number) => (
                         <li key={i}>
                         <Link href={`/${item.url.replace(/^\//, '')}`} className="hover:text-darkOrange transition">

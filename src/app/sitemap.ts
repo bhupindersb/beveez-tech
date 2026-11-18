@@ -1,4 +1,5 @@
 import { getBlogs } from '@/sanity/lib/getBlogs'
+import { productGuides } from '@/lib/product-guides'
 
 export default async function sitemap() {
 
@@ -84,5 +85,12 @@ export default async function sitemap() {
     },
   ]
 
-  return [...staticPages, ...blogUrls]
+  const productGuideUrls = Object.entries(productGuides).flatMap(([slug, guides]) =>
+    guides.map((guide) => ({
+      url: `https://beveez.tech/products/${slug}/${guide.slug}`,
+      lastModified: new Date(),
+    }))
+  )
+
+  return [...staticPages, ...productGuideUrls, ...blogUrls]
 }

@@ -3,6 +3,8 @@ export const revalidate = 0
 import Hero from '@/components/Hero'
 import TrustSection from '@/components/TrustSection'
 import ServicesSection from '@/components/ServicesSection'
+import ProductShowcase from '@/components/ProductShowcase'
+import IndustriesSection from '@/components/IndustriesSection'
 import WhyChooseUs from '@/components/WhyChooseUs'
 import WhoWeWorkWith from '@/components/WhoWeWorkWith'
 import CtaSection from '@/components/CtaSection'
@@ -99,11 +101,17 @@ export default async function Home() {
       {/* TRUST SECTION */}
       {trust && <TrustSection data={trust} />}
 
+      {/* PRODUCT PORTFOLIO */}
+      <ProductShowcase />
+
       {/* SERVICES SECTION */}
       <ServicesSection
         services={services}
         section={servicesSection}
       />
+
+      {/* INDUSTRIES & USE CASES */}
+      <IndustriesSection />
 
       {/* WHY CHOOSE US SECTION */}
       <WhyChooseUs data={whyChooseUs} />

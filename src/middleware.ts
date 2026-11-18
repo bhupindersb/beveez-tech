@@ -3,6 +3,18 @@ import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+  const hostname = request.headers.get('host')?.split(':')[0]?.toLowerCase()
+
+  // Give the AffilixWP subdomain its own product landing page while keeping
+  // API routes and WordPress updater endpoints on the same deployment.
+  if (
+    hostname === 'affilixwp.beveeztech.com' &&
+    pathname === '/'
+  ) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/affilixwp'
+    return NextResponse.rewrite(url)
+  }
 
   if (pathname.startsWith('/admin') && !pathname.includes('/login')) {
     const token = request.cookies.get('admin_token')?.value
@@ -18,5 +30,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 }

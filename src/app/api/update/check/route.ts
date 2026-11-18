@@ -60,7 +60,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       new_version: latestVersion,
-      homepage: "https://www.beveez.tech/affilixwp",
+      homepage: "https://affilixwp.beveeztech.com",
       download_url: zipAsset.browser_download_url,
     });
   } catch (error) {

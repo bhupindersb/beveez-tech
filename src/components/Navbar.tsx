@@ -16,6 +16,13 @@ export default function Navbar({ settings }: any) {
   const currentPath =
     pathname !== '/' ? pathname.replace(/\/$/, '') : '/'
 
+  // Close navigation overlays whenever the route changes. This also prevents
+  // a hovered desktop dropdown from staying open over the newly loaded page.
+  useEffect(() => {
+    setOpen(false)
+    setProductsOpen(false)
+  }, [pathname])
+
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
@@ -90,15 +97,19 @@ export default function Navbar({ settings }: any) {
           {/* DESKTOP MENU */}
           <LayoutGroup>
             <ul className="hidden items-center gap-6 whitespace-nowrap text-white md:flex">
-              <li className="group relative">
-                <Link href="/products" className={`relative px-1 transition ${isActive('/products') ? 'text-orange font-semibold' : 'text-white hover:text-orange'}`}>
+              <li
+                className="group relative"
+                onMouseEnter={() => setProductsOpen(true)}
+                onMouseLeave={() => setProductsOpen(false)}
+              >
+                <Link href="/products" onClick={() => setProductsOpen(false)} className={`relative px-1 transition ${isActive('/products') ? 'text-orange font-semibold' : 'text-white hover:text-orange'}`}>
                   Products
                   {isActive('/products') && <motion.span layoutId="nav-underline" className="absolute -bottom-1 left-0 h-[2px] w-full rounded-full bg-orange" />}
                 </Link>
-                <div className="invisible absolute left-1/2 top-full z-50 w-56 -translate-x-1/2 pt-4 opacity-0 transition duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                <div className={`absolute left-1/2 top-full z-50 w-56 -translate-x-1/2 pt-4 transition duration-200 ${productsOpen ? 'visible opacity-100' : 'invisible opacity-0'}`}>
                   <div className="rounded-2xl border border-white/10 bg-darkBlue p-2 shadow-2xl">
-                    {productLinks.map((item) => <Link key={item.url} href={item.url} className={`block rounded-xl px-4 py-3 text-sm transition hover:bg-white/10 hover:text-orange ${isActive(item.url) ? 'text-orange' : 'text-white'}`}>{item.label}</Link>)}
-                    <Link href="/products" className="mt-1 block rounded-xl border-t border-white/10 px-4 py-3 text-sm font-semibold text-[#65c6db] transition hover:bg-white/10">View all products →</Link>
+                    {productLinks.map((item) => <Link key={item.url} href={item.url} onClick={() => setProductsOpen(false)} className={`block rounded-xl px-4 py-3 text-sm transition hover:bg-white/10 hover:text-orange ${isActive(item.url) ? 'text-orange' : 'text-white'}`}>{item.label}</Link>)}
+                    <Link href="/products" onClick={() => setProductsOpen(false)} className="mt-1 block rounded-xl border-t border-white/10 px-4 py-3 text-sm font-semibold text-[#65c6db] transition hover:bg-white/10">View all products →</Link>
                   </div>
                 </div>
               </li>

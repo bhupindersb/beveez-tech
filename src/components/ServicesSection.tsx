@@ -9,13 +9,16 @@ export default function ServicesSection({
   section: any
 }) {
   return (
-    <section className="pb-[120px]">
+    <section className="pt-16 md:pt-20 pb-[120px]">
 
       {/* SECTION HEADER */}
       <div className="mx-auto max-w-[1280px] flex items-center grid grid-cols-1 md:grid-cols-4 gap-10 px-6 mb-16">
-        <h2 className="md:col-span-3 text-[48px] md:text-[72px] font-bold font-heading text-darkBlue leading-none text-center md:text-left">
-          {section?.heading}
-        </h2>
+        <div className="md:col-span-3">
+          <p className="mb-5 text-sm font-semibold uppercase tracking-[0.18em] text-[#147da5]">Custom solutions for clients</p>
+          <h2 className=" text-[48px] md:text-[72px] font-bold font-heading text-darkBlue leading-none text-center md:text-left">
+            {section?.heading}
+          </h2>
+        </div>
         <p className="text-lg text-darkBlue text-center md:text-left">
           {section?.subText}
         </p>

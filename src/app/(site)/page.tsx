@@ -3,6 +3,8 @@ export const revalidate = 0
 import Hero from '@/components/Hero'
 import TrustSection from '@/components/TrustSection'
 import ServicesSection from '@/components/ServicesSection'
+import ProductShowcase from '@/components/ProductShowcase'
+import IndustriesSection from '@/components/IndustriesSection'
 import WhyChooseUs from '@/components/WhyChooseUs'
 import WhoWeWorkWith from '@/components/WhoWeWorkWith'
 import CtaSection from '@/components/CtaSection'
@@ -13,7 +15,6 @@ import { getPageSeo } from '@/sanity/lib/getPageSeo'
 import { getHomepageData } from '@/sanity/lib/getHomepageData'
 import { Suspense } from 'react'
 import BlogSectionWrapper from '@/components/BlogSectionWrapper'
-import PricingSectionWrapper from '@/components/PricingSectionWrapper'
 
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -23,10 +24,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title:
       seo?.seoTitle ||
-      'Beveez Tech — Web Design, Development & SEO for Startups',
+      'Beveez Tech — Digital Products & Custom Technology Solutions',
     description:
       seo?.seoDescription ||
-      'Beveez Tech helps startups, founders, and small businesses build fast, scalable websites.',
+      'Beveez Tech builds focused digital products and high-performance websites, platforms and automations for businesses worldwide.',
     metadataBase: new URL('https://beveez.tech'),
 
     openGraph: {
@@ -72,8 +73,6 @@ export default async function Home() {
   const servicesSection = data?.servicesSection
   const whyChooseUs = data?.whyChooseUs
   const whoWeWorkWith = data?.whoWeWorkWith
-  const pricingSection = data?.pricingSection
-  const pricingPlans = data?.pricingPlans
   const ctaSection = data?.ctaSection
   const blogs = data?.blogs
 
@@ -86,18 +85,20 @@ export default async function Home() {
       {/* HERO SECTION */}
       <Hero
         background={page.heroBackground}
-        highlightImage={page.heroHighlightImage}
-        title={page.heroHeadline}
-        highlight={page.heroHighlight}
-        subtitle={page.heroSubheadline}
-        primaryCtaText={page.heroPrimaryCtaText}
-        primaryCtaUrl={page.heroPrimaryCtaUrl}
-        secondaryCtaText={page.heroSecondaryCtaText}
-        secondaryCtaUrl={page.heroSecondaryCtaUrl}
+        title="Technology that solves real problems."
+        highlight="Products we build. Solutions we deliver."
+        subtitle="Beveez Tech builds focused digital products and high-performance websites, platforms and automations for businesses worldwide."
+        primaryCtaText="Explore Our Products"
+        primaryCtaUrl="/products"
+        secondaryCtaText="Build With Us"
+        secondaryCtaUrl="/contact"
       />
 
       {/* TRUST SECTION */}
-      {trust && <TrustSection data={trust} />}
+      <TrustSection />
+
+      {/* PRODUCT PORTFOLIO */}
+      <ProductShowcase />
 
       {/* SERVICES SECTION */}
       <ServicesSection
@@ -105,16 +106,14 @@ export default async function Home() {
         section={servicesSection}
       />
 
+      {/* INDUSTRIES & USE CASES */}
+      <IndustriesSection />
+
       {/* WHY CHOOSE US SECTION */}
       <WhyChooseUs data={whyChooseUs} />
 
       {/* WHO WE WORK WITH SECTION */}
       <WhoWeWorkWith data={whoWeWorkWith} />
-
-      {/* PRICING SECTION */}
-      <Suspense fallback={<div className="py-20 text-center">Loading pricing...</div>}>
-        <PricingSectionWrapper />
-      </Suspense>
 
       {/* CTA SECTION */}
       <CtaSection data={ctaSection} />

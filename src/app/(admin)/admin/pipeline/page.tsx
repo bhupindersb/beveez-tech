@@ -1,5 +1,9 @@
 import { prisma } from '@/lib/prisma'
 
+// This page reads live database records. Keep it out of the build-time
+// static prerender so preview builds do not require production DB access.
+export const dynamic = 'force-dynamic'
+
 export default async function Pipeline() {
   const leads = await prisma.lead.findMany()
 

@@ -8,12 +8,20 @@ import { motion, LayoutGroup } from 'framer-motion'
 
 export default function Navbar({ settings }: any) {
   const [open, setOpen] = useState(false)
+  const [productsOpen, setProductsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
 
   // Normalize pathname
   const currentPath =
     pathname !== '/' ? pathname.replace(/\/$/, '') : '/'
+
+  // Close navigation overlays whenever the route changes. This also prevents
+  // a hovered desktop dropdown from staying open over the newly loaded page.
+  useEffect(() => {
+    setOpen(false)
+    setProductsOpen(false)
+  }, [pathname])
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -32,6 +40,21 @@ export default function Navbar({ settings }: any) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const productLinks = [
+    { label: 'UNLIVO', url: '/products/unlivo' },
+    { label: 'AffilixWP', url: '/products/affilixwp' },
+    { label: 'Docs AI', url: '/products/docs-ai' },
+    { label: 'Beveez AI', url: '/products/beveez-ai' },
+  ]
+
+  // Apply the requested order and present the existing Blog page as Insights.
+  const orderedNavigation = [...(settings?.navigation ?? [])].map((item: any) => ({ ...item, displayLabel: item.label?.toLowerCase() === 'blog' ? 'Insights' : item.label })).sort((a: any, b: any) => {
+    const order = ['services', 'pricing', 'about', 'insights', 'contact']
+    const ai = order.indexOf(a.displayLabel?.toLowerCase())
+    const bi = order.indexOf(b.displayLabel?.toLowerCase())
+    return (ai < 0 ? order.length : ai) - (bi < 0 ? order.length : bi)
+  })
+
   // Active link matcher
   const isActive = (url: string) => {
     const normalize = (v: string) =>
@@ -47,7 +70,7 @@ export default function Navbar({ settings }: any) {
     <>
       {/* NAV BAR */}
       <nav
-        className={`fixed top-4 left-0 right-0 mx-auto z-50 w-[90%] md:max-w-[900px]
+        className={`fixed top-4 left-0 right-0 mx-auto z-50 w-[94%] md:max-w-[1250px]
         rounded-full py-3 pl-5 pr-3 md:top-6
         transition-all duration-300
         ${
@@ -73,35 +96,30 @@ export default function Navbar({ settings }: any) {
 
           {/* DESKTOP MENU */}
           <LayoutGroup>
-            <ul className="hidden items-center gap-8 text-white md:flex">
-              {settings?.navigation?.map((item: any, i: number) => {
+            <ul className="hidden items-center gap-6 whitespace-nowrap text-white md:flex">
+              <li
+                className="group relative"
+                onMouseEnter={() => setProductsOpen(true)}
+                onMouseLeave={() => setProductsOpen(false)}
+              >
+                <Link href="/products" onClick={() => setProductsOpen(false)} className={`relative px-1 transition ${isActive('/products') ? 'text-orange font-semibold' : 'text-white hover:text-orange'}`}>
+                  Products
+                  {isActive('/products') && <motion.span layoutId="nav-underline" className="absolute -bottom-1 left-0 h-[2px] w-full rounded-full bg-orange" />}
+                </Link>
+                <div className={`absolute left-1/2 top-full z-50 w-56 -translate-x-1/2 pt-4 transition duration-200 ${productsOpen ? 'visible opacity-100' : 'invisible opacity-0'}`}>
+                  <div className="rounded-2xl border border-white/10 bg-darkBlue p-2 shadow-2xl">
+                    {productLinks.map((item) => <Link key={item.url} href={item.url} onClick={() => setProductsOpen(false)} className={`block rounded-xl px-4 py-3 text-sm transition hover:bg-white/10 hover:text-orange ${isActive(item.url) ? 'text-orange' : 'text-white'}`}>{item.label}</Link>)}
+                    <Link href="/products" onClick={() => setProductsOpen(false)} className="mt-1 block rounded-xl border-t border-white/10 px-4 py-3 text-sm font-semibold text-[#65c6db] transition hover:bg-white/10">View all products →</Link>
+                  </div>
+                </div>
+              </li>
+              {orderedNavigation.map((item: any, i: number) => {
                 const active = isActive(item.url)
-
                 return (
                   <li key={i} className="relative">
-                    <Link href={`/${item.url.replace(/^\//, '')}`}
-                      className={`relative px-1 transition
-                        ${
-                          active
-                            ? 'text-orange font-semibold'
-                            : 'text-white hover:text-orange'
-                        }
-                      `}
-                    >
-                      {item.label}
-
-                      {/* 🔥 Animated underline */}
-                      {active && (
-                        <motion.span
-                          layoutId="nav-underline"
-                          className="absolute -bottom-1 left-0 h-[2px] w-full bg-orange rounded-full"
-                          transition={{
-                            type: 'spring',
-                            stiffness: 500,
-                            damping: 30,
-                          }}
-                        />
-                      )}
+                    <Link href={`/${item.url.replace(/^\//, '')}`} className={`relative px-1 transition ${active ? 'text-orange font-semibold' : 'text-white hover:text-orange'}`}>
+                      {item.displayLabel}
+                      {active && <motion.span layoutId="nav-underline" className="absolute -bottom-1 left-0 h-[2px] w-full rounded-full bg-orange" transition={{ type: 'spring', stiffness: 500, damping: 30 }} />}
                     </Link>
                   </li>
                 )
@@ -117,7 +135,7 @@ export default function Navbar({ settings }: any) {
               from-[#cf5a20] to-[#f68f1e]
               px-6 py-2 text-white font-semibold
               transition hover:from-[#f68f1e] hover:to-[#cf5a20]
-              md:inline-block"
+              md:inline-block whitespace-nowrap"
             >
               {settings.navCtaText}
             </Link>
@@ -151,22 +169,26 @@ export default function Navbar({ settings }: any) {
         }`}
       >
         <ul className="flex flex-col gap-6 text-center text-white">
-          {settings?.navigation?.map((item: any, i: number) => {
+          <li className="pt-1">
+            <div className="flex items-center justify-center gap-3">
+              <Link href="/products" onClick={() => setOpen(false)} className={`text-lg transition ${isActive('/products') ? 'font-semibold text-orange' : 'text-white'}`}>Products</Link>
+              <button type="button" onClick={() => setProductsOpen(!productsOpen)} aria-label={productsOpen ? 'Collapse products' : 'Expand products'} aria-expanded={productsOpen} className="rounded-full px-2 text-xl text-white/80">{productsOpen ? '−' : '+'}</button>
+            </div>
+            {productsOpen && (
+              <ul className="mt-4 space-y-3 rounded-2xl bg-white/5 px-4 py-4">
+                {productLinks.map((item) => (
+                  <li key={item.url}><Link href={item.url} onClick={() => setOpen(false)} className={`text-sm transition ${isActive(item.url) ? 'font-semibold text-orange' : 'text-white/85'}`}>{item.label}</Link></li>
+                ))}
+                <li><Link href="/products" onClick={() => setOpen(false)} className="text-sm font-semibold text-[#65c6db]">View all products</Link></li>
+              </ul>
+            )}
+          </li>
+          {orderedNavigation.map((item: any, i: number) => {
             const active = isActive(item.url)
-
             return (
               <li key={i}>
-                <Link href={`/${item.url.replace(/^\//, '')}`}
-                  onClick={() => setOpen(false)}
-                  className={`text-lg transition
-                    ${
-                      active
-                        ? 'text-orange font-semibold'
-                        : 'text-white'
-                    }
-                  `}
-                >
-                  {item.label}
+                <Link href={`/${item.url.replace(/^\//, '')}`} onClick={() => setOpen(false)} className={`text-lg transition ${active ? 'text-orange font-semibold' : 'text-white'}`}>
+                  {item.displayLabel}
                 </Link>
               </li>
             )

@@ -1,62 +1,30 @@
-import Image from 'next/image'
-import { urlFor } from '@/sanity/lib/image'
+import { Blocks, Globe2, Layers3, Workflow } from 'lucide-react'
 
-export default function TrustSection({ data }: any) {
-  if (!data || !data.items?.length) return null
+const strengths = [
+  { icon: Blocks, title: 'Products built in-house', detail: 'We create and improve our own digital products.' },
+  { icon: Layers3, title: 'Product thinking', detail: 'We focus on useful outcomes, not technology for its own sake.' },
+  { icon: Workflow, title: 'Connected solutions', detail: 'Websites, platforms and workflows designed to work together.' },
+  { icon: Globe2, title: 'Built for a wider market', detail: 'Digital experiences for businesses and users across markets.' },
+]
 
+export default function TrustSection() {
   return (
-    <section className="py-[60px] md:py-[120px]">
-      <div className="mx-auto max-w-[1280px] w-90% px-6 text-center">
-
-        {/* Heading with Icon */}
-        <div className="flex flex-col max-w-[500px] py-2 mx-auto items-center gap-4 md:flex-row md:justify-center rounded-full bg-[#efd9cb]">
-
-          {data.headingIcon && (
-            <Image
-              src={urlFor(data.headingIcon).width(96).format('webp').url()}
-              alt=""
-              width={48}
-              height={48}
-              className="h-12 w-12"
-            />
-          )}
-
-          <h2 className="font-body text-normal text-darkOrange md:text-normal">
-            {data.heading}
-          </h2>
-
+    <section className="bg-[#f2f1f6] px-5 py-16 md:py-20">
+      <div className="mx-auto max-w-[1280px]">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#147da5]">More than a services company</p>
+          <h2 className="mt-4 font-heading text-3xl font-semibold leading-tight text-[#002b3a] md:text-4xl">We build products, and we put that experience to work.</h2>
+          <p className="mt-4 leading-7 text-[#52656d]">Our own products keep us close to real product challenges. That same practical mindset shapes the websites, platforms and digital systems we build with clients.</p>
         </div>
-
-        {/* Trust Items */}
-        <div className="mt-16 grid grid-cols-2 gap-12 md:grid-cols-4">
-
-          {data.items.map((item: any, i: number) => (
-            <div
-              key={i}
-              className="flex flex-col items-center gap-4 text-center"
-            >
-
-              {item.icon && (
-                <div className="trust-icon">
-                  <Image
-                    src={urlFor(item.icon).width(280).format('webp').url()}
-                    alt={item.title || ''}
-                    width={140}
-                    height={140}
-                    className="mix-blend-multiply"
-                  />
-                </div>
-              )}
-
-              <p className="text-[20px] font-heading font-demi text-darkBlue">
-                {item.title}
-              </p>
-
+        <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {strengths.map(({ icon: Icon, title, detail }) => (
+            <div key={title} className="flex flex-col items-center text-center">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#efd9cb] text-[#cf5a20]"><Icon size={27} /></div>
+              <h3 className="mt-5 text-lg font-semibold text-[#002b3a]">{title}</h3>
+              <p className="mt-2 max-w-xs text-sm leading-6 text-[#52656d]">{detail}</p>
             </div>
           ))}
-
         </div>
-
       </div>
     </section>
   )

@@ -9,7 +9,7 @@ export default function ServicesSection({
   section: any
 }) {
   return (
-    <section className="pb-[120px]">
+    <section className="pt-16 md:pt-20 pb-[120px]">
 
       {/* SECTION HEADER */}
       <div className="mx-auto max-w-[1280px] flex items-center grid grid-cols-1 md:grid-cols-4 gap-10 px-6 mb-16">

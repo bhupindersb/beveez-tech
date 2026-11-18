@@ -10,7 +10,7 @@ export default function Footer({ data }: any) {
             <div className="mx-auto max-w-[1280px]">
 
                 {/* TOP GRID */}
-                <div className="grid grid-cols-1 gap-10 md:grid-cols-4 text-white">
+                <div className="grid grid-cols-1 gap-10 md:grid-cols-5 text-white">
 
                 {/* LOGO */}
                 <div className="flex justify-center md:justify-start">
@@ -36,6 +36,18 @@ export default function Footer({ data }: any) {
                         </Link>
                         </li>
                     ))}
+                    </ul>
+                </div>
+
+                {/* PRODUCTS */}
+                <div>
+                    <h4 className="mb-4 font-semibold text-center md:text-left">Products</h4>
+                    <ul className="space-y-2 text-sm text-center md:text-left">
+                        <li><Link href="/products" className="hover:text-darkOrange transition">All Products</Link></li>
+                        <li><Link href="/products/unlivo" className="hover:text-darkOrange transition">UNLIVO</Link></li>
+                        <li><Link href="/products/affilixwp" className="hover:text-darkOrange transition">AffilixWP</Link></li>
+                        <li><Link href="/products/docs-ai" className="hover:text-darkOrange transition">Docs AI</Link></li>
+                        <li><Link href="/products/beveez-ai" className="hover:text-darkOrange transition">Beveez AI</Link></li>
                     </ul>
                 </div>
 

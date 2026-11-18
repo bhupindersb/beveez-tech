@@ -89,13 +89,13 @@ export default async function Home() {
       <Hero
         background={page.heroBackground}
         highlightImage={page.heroHighlightImage}
-        title={page.heroHeadline}
-        highlight={page.heroHighlight}
-        subtitle={page.heroSubheadline}
-        primaryCtaText={page.heroPrimaryCtaText}
-        primaryCtaUrl={page.heroPrimaryCtaUrl}
-        secondaryCtaText={page.heroSecondaryCtaText}
-        secondaryCtaUrl={page.heroSecondaryCtaUrl}
+        title="Technology that solves real problems."
+        highlight="Products we build. Solutions we deliver."
+        subtitle="Beveez Tech builds focused digital products and high-performance websites, platforms and automations for businesses worldwide."
+        primaryCtaText="Explore Our Products"
+        primaryCtaUrl="/products"
+        secondaryCtaText="Build With Us"
+        secondaryCtaUrl="/contact"
       />
 
       {/* TRUST SECTION */}

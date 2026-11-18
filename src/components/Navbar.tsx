@@ -249,30 +249,30 @@ export default function Navbar({ settings }: any) {
         }`}
       >
         <ul className="flex flex-col gap-6 text-center text-white">
-          {settings?.navigation?.map((item: any, i: number) => {
+          <li className="pt-1">
+            <div className="flex items-center justify-center gap-3">
+              <Link href="/products" onClick={() => setOpen(false)} className={`text-lg transition ${isActive('/products') ? 'font-semibold text-orange' : 'text-white'}`}>Products</Link>
+              <button type="button" onClick={() => setProductsOpen(!productsOpen)} aria-label={productsOpen ? 'Collapse products' : 'Expand products'} aria-expanded={productsOpen} className="rounded-full px-2 text-xl text-white/80">{productsOpen ? '−' : '+'}</button>
+            </div>
+            {productsOpen && (
+              <ul className="mt-4 space-y-3 rounded-2xl bg-white/5 px-4 py-4">
+                {productLinks.map((item) => (
+                  <li key={item.url}><Link href={item.url} onClick={() => setOpen(false)} className={`text-sm transition ${isActive(item.url) ? 'font-semibold text-orange' : 'text-white/85'}`}>{item.label}</Link></li>
+                ))}
+                <li><Link href="/products" onClick={() => setOpen(false)} className="text-sm font-semibold text-[#65c6db]">View all products</Link></li>
+              </ul>
+            )}
+          </li>
+          {orderedNavigation.map((item: any, i: number) => {
             const active = isActive(item.url)
-
             return (
               <li key={i}>
-                <Link href={`/${item.url.replace(/^\//, '')}`}
-                  onClick={() => setOpen(false)}
-                  className={`text-lg transition
-                    ${
-                      active
-                        ? 'text-orange font-semibold'
-                        : 'text-white'
-                    }
-                  `}
-                >
-                  {item.label}
+                <Link href={`/${item.url.replace(/^\//, '')}`} onClick={() => setOpen(false)} className={`text-lg transition ${active ? 'text-orange font-semibold' : 'text-white'}`}>
+                  {item.displayLabel}
                 </Link>
               </li>
             )
           })}
-
-              </ul>
-            )}
-          </li>
         </ul>
 
         {settings?.navCtaText && settings?.navCtaUrl && (

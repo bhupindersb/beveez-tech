@@ -15,7 +15,6 @@ import { getPageSeo } from '@/sanity/lib/getPageSeo'
 import { getHomepageData } from '@/sanity/lib/getHomepageData'
 import { Suspense } from 'react'
 import BlogSectionWrapper from '@/components/BlogSectionWrapper'
-import PricingSectionWrapper from '@/components/PricingSectionWrapper'
 
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -74,8 +73,6 @@ export default async function Home() {
   const servicesSection = data?.servicesSection
   const whyChooseUs = data?.whyChooseUs
   const whoWeWorkWith = data?.whoWeWorkWith
-  const pricingSection = data?.pricingSection
-  const pricingPlans = data?.pricingPlans
   const ctaSection = data?.ctaSection
   const blogs = data?.blogs
 
@@ -88,7 +85,6 @@ export default async function Home() {
       {/* HERO SECTION */}
       <Hero
         background={page.heroBackground}
-        highlightImage={page.heroHighlightImage}
         title="Technology that solves real problems."
         highlight="Products we build. Solutions we deliver."
         subtitle="Beveez Tech builds focused digital products and high-performance websites, platforms and automations for businesses worldwide."
@@ -99,7 +95,7 @@ export default async function Home() {
       />
 
       {/* TRUST SECTION */}
-      {trust && <TrustSection data={trust} />}
+      <TrustSection />
 
       {/* PRODUCT PORTFOLIO */}
       <ProductShowcase />
@@ -118,11 +114,6 @@ export default async function Home() {
 
       {/* WHO WE WORK WITH SECTION */}
       <WhoWeWorkWith data={whoWeWorkWith} />
-
-      {/* PRICING SECTION */}
-      <Suspense fallback={<div className="py-20 text-center">Loading pricing...</div>}>
-        <PricingSectionWrapper />
-      </Suspense>
 
       {/* CTA SECTION */}
       <CtaSection data={ctaSection} />

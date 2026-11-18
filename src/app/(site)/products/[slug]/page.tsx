@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, ArrowUpRight, Check } from 'lucide-react'
 import { products } from '@/lib/products'
+import { productGuides } from '@/lib/product-guides'
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -41,6 +42,7 @@ export default async function ProductDetailPage({ params }: Props) {
 
   const Icon = product.icon
   const isExternal = product.href.startsWith('https://')
+  const guides = productGuides[product.slug] ?? []
 
   return (
     <main className="min-h-screen bg-[#f2f1f6]">
@@ -138,6 +140,33 @@ export default async function ProductDetailPage({ params }: Props) {
               {product.overview}
             </p>
           </div>
+
+          <section className="mt-20 border-t border-[#002b3a]/10 pt-12 md:mt-28">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#147da5]">Explore the details</p>
+            <h2 className="mt-3 max-w-3xl text-3xl font-semibold text-[#002b3a] md:text-4xl">Get to know {product.name} in more detail.</h2>
+            <p className="mt-4 max-w-2xl leading-7 text-[#5a6b71]">Explore focused guides about the product, the people it is designed for and the workflows it supports.</p>
+            <div className="mt-8 grid gap-4 md:grid-cols-3">
+              {guides.map((guide) => (
+                <Link key={guide.slug} href={`/products/${product.slug}/${guide.slug}`} className="group rounded-2xl border border-[#002b3a]/10 bg-white p-6 transition hover:-translate-y-1 hover:shadow-lg">
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#147da5]">{guide.eyebrow}</p>
+                  <h3 className="mt-3 text-lg font-semibold leading-7 text-[#002b3a]">{guide.title}</h3>
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-[#5a6b71]">{guide.intro}</p>
+                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#087ba4] transition group-hover:gap-3">Read guide <ArrowUpRight size={16}/></span>
+                </Link>
+              ))}
+            </div>
+          </section>
+          <section className="mt-16 rounded-3xl bg-[#e8f4f7] p-8 md:p-10">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#147da5]">Part of the Beveez Tech portfolio</p>
+            <h2 className="mt-3 text-2xl font-semibold text-[#002b3a]">Explore our other products</h2>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              {products.filter((item) => item.slug !== product.slug).map((item) => (
+                <Link key={item.slug} href={`/products/${item.slug}`} className="flex items-center justify-between rounded-xl border border-[#002b3a]/10 bg-white px-5 py-4 font-semibold text-[#002b3a] transition hover:border-[#147da5]/40">
+                  <span>{item.name}<span className="ml-2 text-xs font-normal text-[#607780]">{item.category}</span></span><ArrowUpRight size={17}/>
+                </Link>
+              ))}
+            </div>
+          </section>
         </div>
       </section>
     </main>

@@ -59,6 +59,10 @@ export default async function sitemap() {
       lastModified: new Date()
     },
     {
+      url: 'https://beveez.tech/industries',
+      lastModified: new Date()
+    },
+    {
       url: 'https://beveez.tech/products',
       lastModified: new Date()
     },

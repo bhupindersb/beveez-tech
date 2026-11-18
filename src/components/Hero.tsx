@@ -38,7 +38,7 @@ export default function Hero({
 
   const reveal = (delay = 0) => reduceMotion
     ? {}
-    : { initial: { opacity: 0, y: 22 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.75, delay, ease: [0.22, 1, 0.36, 1] } }
+    : { initial: { opacity: 0, y: 22 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.75, delay, ease: 'easeOut' } }
 
   return (
     <section className="relative isolate overflow-hidden bg-[#f4f3f8] px-5 pb-16 pt-32 text-darkBlue sm:px-7 md:pb-24 md:pt-40">

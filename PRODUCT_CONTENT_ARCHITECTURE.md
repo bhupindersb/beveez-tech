@@ -56,7 +56,7 @@ Code-backed capabilities found:
 - Commission records linked to purchase references, with duplicate-reference checks. The inspected commission engine currently uses 10% for Level 1 and 5% for Level 2; do not claim these are universally configurable until the current settings and release are checked.
 - Affiliate dashboard displays total, pending and paid commissions, referral link and recent commission history.
 - Admin-side commission and payout management/export code is present.
-- Payout profile, Razorpay API/webhook and Stripe webhook modules are present in the plugin source. Do not claim a payment gateway is enabled or automatic payouts are available without checking the live configuration and supported flow.
+- Payout-profile and Razorpay API/webhook modules are present in the plugin source. Razorpay is the sole payment provider to reference in product content. Do not claim automatic payouts are available without checking the live configuration and supported flow.
 - License validation and update functionality are present.
 
 Existing guide routes:

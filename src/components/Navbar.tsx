@@ -40,6 +40,14 @@ export default function Navbar({ settings }: any) {
     { label: 'Beveez AI', url: '/products/beveez-ai' },
   ]
 
+  // Apply the requested order and present the existing Blog page as Insights.
+  const orderedNavigation = [...(settings?.navigation ?? [])].map((item: any) => ({ ...item, displayLabel: item.label?.toLowerCase() === 'blog' ? 'Insights' : item.label })).sort((a: any, b: any) => {
+    const order = ['services', 'pricing', 'about', 'insights', 'contact']
+    const ai = order.indexOf(a.displayLabel?.toLowerCase())
+    const bi = order.indexOf(b.displayLabel?.toLowerCase())
+    return (ai < 0 ? order.length : ai) - (bi < 0 ? order.length : bi)
+  })
+
   // Active link matcher
   const isActive = (url: string) => {
     const normalize = (v: string) =>
@@ -82,38 +90,6 @@ export default function Navbar({ settings }: any) {
           {/* DESKTOP MENU */}
           <LayoutGroup>
             <ul className="hidden items-center gap-6 whitespace-nowrap text-white md:flex">
-              {settings?.navigation?.map((item: any, i: number) => {
-                const active = isActive(item.url)
-
-                return (
-                  <li key={i} className="relative">
-                    <Link href={`/${item.url.replace(/^\//, '')}`}
-                      className={`relative px-1 transition
-                        ${
-                          active
-                            ? 'text-orange font-semibold'
-                            : 'text-white hover:text-orange'
-                        }
-                      `}
-                    >
-                      {item.label}
-
-                      {/* 🔥 Animated underline */}
-                      {active && (
-                        <motion.span
-                          layoutId="nav-underline"
-                          className="absolute -bottom-1 left-0 h-[2px] w-full bg-orange rounded-full"
-                          transition={{
-                            type: 'spring',
-                            stiffness: 500,
-                            damping: 30,
-                          }}
-                        />
-                      )}
-                    </Link>
-                  </li>
-                )
-              })}
               <li className="group relative">
                 <Link
                   href="/products"
@@ -154,6 +130,80 @@ export default function Navbar({ settings }: any) {
                   </div>
                 </div>
               </li>
+              <li className="pt-1">
+            <div className="flex items-center justify-center gap-3">
+              <Link
+                href="/products"
+                onClick={() => setOpen(false)}
+                className={`text-lg transition ${isActive('/products') ? 'font-semibold text-orange' : 'text-white'}`}
+              >
+                Products
+              </Link>
+              <button
+                type="button"
+                onClick={() => setProductsOpen(!productsOpen)}
+                aria-label={productsOpen ? 'Collapse products' : 'Expand products'}
+                aria-expanded={productsOpen}
+                className="rounded-full px-2 text-xl text-white/80"
+              >
+                {productsOpen ? '−' : '+'}
+              </button>
+            </div>
+            {productsOpen && (
+              <ul className="mt-4 space-y-3 rounded-2xl bg-white/5 px-4 py-4">
+                {productLinks.map((item) => (
+                  <li key={item.url}>
+                    <Link
+                      href={item.url}
+                      onClick={() => setOpen(false)}
+                      className={`text-sm transition ${isActive(item.url) ? 'font-semibold text-orange' : 'text-white/85'}`}
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+                <li>
+                  <Link
+                    href="/products"
+                    onClick={() => setOpen(false)}
+                    className="text-sm font-semibold text-[#65c6db]"
+                  >
+                    View all products
+                  </Link>
+                </li>
+          {orderedNavigation.map((item: any, i: number) => {
+                const active = isActive(item.url)
+
+                return (
+                  <li key={i} className="relative">
+                    <Link href={`/${item.url.replace(/^\//, '')}`}
+                      className={`relative px-1 transition
+                        ${
+                          active
+                            ? 'text-orange font-semibold'
+                            : 'text-white hover:text-orange'
+                        }
+                      `}
+                    >
+                      {item.displayLabel}
+
+                      {/* 🔥 Animated underline */}
+                      {active && (
+                        <motion.span
+                          layoutId="nav-underline"
+                          className="absolute -bottom-1 left-0 h-[2px] w-full bg-orange rounded-full"
+                          transition={{
+                            type: 'spring',
+                            stiffness: 500,
+                            damping: 30,
+                          }}
+                        />
+                      )}
+                    </Link>
+                  </li>
+                )
+              })}
+
             </ul>
           </LayoutGroup>
 
@@ -219,47 +269,7 @@ export default function Navbar({ settings }: any) {
               </li>
             )
           })}
-          <li className="pt-1">
-            <div className="flex items-center justify-center gap-3">
-              <Link
-                href="/products"
-                onClick={() => setOpen(false)}
-                className={`text-lg transition ${isActive('/products') ? 'font-semibold text-orange' : 'text-white'}`}
-              >
-                Products
-              </Link>
-              <button
-                type="button"
-                onClick={() => setProductsOpen(!productsOpen)}
-                aria-label={productsOpen ? 'Collapse products' : 'Expand products'}
-                aria-expanded={productsOpen}
-                className="rounded-full px-2 text-xl text-white/80"
-              >
-                {productsOpen ? '−' : '+'}
-              </button>
-            </div>
-            {productsOpen && (
-              <ul className="mt-4 space-y-3 rounded-2xl bg-white/5 px-4 py-4">
-                {productLinks.map((item) => (
-                  <li key={item.url}>
-                    <Link
-                      href={item.url}
-                      onClick={() => setOpen(false)}
-                      className={`text-sm transition ${isActive(item.url) ? 'font-semibold text-orange' : 'text-white/85'}`}
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-                <li>
-                  <Link
-                    href="/products"
-                    onClick={() => setOpen(false)}
-                    className="text-sm font-semibold text-[#65c6db]"
-                  >
-                    View all products
-                  </Link>
-                </li>
+
               </ul>
             )}
           </li>

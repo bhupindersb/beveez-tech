@@ -55,7 +55,7 @@ export default function Navbar({ settings }: any) {
     <>
       {/* NAV BAR */}
       <nav
-        className={`fixed top-4 left-0 right-0 mx-auto z-50 w-[90%] md:max-w-[900px]
+        className={`fixed top-4 left-0 right-0 mx-auto z-50 w-[94%] md:max-w-[1250px]
         rounded-full py-3 pl-5 pr-3 md:top-6
         transition-all duration-300
         ${
@@ -81,7 +81,7 @@ export default function Navbar({ settings }: any) {
 
           {/* DESKTOP MENU */}
           <LayoutGroup>
-            <ul className="hidden items-center gap-8 text-white md:flex">
+            <ul className="hidden items-center gap-6 whitespace-nowrap text-white md:flex">
               {settings?.navigation?.map((item: any, i: number) => {
                 const active = isActive(item.url)
 
@@ -165,7 +165,7 @@ export default function Navbar({ settings }: any) {
               from-[#cf5a20] to-[#f68f1e]
               px-6 py-2 text-white font-semibold
               transition hover:from-[#f68f1e] hover:to-[#cf5a20]
-              md:inline-block"
+              md:inline-block whitespace-nowrap"
             >
               {settings.navCtaText}
             </Link>

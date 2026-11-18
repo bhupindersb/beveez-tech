@@ -25,10 +25,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title:
       seo?.seoTitle ||
-      'Beveez Tech — Web Design, Development & SEO for Startups',
+      'Beveez Tech — Digital Products & Custom Technology Solutions',
     description:
       seo?.seoDescription ||
-      'Beveez Tech helps startups, founders, and small businesses build fast, scalable websites.',
+      'Beveez Tech builds focused digital products and high-performance websites, platforms and automations for businesses worldwide.',
     metadataBase: new URL('https://beveez.tech'),
 
     openGraph: {

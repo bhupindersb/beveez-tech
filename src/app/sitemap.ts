@@ -58,6 +58,26 @@ export default async function sitemap() {
       url: 'https://beveez.tech/contact',
       lastModified: new Date()
     },
+    {
+      url: 'https://beveez.tech/products',
+      lastModified: new Date()
+    },
+    {
+      url: 'https://beveez.tech/products/unlivo',
+      lastModified: new Date()
+    },
+    {
+      url: 'https://beveez.tech/products/affilixwp',
+      lastModified: new Date()
+    },
+    {
+      url: 'https://beveez.tech/products/docs-ai',
+      lastModified: new Date()
+    },
+    {
+      url: 'https://beveez.tech/products/beveez-ai',
+      lastModified: new Date()
+    },
   ]
 
   return [...staticPages, ...blogUrls]

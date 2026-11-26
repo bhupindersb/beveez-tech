@@ -45,6 +45,7 @@ export default function RootLayout({
 
       <body className="antialiased bg-[#f2f1f6] font-body">
         {children}
+        {process.env.VERCEL_ENV === 'preview' && <script async src="https://beveez-ai-git-feat-dashboard-guida-9078b5-bhupindersbs-projects.vercel.app/ansivra-widget.js" data-assistant="ba85f93f-392f-4f17-87ac-88de9d471981" />}
       </body>
     </html>
   )
